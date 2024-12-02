@@ -31,7 +31,7 @@ This repo does not have a licence. This means that by default, it is All Rights 
  - Redistribute the Mod under a different name or Author.
 
 ## Mod Pages
-[ComosLibrary on CurseForge](https://minecraft.curseforge.com/projects/cosmos-library)
+[CosmosLibrary on CurseForge](https://minecraft.curseforge.com/projects/cosmos-library)
 
 [CosmosLibrary on Modrinth](https://modrinth.com/organization/the-cosmos-series)
 
