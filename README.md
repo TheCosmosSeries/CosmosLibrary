@@ -1,5 +1,7 @@
 ![Version](https://img.shields.io/badge/VERSION-1.20.1-success?style=for-the-badge) ![Repo Size](https://img.shields.io/github/repo-size/TheCosmicNebula/Cosmos-Library?label=REPO%20SIZE&style=for-the-badge) ![Open Issues](https://img.shields.io/github/issues/TheCosmicNebula/Cosmos-Library?style=for-the-badge) ![Closed Issues](https://img.shields.io/github/issues-closed/TheCosmicNebula/Cosmos-Library?color=green&style=for-the-badge)
 
+![cosmos-library-title-new](https://github.com/user-attachments/assets/aa456b43-a672-4a06-9f4a-08440b979dbb)
+
 # CosmosLibrary
 Main required library for all my mods. Currently using Forge for MinecraftForge 1.20.1.
 
