@@ -1,6 +1,7 @@
 ![Version](https://img.shields.io/badge/VERSION-1.20.1-success?style=for-the-badge) ![Repo Size](https://img.shields.io/github/repo-size/TheCosmicNebula/Cosmos-Library?label=REPO%20SIZE&style=for-the-badge) ![Open Issues](https://img.shields.io/github/issues/TheCosmicNebula/Cosmos-Library?style=for-the-badge) ![Closed Issues](https://img.shields.io/github/issues-closed/TheCosmicNebula/Cosmos-Library?color=green&style=for-the-badge)
 
-![cosmos-library-title-new](https://github.com/user-attachments/assets/56aee668-87e6-4842-83b0-aa95dcb3a03d)
+![cosmos-library-title-new-3](https://github.com/user-attachments/assets/ff1d671d-63a1-4dbc-8d05-4c40291b822b)
+
 
 
 # CosmosLibrary
