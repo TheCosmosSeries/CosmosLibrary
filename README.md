@@ -2,17 +2,15 @@
 
 ![cosmos-library-title-new-3](https://github.com/user-attachments/assets/5498b2ed-dc74-432e-9bc9-cb6e8dad487f)
 
-
-
-# **Cosmos Library**
+# Cosmos Library
 Main required library for The Cosmos Series mods. Currently using Forge for MinecraftForge 1.20.1.
 
-### **Description**
+### Description
 Cosmos Library is a collection of helper functions to enable a quicker and more seamless creation of Minecraft Mods. It adds nothing to the game itself, it is simply a base upon which other mods are created. This also allows the reduction of common code distributed within other mods, as that common code is stored in this mod once.
 
 This library is required for all mods in **The Cosmos Series**.
 
-## **Developers**
+## Developers
 A note for any Developers looking to use Cosmos Library for their own projects:
 
 _Cosmos Library is made and used exclusively by TheCosmicNebula for The Cosmos Series. There is no official documentation, and there likely will never be. TheCosmicNebula will ruthlessly change or remove functions and classes with reckless abandon._
@@ -47,9 +45,10 @@ This repo does not have a licence. This means that by default, it is All Rights 
  - Redistribute the Mod under a different name or Author.
 
 ## Mod Pages
-Cosmos Library on [CurseForge](https://minecraft.curseforge.com/projects/cosmos-library)
+- Cosmos Library on [CurseForge](https://minecraft.curseforge.com/projects/cosmos-library)
+- CosmosLibrary on [Modrinth](https://modrinth.com/mod/cosmos-library)
 
-CosmosLibrary on [Modrinth](https://modrinth.com/mod/cosmos-library)
+## The Cosmos Series
+This mod is part of [The Cosmos Series](https://www.github.com/TheCosmosSeries).
 
-
-| 2021 @ TheCosmicNebula | TCN | All Rights Reserved (Except Where Specified) |
+| 2021 @ TheCosmicNebula | The Cosmos Series | All Rights Reserved (Except Where Specified) |
