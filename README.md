@@ -46,7 +46,7 @@ This repo does not have a licence. This means that by default, it is All Rights 
 
 ## Mod Pages
 - Cosmos Library on [CurseForge](https://minecraft.curseforge.com/projects/cosmos-library)
-- CosmosLibrary on [Modrinth](https://modrinth.com/mod/cosmos-library)
+- Cosmos Library on [Modrinth](https://modrinth.com/mod/cosmos-library)
 
 ## The Cosmos Series
 This mod is part of [The Cosmos Series](https://www.github.com/TheCosmosSeries).
