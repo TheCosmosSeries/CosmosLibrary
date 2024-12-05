@@ -3,7 +3,7 @@
 ![cosmos-library-title-new-3](https://github.com/user-attachments/assets/5498b2ed-dc74-432e-9bc9-cb6e8dad487f)
 
 # Cosmos Library
-Main required library for The Cosmos Series mods. Currently using Forge for MinecraftForge 1.20.1.
+Main required library for The Cosmos Series mods. Currently using Forge for Minecraft 1.20.1.
 
 ### Description
 Cosmos Library is a collection of helper functions to enable a quicker and more seamless creation of Minecraft Mods. It adds nothing to the game itself, it is simply a base upon which other mods are created. This also allows the reduction of common code distributed within other mods, as that common code is stored in this mod once.
