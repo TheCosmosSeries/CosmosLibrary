@@ -53,4 +53,4 @@ This repo does not have a licence. This means that by default, it is All Rights 
 ## The Cosmos Series
 This mod is part of [The Cosmos Series](https://www.github.com/TheCosmosSeries).
 
-| 2021 @ TheCosmicNebula | The Cosmos Series | All Rights Reserved (Except Where Specified) |
+| 2024 @ TheCosmicNebula | The Cosmos Series | All Rights Reserved (Except Where Specified) |
