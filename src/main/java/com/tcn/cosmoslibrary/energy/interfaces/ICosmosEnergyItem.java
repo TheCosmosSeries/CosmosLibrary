@@ -70,5 +70,4 @@ public interface ICosmosEnergyItem {
 	
 	public int receiveEnergy(ItemStack stackIn, int energy, boolean simulate);
 	public int extractEnergy(ItemStack stackIn, int energy, boolean simulate);
-	
 }

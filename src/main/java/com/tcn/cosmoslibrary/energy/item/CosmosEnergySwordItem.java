@@ -214,7 +214,7 @@ public class CosmosEnergySwordItem extends SwordItem implements ICosmosEnergyIte
 
 	@Override
 	public boolean isBarVisible(ItemStack stackIn) {
-		return true;
+		return stackIn.has(DataComponents.CUSTOM_DATA) ? stackIn.get(DataComponents.CUSTOM_DATA).copyTag().contains("energy") : false;
 	}
 	
 	@Override
@@ -225,6 +225,6 @@ public class CosmosEnergySwordItem extends SwordItem implements ICosmosEnergyIte
 	@Override
 	public int getBarWidth(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof ICosmosEnergyItem) ? 0 : Mth.clamp(Math.round((float) ((ICosmosEnergyItem) item).getScaledEnergy(stackIn, 13)), 0, 13);
+		return !(item instanceof ICosmosEnergyItem energyItem) ? 0 : Mth.clamp(Math.round((float) energyItem.getScaledEnergy(stackIn, 13)), 0, 13);
 	}
 }

@@ -200,7 +200,7 @@ public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra impleme
 
 	@Override
 	public boolean isBarVisible(ItemStack stackIn) {
-		return true;
+		return stackIn.has(DataComponents.CUSTOM_DATA) ? stackIn.get(DataComponents.CUSTOM_DATA).copyTag().contains("energy") : false;
 	}
 	
 	@Override

@@ -15,12 +15,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +36,6 @@ import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 @OnlyIn(Dist.CLIENT)
-@SuppressWarnings({ "deprecation" })
 public class CosmosLayerArmourColourable<E extends LivingEntity, M extends HumanoidModel<E>, A extends HumanoidModel<E>> extends RenderLayer<E, M> {
 	
 	private enum TYPE {
@@ -51,13 +48,13 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 	
 	private final A innerModel;
 	private final A outerModel;
-    private final TextureAtlas armorTrimAtlas;
+//    private final TextureAtlas armorTrimAtlas;
 
 	public CosmosLayerArmourColourable(RenderLayerParent<E, M> entityRenderer, A innerModelIn, A outerModelIn, ModelManager modelManager) {
 		super(entityRenderer);
 		this.innerModel = innerModelIn;
 		this.outerModel = outerModelIn;
-        this.armorTrimAtlas = modelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);
+//        this.armorTrimAtlas = modelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);
 	}
 
 	@Override
@@ -77,9 +74,9 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 				Model model = this.getArmorModelHook(livingEntityIn, stackIn, slotTypeIn, modelIn);
 				this.setPartVisibility(modelIn, slotTypeIn);
 				
-				boolean flag = this.usesInnerModel(slotTypeIn);
+//				boolean flag = this.usesInnerModel(slotTypeIn);
 				boolean flag1 = stackIn.hasFoil();
-				ArmorMaterial armormaterial = armourItem.getMaterial().value();
+//				ArmorMaterial armormaterial = armourItem.getMaterial().value();
 
                 IClientItemExtensions extensions = IClientItemExtensions.of(stackIn);
                 extensions.setupModelAnimations(livingEntityIn, stackIn, slotTypeIn, model, limbSwingIn, limbSwingAmountIn, partialTicksIn, ageInTicksIn, netHeadYawIn, headPitchIn);

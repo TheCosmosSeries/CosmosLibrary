@@ -38,8 +38,9 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 	private boolean doesCharge;
 	private boolean doesDisplayEnergyInTooltip;
 	private ComponentColour barColour;
+	private float damage;
 	
-	public CosmosEnergyBowItem(Properties builder, CosmosEnergyItem.Properties energyProperties, int rangeIn, int knockbackModifierIn, float powerModifierIn, float damageModifierIn) {
+	public CosmosEnergyBowItem(Properties builder, CosmosEnergyItem.Properties energyProperties, float damageIn) {
 		super(builder.stacksTo(1));
 
 		this.maxEnergyStored = energyProperties.maxEnergyStored;
@@ -50,6 +51,8 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 		this.doesCharge = energyProperties.doesCharge;
 		this.doesDisplayEnergyInTooltip = energyProperties.doesDisplayEnergyInTooltip;
 		this.barColour = energyProperties.barColour;
+		
+		this.damage = damageIn;
 	}
 	
 	@Override
@@ -109,7 +112,7 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 				if (!((double) f < 0.1D)) {
 					List<ItemStack> list = draw(stack, itemstack, playerentity);
                     if (level instanceof ServerLevel serverlevel && !list.isEmpty()) {
-                        this.shoot(serverlevel, playerentity, playerentity.getUsedItemHand(), stack, list, f * 3.0F, 1.0F, f == 1.0F, null);
+                        this.shoot(serverlevel, playerentity, playerentity.getUsedItemHand(), stack, list, f * this.damage, 1.0F, f == 1.0F, null);
 						this.extractEnergy(stack, this.getMaxUse(stack) / 2, false);
                     }
 
@@ -127,6 +130,16 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 				}
 			}
 		}
+	}
+
+	public static float getPowerForTime(int charge) {
+		float f = (float) charge / 20.0F;
+		f = (f * f + f * 2.0F) / 3.0F;
+		if (f > 1.0F) {
+			f = 1.0F;
+		}
+
+		return f;
 	}
 
     @Override
@@ -244,7 +257,7 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 
 	@Override
 	public boolean isBarVisible(ItemStack stackIn) {
-		return true;
+		return stackIn.has(DataComponents.CUSTOM_DATA) ? stackIn.get(DataComponents.CUSTOM_DATA).copyTag().contains("energy") : false;
 	}
 	
 	@Override
@@ -255,6 +268,6 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 	@Override
 	public int getBarWidth(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof ICosmosEnergyItem) ? 0 : Mth.clamp(Math.round((float) ((ICosmosEnergyItem) item).getScaledEnergy(stackIn, 13)), 0, 13);
+		return !(item instanceof ICosmosEnergyItem energyItem) ? 0 : Mth.clamp(Math.round((float) energyItem.getScaledEnergy(stackIn, 13)), 0, 13);
 	}
 }
