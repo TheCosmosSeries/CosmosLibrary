@@ -1,1 +1,0 @@
-TRZCore LICENCE.md
