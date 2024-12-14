@@ -1,6 +1,9 @@
 package com.tcn.cosmoslibrary.energy.item;
 
 import java.util.List;
+import java.util.function.Consumer;
+
+import javax.annotation.Nullable;
 
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
@@ -161,6 +164,15 @@ public class CosmosEnergyShovelItem extends ShovelItem implements ICosmosEnergyI
 		return false;
 	}
 
+	@Override
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+		if (this.hasEnergy(stackIn)) {
+			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
+		}
+		
+		return 0;
+	}
+	
 	@Override
 	public int getMaxEnergyStored(ItemStack stackIn) {
 		Item item = stackIn.getItem();

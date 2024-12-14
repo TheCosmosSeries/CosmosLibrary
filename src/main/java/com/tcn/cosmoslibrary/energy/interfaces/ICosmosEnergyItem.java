@@ -44,7 +44,7 @@ public interface ICosmosEnergyItem {
 	}
 	
 	default int setEnergy(ItemStack stackIn, int energy) {
-		stackIn.setDamageValue(0);
+		//stackIn.setDamageValue(0);
 		if (stackIn.has(DataComponents.CUSTOM_DATA)) {
 			CompoundTag tag = stackIn.get(DataComponents.CUSTOM_DATA).copyTag();
 			tag.putInt("energy", Math.max(0, energy));

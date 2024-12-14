@@ -3,6 +3,8 @@ package com.tcn.cosmoslibrary.energy.item;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.tcn.cosmoslibrary.client.renderer.item.CosmosShieldBEWLR;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
@@ -50,7 +52,7 @@ public class CosmosEnergyShieldItem extends ShieldItem implements ICosmosEnergyI
 	private ResourceLocation normal, noPattern;
 	
 	public CosmosEnergyShieldItem(Item.Properties properties, CosmosEnergyItem.Properties energyProperties, ResourceLocation normalIn, ResourceLocation noPatternIn) {
-		super(properties);
+		super(properties.durability(64));
 		DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
 
 		this.maxEnergyStored = energyProperties.maxEnergyStored;
@@ -124,18 +126,14 @@ public class CosmosEnergyShieldItem extends ShieldItem implements ICosmosEnergyI
 	}
 
 	@Override
-	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, T entity, Consumer<Item> onBroken) {
-		if (this.getDamage(stackIn) < this.getMaxDamage(stackIn)) {
-			this.setDamage(stackIn, 0);
-		}
-		
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
 		if (this.hasEnergy(stackIn)) {
 			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
 		}
 		
-        return 0;
-    }
-
+		return 0;
+	}
+	
 	@Override
 	public boolean isValidRepairItem(ItemStack stackIn, ItemStack repairStackIn) {
 		return false;
@@ -153,43 +151,43 @@ public class CosmosEnergyShieldItem extends ShieldItem implements ICosmosEnergyI
 	@Override
 	public int getMaxEnergyStored(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? 0 : ((CosmosEnergyShieldItem)item).maxEnergyStored;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? 0 : energyItem.maxEnergyStored;
 	}
 	
 	@Override
 	public int getMaxExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? 0 : ((CosmosEnergyShieldItem)item).maxExtract;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? 0 : energyItem.maxExtract;
 	}
 	
 	@Override
 	public int getMaxReceive(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? 0 : ((CosmosEnergyShieldItem)item).maxReceive;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? 0 : energyItem.maxReceive;
 	}
 
 	@Override
 	public int getMaxUse(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? 0 : ((CosmosEnergyShieldItem)item).maxUse;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? 0 : energyItem.maxUse;
 	}
 
 	@Override
 	public boolean doesExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? false : ((CosmosEnergyShieldItem)item).doesExtract;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? false : energyItem.doesExtract;
 	}
 
 	@Override
 	public boolean doesCharge(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? false : ((CosmosEnergyShieldItem)item).doesCharge;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? false : energyItem.doesCharge;
 	}
 
 	@Override
 	public boolean doesDisplayEnergyInTooltip(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyShieldItem) ? false : ((CosmosEnergyShieldItem)item).doesDisplayEnergyInTooltip;
+		return !(item instanceof CosmosEnergyShieldItem energyItem) ? false : energyItem.doesDisplayEnergyInTooltip;
 	}
 	
 	@Override

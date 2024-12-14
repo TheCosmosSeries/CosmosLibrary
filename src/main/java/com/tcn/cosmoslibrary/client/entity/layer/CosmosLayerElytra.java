@@ -23,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -51,10 +50,9 @@ public class CosmosLayerElytra<T extends LivingEntity, M extends EntityModel<T>>
 			if (entityLivingBaseIn instanceof AbstractClientPlayer abstractclientplayer) {
 				PlayerSkin playerskin = abstractclientplayer.getSkin();
 				
+				//Removed cape texture override -> very da stupid
 				if (playerskin.elytraTexture() != null) {
 					resourcelocation = playerskin.elytraTexture();
-				} else if (playerskin.capeTexture() != null && abstractclientplayer.isModelPartShown(PlayerModelPart.CAPE)) {
-					resourcelocation = playerskin.capeTexture();
 				} else {
 					resourcelocation = getElytraTexture(stackIn, entityLivingBaseIn);
 				}

@@ -2,6 +2,7 @@ package com.tcn.cosmoslibrary.energy.item;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -36,7 +37,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-@SuppressWarnings("deprecation")
 public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
 
 	private int maxEnergyStored;
@@ -66,7 +66,7 @@ public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
 		super.appendHoverText(stack, context, tooltip, flagIn);
 		
 		if (stack.has(DataComponents.CUSTOM_DATA)) {
-			CompoundTag stackTag = stack.get(DataComponents.CUSTOM_DATA).getUnsafe();
+			CompoundTag stackTag = stack.get(DataComponents.CUSTOM_DATA).copyTag();
 			tooltip.add(ComponentHelper.style(ComponentColour.GRAY, "cosmoslibrary.tooltip.energy_item.stored").append(ComponentHelper.comp(Value.LIGHT_GRAY + "[ " + Value.RED + CosmosUtil.formatIntegerMillion(stackTag.getInt("energy")) + Value.LIGHT_GRAY + " / " + Value.RED + CosmosUtil.formatIntegerMillion(this.getMaxEnergyStored(stack)) + Value.LIGHT_GRAY + " ]")));
 		}
 	}
@@ -157,6 +157,15 @@ public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
 		}
 	}
 
+	@Override
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+		if (this.hasEnergy(stackIn)) {
+			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
+		}
+		
+		return 0;
+	}
+	
     private static boolean playerHasShieldUseIntent(UseOnContext context) {
         Player player = context.getPlayer();
         return context.getHand().equals(InteractionHand.MAIN_HAND) && player.getOffhandItem().is(Items.SHIELD) && !player.isSecondaryUseActive();

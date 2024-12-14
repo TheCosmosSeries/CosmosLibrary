@@ -262,7 +262,6 @@ public class CosmosUtil {
         return new AABB((float) fromX / 16F, (float) fromY / 16F, (float) fromZ / 16F, (float) toX / 16F, (float) toY / 16F, (float) toZ / 16F);
     }
 
-	
 	public static int getSides(boolean down, boolean up, boolean north, boolean south, boolean west, boolean east) {
 		int side_connect = 0;
 		

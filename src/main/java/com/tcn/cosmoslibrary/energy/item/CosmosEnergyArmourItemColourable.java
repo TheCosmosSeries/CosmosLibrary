@@ -3,6 +3,8 @@ package com.tcn.cosmoslibrary.energy.item;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.tcn.cosmoslibrary.common.item.CosmosArmourItemColourable;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
@@ -24,7 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 
-@SuppressWarnings("deprecation")
 public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable implements ICosmosEnergyItem {
 	private int maxEnergyStored;
 	private int maxExtract;
@@ -38,7 +39,7 @@ public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable
 	private boolean isEnderMask;
 
 	public CosmosEnergyArmourItemColourable(Holder<ArmorMaterial> materialIn, Type typeIn, boolean isEnderMaskIn, Item.Properties builderIn, CosmosEnergyItem.Properties energyProperties) {
-		super(materialIn, typeIn, builderIn);
+		super(materialIn, typeIn, builderIn.durability(64));
 		
 		this.maxEnergyStored = energyProperties.maxEnergyStored;
 		this.maxExtract = energyProperties.maxExtract;
@@ -64,66 +65,60 @@ public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable
 		super.appendHoverText(stack, context, tooltip, flagIn);
 		
 		if (stack.has(DataComponents.CUSTOM_DATA)) {
-			CompoundTag stackTag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).getUnsafe();
+			CompoundTag stackTag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 			tooltip.add(ComponentHelper.style(ComponentColour.GRAY, "cosmoslibrary.tooltip.energy_item.stored").append(ComponentHelper.comp(Value.LIGHT_GRAY + "[ " + Value.RED + CosmosUtil.formatIntegerMillion(stackTag.getInt("energy")) + Value.LIGHT_GRAY + " / " + Value.RED + CosmosUtil.formatIntegerMillion(this.getMaxEnergyStored(stack)) + Value.LIGHT_GRAY + " ]")));
 		}
 	}
-	
+
 	@Override
-	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, T entity, Consumer<Item> onBroken) {
-		if (this.getDamage(stackIn) < this.getMaxDamage(stackIn)) {
-			this.setDamage(stackIn, 0);
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+		if (this.hasEnergy(stackIn)) {
+			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
 		}
 		
-		if (entity instanceof Player) {
-			if (this.hasEnergy(stackIn)) {
-				this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
-			}
-		}
-		
-        return 0;
-    }
-	
+		return 0;
+	}
+
 	@Override
 	public int getMaxEnergyStored(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? 0 : ((CosmosEnergyArmourItemColourable)item).maxEnergyStored;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? 0 : energyItem.maxEnergyStored;
 	}
 
 	@Override
 	public int getMaxExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? 0 : ((CosmosEnergyArmourItemColourable)item).maxExtract;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? 0 : energyItem.maxExtract;
 	}
 
 	@Override
 	public int getMaxReceive(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? 0 : ((CosmosEnergyArmourItemColourable)item).maxReceive;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? 0 : energyItem.maxReceive;
 	}
 
 	@Override
 	public int getMaxUse(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? 0 : ((CosmosEnergyArmourItemColourable)item).maxUse;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? 0 : energyItem.maxUse;
 	}
 
 	@Override
 	public boolean doesExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? false : ((CosmosEnergyArmourItemColourable)item).doesExtract;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? false : energyItem.doesExtract;
 	}
 
 	@Override
 	public boolean doesCharge(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? false : ((CosmosEnergyArmourItemColourable)item).doesCharge;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? false : energyItem.doesCharge;
 	}
 
 	@Override
 	public boolean doesDisplayEnergyInTooltip(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyArmourItemColourable) ? false : ((CosmosEnergyArmourItemColourable)item).doesDisplayEnergyInTooltip;
+		return !(item instanceof CosmosEnergyArmourItemColourable energyItem) ? false : energyItem.doesDisplayEnergyInTooltip;
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package com.tcn.cosmoslibrary.energy.item;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.tcn.cosmoslibrary.common.item.CosmosArmourItemElytra;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
@@ -34,7 +36,7 @@ public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra impleme
 	private ComponentColour barColour;
 
 	public CosmosEnergyArmourItemElytra(Holder<ArmorMaterial> materialIn, Type typeIn, Item.Properties builderIn, boolean damageableIn, CosmosEnergyItem.Properties energyProperties) {
-		super(materialIn, typeIn, builderIn, damageableIn);
+		super(materialIn, typeIn, builderIn.durability(64), damageableIn);
 		
 		this.maxEnergyStored = energyProperties.maxEnergyStored;
 		this.maxExtract = energyProperties.maxExtract;
@@ -83,18 +85,14 @@ public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra impleme
 	}
 
 	@Override
-	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, T entity, Consumer<Item> onBroken) {
-		if (this.getDamage(stackIn) < this.getMaxDamage(stackIn)) {
-			this.setDamage(stackIn, 0);
-		}
-		
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
 		if (this.hasEnergy(stackIn)) {
 			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
 		}
 		
-        return 0;
-    }
-	
+		return 0;
+	}
+
 	@Override
 	public int getMaxEnergyStored(ItemStack stackIn) {
 		Item item = stackIn.getItem();

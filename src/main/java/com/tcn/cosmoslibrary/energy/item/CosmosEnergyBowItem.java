@@ -1,7 +1,10 @@
 package com.tcn.cosmoslibrary.energy.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
 
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
@@ -90,6 +93,15 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 		} else {
 			return InteractionResultHolder.fail(itemstack);
 		}
+	}
+
+	@Override
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+		if (this.hasEnergy(stackIn)) {
+			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
+		}
+		
+		return 0;
 	}
 	
 	@Override

@@ -42,7 +42,8 @@ public enum ComponentColour {
 	BLURPLE(27, "Blurple", 7506394, Value.CYAN, 114, 137, 218, true),
 	BLURPLE_LIGHT(28, "Blurple Light", 3692707, Value.CYAN, 56, 88, 163, false),
 	EMPTY(29, "Default", 0, Value.LIGHT_GRAY, 0, 0, 0, true),
-	END(30, "End", 2458740, Value.GREEN, 37, 132, 116, true);
+	END(30, "End", 2458740, Value.GREEN, 37, 132, 116, true),
+	ELYTRA(31, "Elytra", 7113119, Value.CYAN, 108, 137, 159, false);
 
 	private final int index;
 	private final String name;
@@ -95,6 +96,10 @@ public enum ComponentColour {
 	public int decOpaque() {
 		return FastColor.ARGB32.opaque(this.decimal);
 	}
+
+	public int alpha() {
+		return FastColor.ARGB32.alpha(this.decimal);
+	}
 	
 	public int withAlpha(float alpha) {
 		return FastColor.ARGB32.colorFromFloat(alpha, this.RGBF[0], this.RGBF[1], this.RGBF[2]);
@@ -102,6 +107,10 @@ public enum ComponentColour {
 
 	public static int opaque(int colour) {
 		return FastColor.ARGB32.opaque(colour);
+	}
+
+	public static int alpha(int colour) {
+		return FastColor.ARGB32.alpha(colour);
 	}
 
 	public String getChatColour() {
@@ -339,6 +348,92 @@ public enum ComponentColour {
 			case ORANGE:
 				return WHITE;
 			case WHITE:
+				return POCKET_PURPLE;
+			default:
+				return BLACK;
+		}
+	}
+
+	public ComponentColour getNextVanillaColourElytra() {
+		switch (this) {
+			case WHITE:
+				return ORANGE;
+			case ORANGE:
+				return MAGENTA;
+			case MAGENTA:
+				return LIGHT_BLUE;
+			case LIGHT_BLUE:
+				return YELLOW;
+			case YELLOW:
+				return LIME;
+			case LIME:
+				return PINK;
+			case PINK:
+				return GRAY;
+			case GRAY:
+				return LIGHT_GRAY;
+			case LIGHT_GRAY:
+				return CYAN;
+			case CYAN:
+				return PURPLE;
+			case PURPLE:
+				return BLUE;
+			case BLUE:
+				return BROWN;
+			case BROWN:
+				return GREEN;
+			case GREEN:
+				return RED;
+			case RED:
+				return BLACK;
+			case BLACK:
+				return POCKET_PURPLE;
+			case POCKET_PURPLE:
+				return ELYTRA;
+			case ELYTRA:
+				return WHITE;
+			default:
+				return WHITE;
+		}
+	}
+
+	public ComponentColour getNextVanillaColourReverseElytra() {
+		switch (this) {
+			case POCKET_PURPLE:
+				return BLACK;
+			case BLACK:
+				return RED;
+			case RED:
+				return GREEN;
+			case GREEN:
+				return BROWN;
+			case BROWN:
+				return BLUE;
+			case BLUE:
+				return PURPLE;
+			case PURPLE:
+				return CYAN;
+			case CYAN:
+				return LIGHT_GRAY;
+			case LIGHT_GRAY:
+				return GRAY;
+			case GRAY:
+				return PINK;
+			case PINK:
+				return LIME;
+			case LIME:
+				return YELLOW;
+			case YELLOW:
+				return LIGHT_BLUE;
+			case LIGHT_BLUE:
+				return MAGENTA;
+			case MAGENTA:
+				return ORANGE;
+			case ORANGE:
+				return WHITE;
+			case WHITE:
+				return ELYTRA;
+			case ELYTRA:
 				return POCKET_PURPLE;
 			default:
 				return BLACK;

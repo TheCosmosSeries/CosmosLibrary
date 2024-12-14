@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
@@ -12,8 +14,6 @@ import com.tcn.cosmoslibrary.common.util.CosmosUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItemBEWLR;
 import com.tcn.cosmoslibrary.energy.item.CosmosEnergyItem;
-import com.tcn.dimensionalpocketsii.client.renderer.DimensionalTridentBEWLR;
-import com.tcn.dimensionalpocketsii.core.entity.DimensionalTridentEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -160,62 +160,6 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stackIn, Level levelIn, LivingEntity livingEntityIn, int timeLeft) {
-		if (livingEntityIn instanceof Player playerEntity) {
-			int i = this.getUseDuration(stackIn, livingEntityIn) - timeLeft;
-			
-			if (i >= 10) {
-                float j = EnchantmentHelper.getTridentSpinAttackStrength(stackIn, playerEntity);
-				if (!(j > 0.0F) || playerEntity.isInWaterOrRain()) {
-					Holder<SoundEvent> holder = EnchantmentHelper.pickHighestLevel(stackIn, EnchantmentEffectComponents.TRIDENT_SOUND).orElse(SoundEvents.TRIDENT_THROW);
-					if (!levelIn.isClientSide) {
-						this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
-						
-						if (j == 0.0F) {
-							DimensionalTridentEntity tridententity = new DimensionalTridentEntity(levelIn, playerEntity, stackIn);
-							tridententity.shootFromRotation(playerEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, 2.5F + (float) j * 0.5F, 1.0F);
-							
-							if (playerEntity.getAbilities().instabuild) {
-								tridententity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-							}
-
-							levelIn.addFreshEntity(tridententity);
-							levelIn.playSound(null, tridententity, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
-							if (!playerEntity.getAbilities().instabuild) {
-								playerEntity.getInventory().removeItem(stackIn);
-							}
-						}
-					}
-
-					playerEntity.awardStat(Stats.ITEM_USED.get(this));
-					if (j > 0) {
-						float f7 = playerEntity.getYRot();
-						float f = playerEntity.getXRot();
-						float f1 = -Mth.sin(f7 * ((float) Math.PI / 180F)) * Mth.cos(f * ((float) Math.PI / 180F));
-						float f2 = -Mth.sin(f * ((float) Math.PI / 180F));
-						float f3 = Mth.cos(f7 * ((float) Math.PI / 180F)) * Mth.cos(f * ((float) Math.PI / 180F));
-						float f4 = Mth.sqrt(f1 * f1 + f2 * f2 + f3 * f3);
-						float f5 = 3.0F * ((1.0F + (float) j) / 4.0F);
-						
-						f1 = f1 * (f5 / f4);
-						f2 = f2 * (f5 / f4);
-						f3 = f3 * (f5 / f4);
-						
-						playerEntity.push((double) f1, (double) f2, (double) f3);
-						playerEntity.startAutoSpinAttack(20, 8.0F, stackIn);
-						if (playerEntity.onGround()) {
-							float f6 = 1.1999999F;
-							playerEntity.move(MoverType.SELF, new Vec3(0.0D, (double) 1.1999999F, 0.0D));
-						}
-
-                        levelIn.playSound(null, playerEntity, holder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
-					}
-				}
-			}
-		}
-	}
-
-	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		ItemStack stack = playerIn.getItemInHand(handIn);
 		
@@ -229,6 +173,15 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 		}
 	}
 
+	@Override
+	public <T extends LivingEntity> int damageItem(ItemStack stackIn, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+		if (this.hasEnergy(stackIn)) {
+			this.extractEnergy(stackIn, this.getMaxUse(stackIn), false);
+		}
+		
+		return 0;
+	}
+	
     @Override
     public int getEnchantmentValue() {
         return this.enchantValue;
