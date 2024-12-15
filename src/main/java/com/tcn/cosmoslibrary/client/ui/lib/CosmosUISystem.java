@@ -517,7 +517,7 @@ public class CosmosUISystem {
 			int x = (screenCoords[0] * 2) / 2;
 			int y = (screenCoords[1] * 2) / 2 + 33;
 
-			graphics.drawString(font, comp, ((x - font.width(comp) / 2) + xOffset), y + yOffset, comp.getStyle().getColor().getValue());
+			graphics.drawString(font, comp, ((x - font.width(comp) / 2) + xOffset), y + yOffset, comp.getStyle().getColor().getValue(), false);
 		}
 		
 		public static void drawWrappedStringBR(GuiGraphics graphics, Font font, int[] screenCoords, int xOffset, int yOffset, int length, Component comp) {

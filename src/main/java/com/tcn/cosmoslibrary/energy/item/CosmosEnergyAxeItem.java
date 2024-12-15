@@ -138,8 +138,8 @@ public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
                 return InteractionResult.PASS;
             } else {
 	        	if (this.hasEnergy(selected)) {
-					if (player instanceof ServerPlayer) {
-						CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
+					if (player instanceof ServerPlayer serverPlayer) {
+						CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, blockpos, itemstack);
 					}
 		
 					level.setBlock(blockpos, optional.get(), 11);
@@ -198,43 +198,43 @@ public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
 	@Override
 	public int getMaxEnergyStored(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? 0 : ((CosmosEnergyAxeItem)item).maxEnergyStored;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? 0 : energyItem.maxEnergyStored;
 	}
 
 	@Override
 	public int getMaxExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? 0 : ((CosmosEnergyAxeItem)item).maxExtract;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? 0 : energyItem.maxExtract;
 	}
 
 	@Override
 	public int getMaxReceive(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? 0 : ((CosmosEnergyAxeItem)item).maxReceive;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? 0 : energyItem.maxReceive;
 	}
 
 	@Override
 	public int getMaxUse(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? 0 : ((CosmosEnergyAxeItem)item).maxUse;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? 0 : energyItem.maxUse;
 	}
 
 	@Override
 	public boolean doesExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? false : ((CosmosEnergyAxeItem)item).doesExtract;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? false : energyItem.doesExtract;
 	}
 
 	@Override
 	public boolean doesCharge(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? false : ((CosmosEnergyAxeItem)item).doesCharge;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? false : energyItem.doesCharge;
 	}
 
 	@Override
 	public boolean doesDisplayEnergyInTooltip(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyAxeItem) ? false : ((CosmosEnergyAxeItem)item).doesDisplayEnergyInTooltip;
+		return !(item instanceof CosmosEnergyAxeItem energyItem) ? false : energyItem.doesDisplayEnergyInTooltip;
 	}
 
 	@Override

@@ -44,6 +44,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
@@ -110,22 +111,6 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
     
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-		if (!ComponentHelper.isShiftKeyDown(Minecraft.getInstance())) {
-			tooltip.add(ComponentHelper.getTooltipInfo("dimensionalpocketsii.item.info.trident_enhanced"));
-			
-			if (ComponentHelper.displayShiftForDetail) {
-				tooltip.add(ComponentHelper.shiftForMoreDetails());
-			} 
-			
-		} else {
-			tooltip.add(ComponentHelper.getTooltipOne("dimensionalpocketsii.item.info.tool_charge"));
-			tooltip.add(ComponentHelper.getTooltipThree("dimensionalpocketsii.item.info.tool_usage_enhanced"));
-			tooltip.add(ComponentHelper.getTooltipFour("dimensionalpocketsii.item.info.tool_energy_enhanced"));
-			tooltip.add(ComponentHelper.getTooltipLimit("dimensionalpocketsii.item.info.tool_limitation"));
-			
-			tooltip.add(ComponentHelper.shiftForLessDetails());
-		}
-
 		if (stack.has(DataComponents.CUSTOM_DATA)) {
 			CompoundTag stackTag = stack.get(DataComponents.CUSTOM_DATA).copyTag();
 			tooltip.add(ComponentHelper.style(ComponentColour.GRAY, "cosmoslibrary.tooltip.energy_item.stored").append(ComponentHelper.comp(Value.LIGHT_GRAY + "[ " + Value.RED + CosmosUtil.formatIntegerMillion(stackTag.getInt("energy")) + Value.LIGHT_GRAY + " / " + Value.RED + CosmosUtil.formatIntegerMillion(this.getMaxEnergyStored(stack)) + Value.LIGHT_GRAY + " ]")));

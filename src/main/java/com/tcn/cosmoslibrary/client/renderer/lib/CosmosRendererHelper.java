@@ -135,6 +135,7 @@ public class CosmosRendererHelper {
 		if (boxOn) {
 			fontRendererIn.drawInBatch(textIn, width, 0.0F, 553648127, false, matrix4f, bufferIn, Font.DisplayMode.NORMAL, -alpha, combinedLightIn);
 		}
+		
 		fontRendererIn.drawInBatch(textIn, width, 0.0F, -1, shadowOn, matrix4f, bufferIn, Font.DisplayMode.POLYGON_OFFSET, 0, combinedLightIn);
 		matrixStackIn.popPose();
 	}
@@ -175,15 +176,13 @@ public class CosmosRendererHelper {
 						poseStackIn.popPose();
 						if (flag1) {
 							if (renderFoil) {
-								ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, rendertype, true,
-										stackIn.hasFoil());
+								ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, rendertype, true, stackIn.hasFoil());
 							} else {
 								ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, rendertype, true, false);
 							}
 						} else {
 							if (renderFoil) {
-								ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, rendertype, true,
-										stackIn.hasFoil());
+								ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, rendertype, true, stackIn.hasFoil());
 							} else {
 								ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, rendertype, true, false);
 							}
