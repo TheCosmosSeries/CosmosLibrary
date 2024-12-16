@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/VERSION-1.21.1-3eff8e?style=for-the-badge) ![Version](https://img.shields.io/badge/Loader-NeoForge-ffa835?style=for-the-badge) ![Repo Size](https://img.shields.io/github/repo-size/TheCosmicNebula/Cosmos-Library?label=REPO%20SIZE&style=for-the-badge) ![Open Issues](https://img.shields.io/github/issues/TheCosmicNebula/Cosmos-Library?style=for-the-badge) ![Closed Issues](https://img.shields.io/github/issues-closed/TheCosmicNebula/Cosmos-Library?color=green&style=for-the-badge)
+![Version](https://img.shields.io/badge/VERSION-1.21.1-3eff8e?style=for-the-badge) ![Version](https://img.shields.io/badge/Loader-NeoForge-ffa835?style=for-the-badge) ![Repo Size](https://img.shields.io/github/repo-size/TheCosmosSeries/CosmosLibrary?label=REPO%20SIZE&style=for-the-badge) ![Open Issues](https://img.shields.io/github/issues/TheCosmosSeries/CosmosLibrary?style=for-the-badge) ![Closed Issues](https://img.shields.io/github/issues-closed/TheCosmosSeries/CosmosLibrary?color=green&style=for-the-badge)
 
 ![cosmos-library-title-new-3](https://github.com/user-attachments/assets/5498b2ed-dc74-432e-9bc9-cb6e8dad487f)
 
@@ -47,7 +47,7 @@ This repo does not have a licence. This means that by default, it is All Rights 
  - Redistribute the Mod under a different name or Author.
 
 ## Mod Pages
-- Cosmos Library on [CurseForge](https://minecraft.curseforge.com/projects/cosmos-library)
+- Cosmos Library on [CurseForge](https://www..curseforge.com/minecraft/mc-mods/cosmos-library)
 - Cosmos Library on [Modrinth](https://modrinth.com/mod/cosmos-library)
 
 ## The Cosmos Series
