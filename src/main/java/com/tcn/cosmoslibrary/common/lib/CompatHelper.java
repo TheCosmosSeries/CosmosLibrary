@@ -20,13 +20,13 @@ public class CompatHelper {
 	
 	/**
 	 * Used to generate an {@link ItemStack} from a block to produce a {@link ItemBlock} with the required NBT data.
-	 * @param {@link World} [given world the block is in]
+	 * @param {@link Level} [given world the block is in]
 	 * @param {@link BlockPos} [position of the given block]
 	 */
-	public static void generateStack(Level world, BlockPos pos, HolderLookup.Provider provider) {
-		BlockEntity tile = world.getBlockEntity(pos);
+	public static void generateStack(Level levelIn, BlockPos pos, HolderLookup.Provider provider) {
+		BlockEntity tile = levelIn.getBlockEntity(pos);
 		//BlockState state = world.getBlockState(pos);
-		Block block = world.getBlockState(pos).getBlock();
+		Block block = levelIn.getBlockState(pos).getBlock();
 		
 		ItemStack stack = new ItemStack(block);
 		
@@ -39,8 +39,27 @@ public class CompatHelper {
 		
 		//block.spawnAfterBreak(state, (ServerLevel) world, pos, stack, true);
 		//block.dropResources(state, world, pos, tile, null, stack);
-		spawnStack(stack, world, pos.getX(), pos.getY(), pos.getZ(), 0);
-		world.removeBlock(pos, false);
+		spawnStack(stack, levelIn, pos.getX(), pos.getY(), pos.getZ(), 0);
+		levelIn.removeBlock(pos, false);
+	}
+	
+	/**
+	 * Used to generate an {@link ItemStack} from a block to produce an {@link ItemBlock} with the required NBT data.
+	 * @param {@link Level}
+	 * @param {@link BlockEntity}
+	 * @param {@link BlockPos}
+	 */
+	public static ItemStack generateItemStackOnRemoval(Level levelIn, BlockEntity blockEntityIn, BlockPos posIn) {
+		if (blockEntityIn != null) {
+			ItemStack returnStack = new ItemStack(blockEntityIn.getBlockState().getBlock());
+			CompoundTag stackTag = new CompoundTag();
+	
+			blockEntityIn.saveToItem(returnStack, levelIn.registryAccess());
+			
+			returnStack.set(DataComponents.CUSTOM_DATA, CustomData.of(stackTag));
+			return returnStack;
+		}
+		return ItemStack.EMPTY;
 	}
 	
 	/**

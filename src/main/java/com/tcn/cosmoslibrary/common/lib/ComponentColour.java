@@ -3,6 +3,8 @@ package com.tcn.cosmoslibrary.common.lib;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 
 import io.netty.buffer.ByteBuf;
@@ -65,9 +67,15 @@ public enum ComponentColour {
 		this.dark = isDarkIn;
 	}
 
+	public static final Codec<ComponentColour> CODEC = RecordCodecBuilder.create(instance ->
+		instance.group(
+			Codec.INT.fieldOf("index").forGetter(ComponentColour::getIndex)
+		).apply(instance, ComponentColour::fromIndex)
+	);
+	
 	public static final StreamCodec<ByteBuf, ComponentColour> STREAM_CODEC = new StreamCodec<ByteBuf, ComponentColour>() {
 		@Override
-        public ComponentColour decode(ByteBuf bufIn) {
+		public ComponentColour decode(ByteBuf bufIn) {
             return ComponentColour.fromIndex(bufIn.readInt());
         }
 

@@ -2,7 +2,8 @@ package com.tcn.cosmoslibrary.client.interfaces;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluid;
 
 /**
@@ -96,12 +97,12 @@ public class IBlockEntityClientUpdated {
 		/**
 		 * Returns whether the tile can process or not.
 		 */
-		public boolean canProcess(@Nullable Recipe<?> recipeIn);
+		public boolean canProcess(@Nullable RecipeHolder<?> recipeIn, HolderLookup.Provider provider);
 	
 		/**
 		 * Actually process the Item;
 		 */
-		public void processItem(@Nullable Recipe<?> recipeIn);
+		public void processItem(@Nullable RecipeHolder<?> recipeIn, HolderLookup.Provider provider);
 		
 		/**
 		 * Returns whether the machine is processing or not.
@@ -148,12 +149,12 @@ public class IBlockEntityClientUpdated {
 		/**
 		 * Returns whether the tile can process or not.
 		 */
-		public boolean canProcess(@Nullable Recipe<?> recipeIn);
+		public boolean canProcess(@Nullable RecipeHolder<?> recipeIn, HolderLookup.Provider provider);
 	
 		/**
 		 * Actually process the Item;
 		 */
-		public void processItem(@Nullable Recipe<?> recipeIn);
+		public void processItem(@Nullable RecipeHolder<?> recipeIn, HolderLookup.Provider provider);
 		
 		/**
 		 * Returns whether the machine is processing or not.

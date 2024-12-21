@@ -225,8 +225,8 @@ public class CosmosUISystem {
 
 				setTextureColour(colourIn);
 				renderStaticElement(graphics, CosmosReference.RESOURCE.BASE.UI_ENERGY_HORIZONTAL, screenCoords, drawX, drawY, 0 + scaled, 0, scaled, heightIn);
-				setTextureColour(NORMAL_COLOUR);
 			}
+			setTextureColour(NORMAL_COLOUR);
 		} else {
 			setTexture(graphics.pose(), CosmosReference.RESOURCE.BASE.UI_ENERGY_VERTICAL);
 			setTextureColour(0.6F, 0.6F, 0.6F);
@@ -237,8 +237,8 @@ public class CosmosUISystem {
 
 				setTextureColour(colourIn);
 				renderStaticElement(graphics, CosmosReference.RESOURCE.BASE.UI_ENERGY_VERTICAL, screenCoords, drawX, drawY + heightIn - scaled, 0, 255 - scaled, widthIn, scaled);
-				setTextureColour(NORMAL_COLOUR);
 			}
+			setTextureColour(NORMAL_COLOUR);
 		}
 	}
 

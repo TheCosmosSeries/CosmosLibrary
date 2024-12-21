@@ -47,11 +47,7 @@ public class CosmosRendererHelper {
 		Level world = mc.level;
 		VertexConsumer vertexBuilder = bufferIn.getBuffer(RenderType.entityTranslucent(LASER_TEXTURE));
 
-		float[] colour = enum_colour.getFloatRGB();
-		
-		float r = colour[0];
-		float g = colour[1];
-		float b = colour[2];
+		int colour = enum_colour.withAlpha(alpha);
 		
 		Vec3 vector_one = new Vec3(firstX, firstY, firstZ);
 		Vec3 vector_two = new Vec3(secondX, secondY, secondZ);
@@ -77,32 +73,32 @@ public class CosmosRendererHelper {
 		for (double i = 0; i < 4; i++) {
 			double width = beamWidth * (i / 4.0);
 			
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) width, (float) width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) width, (float) width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) -width, (float) width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) -width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) -width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) -width, (float) width, 0.0F, 0.0F);
 			
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) -width, (float) -width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) -width, (float) -width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) width, (float) -width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) -width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) -width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) width, (float) -width, 0.0F, 0.0F);
 
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) width, (float) -width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) width, (float) -width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) width, (float) width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) width, (float) width, 0.0F, 0.0F);
 			
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) -width, (float) width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) -width, (float) width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) 0, (float) -width, (float) -width, 0.0F, 0.0F);
-			addVertex(matrix4f, matrix3f, vertexBuilder, r, g, b, alpha, (float) length, (float) -width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) -width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) -width, (float) width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) 0, (float) -width, (float) -width, 0.0F, 0.0F);
+			addVertex(matrix4f, matrix3f, vertexBuilder, colour, (float) length, (float) -width, (float) -width, 0.0F, 0.0F);
 		}
 		
 		matrixStack.popPose();
 	}
 	
-	private static void addVertex(Matrix4f matrixPos, Matrix3f matrixNormal, VertexConsumer bufferIn, float red, float green, float blue, float alpha, float x, float y, float z, float texU, float texV) {
-		bufferIn.addVertex(matrixPos, x, y, z).setColor(red, green, blue, alpha).setUv(texU, texV).setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(1.0F, 1.0F, 1.0F);
+	private static void addVertex(Matrix4f matrixPos, Matrix3f matrixNormal, VertexConsumer bufferIn, int colour, float x, float y, float z, float texU, float texV) {
+		bufferIn.addVertex(matrixPos, x, y, z).setColor(colour).setUv(texU, texV).setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(1.0F, 1.0F, 1.0F);
 	}
 
 	public static void addF(VertexConsumer renderer, PoseStack stack, float x, float y, float z, float u, float v, float r, float g, float b, float a) {

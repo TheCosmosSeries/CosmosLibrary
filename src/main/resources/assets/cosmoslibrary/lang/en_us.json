@@ -26,6 +26,8 @@
 	"cosmoslibrary.tooltip.energy_item.extract": "Max Extract Rate: ",
 	"cosmoslibrary.tooltip.energy_item.receive": "Max Receive Rate: ",
 	
+	"cosmoslibrary.tooltip.block_item.items_stored": "This block contains Items.",
+	
 	"cosmoslibrary.info.pickaxe.name": "Pickaxe that uses energy",
 	"cosmoslibrary.info.pickaxe.power.name": "Power Left",
 	
