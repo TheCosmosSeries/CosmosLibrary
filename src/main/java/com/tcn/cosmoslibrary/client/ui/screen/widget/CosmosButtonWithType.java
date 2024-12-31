@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tcn.cosmoslibrary.CosmosReference.RESOURCE.BASE;
 import com.tcn.cosmoslibrary.CosmosReference.RESOURCE.INFO;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -94,6 +94,7 @@ public class CosmosButtonWithType extends CosmosButtonBase {
 		});
 		
 		this.buttonType = typeIn;
+		this.active = enabled;
 		
 		this.x = x;
 		this.y = y;
@@ -123,7 +124,7 @@ public class CosmosButtonWithType extends CosmosButtonBase {
 	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			if (this.buttonType != null) {
-				CosmosUISystem.setTextureWithColourAlpha(graphics.pose(), this.buttonType.getButtonTexture(false), new float[] { 1.0F, 1.0F, 1.0F, 1.0F });
+				CosmosUISystem.Setup.setTextureWithColourAlpha(graphics.pose(), this.buttonType.getButtonTexture(false), new float[] { 1.0F, 1.0F, 1.0F, 1.0F });
 				
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 				int i = this.getHoverState(this.isHovered);

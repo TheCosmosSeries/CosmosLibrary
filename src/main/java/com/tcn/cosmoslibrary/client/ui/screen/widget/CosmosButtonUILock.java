@@ -3,7 +3,7 @@ package com.tcn.cosmoslibrary.client.ui.screen.widget;
 import java.util.function.Supplier;
 
 import com.tcn.cosmoslibrary.CosmosReference;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.enums.EnumUILock;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
@@ -77,7 +77,7 @@ public class CosmosButtonUILock extends Button {
 	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			if (this.mode != null) {
-				CosmosUISystem.setTextureWithColourAlpha(graphics.pose(), TEXTURE, new float[] { 1.0F, 1.0F, 1.0F, 1.0F });
+				CosmosUISystem.Setup.setTextureWithColourAlpha(graphics.pose(), TEXTURE, new float[] { 1.0F, 1.0F, 1.0F, 1.0F });
 				
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 				int i = this.getHoverState(this.isHovered);

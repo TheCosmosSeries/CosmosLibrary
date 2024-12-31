@@ -18,8 +18,8 @@ public class MathHelper {
 	public static boolean isPlayerLookingAt(Player player, BlockPos posIn, boolean isFluid) {
 		HitResult block = player.pick(20.0D, 0.0F, isFluid);
 		
-		if (block.getType() == HitResult.Type.BLOCK) {
-			BlockPos hitPos = ((BlockHitResult) block).getBlockPos();
+		if (block instanceof BlockHitResult hit) {
+			BlockPos hitPos = hit.getBlockPos();
 			
 			if (blockPosEqual(posIn, hitPos)) {
 				return true;

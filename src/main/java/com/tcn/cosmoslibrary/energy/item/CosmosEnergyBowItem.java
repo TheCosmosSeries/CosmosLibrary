@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.EventHooks;
 
 public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
@@ -265,6 +266,41 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyBowItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyBowItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyBowItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyBowItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyBowItem.this.canReceiveEnergy(stackIn) && CosmosEnergyBowItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyBowItem.this.canReceiveEnergy(stackIn) && CosmosEnergyBowItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

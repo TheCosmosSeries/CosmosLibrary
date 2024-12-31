@@ -68,9 +68,7 @@ public enum ComponentColour {
 	}
 
 	public static final Codec<ComponentColour> CODEC = RecordCodecBuilder.create(instance ->
-		instance.group(
-			Codec.INT.fieldOf("index").forGetter(ComponentColour::getIndex)
-		).apply(instance, ComponentColour::fromIndex)
+		instance.group(Codec.INT.fieldOf("index").forGetter(ComponentColour::getIndex)).apply(instance, ComponentColour::fromIndex)
 	);
 	
 	public static final StreamCodec<ByteBuf, ComponentColour> STREAM_CODEC = new StreamCodec<ByteBuf, ComponentColour>() {
@@ -85,6 +83,7 @@ public enum ComponentColour {
         }
     };
     
+    @Override
 	public String toString() {
 		return this.name;
 	}

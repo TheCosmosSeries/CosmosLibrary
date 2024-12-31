@@ -33,6 +33,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyHoeItem extends HoeItem implements ICosmosEnergyItem {
 
@@ -262,6 +263,41 @@ public class CosmosEnergyHoeItem extends HoeItem implements ICosmosEnergyItem {
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyHoeItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyHoeItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyHoeItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyHoeItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyHoeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyHoeItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyHoeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyHoeItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

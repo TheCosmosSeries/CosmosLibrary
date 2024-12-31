@@ -42,5 +42,4 @@ public abstract class CosmosContainerMenuBlockEntity extends AbstractContainerMe
 	public Player getPlayer() {
 		return this.player;
 	}
-	
 }

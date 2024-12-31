@@ -28,6 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class CosmosUtil {
 	
@@ -47,13 +49,23 @@ public class CosmosUtil {
 		
 		Item currentItem = playerIn.getInventory().getSelected().getItem();
 		
-		if (currentItem instanceof CosmosItemTool) {
-			return ((CosmosItemTool) currentItem).isActive(playerIn.getInventory().getSelected());
+		if (currentItem instanceof CosmosItemTool itemTool) {
+			return itemTool.isActive(playerIn.getInventory().getSelected());
 		} else if (currentItem instanceof ICosmosTool) {
 			return true;
 		}
 
 		return false;
+	}
+	
+	public static boolean holdingFluidHandler(ItemStack stackIn) {
+		Object object = stackIn.getCapability(Capabilities.FluidHandler.ITEM);
+		
+		if (object instanceof IFluidHandler fluidHandler) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public static void setToAir(Level worldIn, BlockPos pos) {

@@ -9,7 +9,6 @@ public class CosmosNBTHelper {
 
 	public static void writeDimensionToNBT(ResourceKey<Level> dimension, CompoundTag compound) {
 		CompoundTag dimension_tag = new CompoundTag();
-		
 		ResourceLocation location = dimension.location();
 		
 		dimension_tag.putString("namespace", location.getNamespace());

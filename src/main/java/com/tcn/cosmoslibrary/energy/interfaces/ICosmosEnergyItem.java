@@ -6,13 +6,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
-/**
- * An interface that allows the addition of Energy to Items.
- * 
- * @author TheCosmicNebula
- *
- */
 public interface ICosmosEnergyItem {
 
 	int maxEnergyStored = 0;
@@ -44,7 +39,6 @@ public interface ICosmosEnergyItem {
 	}
 	
 	default int setEnergy(ItemStack stackIn, int energy) {
-		//stackIn.setDamageValue(0);
 		if (stackIn.has(DataComponents.CUSTOM_DATA)) {
 			CompoundTag tag = stackIn.get(DataComponents.CUSTOM_DATA).copyTag();
 			tag.putInt("energy", Math.max(0, energy));
@@ -70,4 +64,6 @@ public interface ICosmosEnergyItem {
 	
 	public int receiveEnergy(ItemStack stackIn, int energy, boolean simulate);
 	public int extractEnergy(ItemStack stackIn, int energy, boolean simulate);
+	
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn);
 }

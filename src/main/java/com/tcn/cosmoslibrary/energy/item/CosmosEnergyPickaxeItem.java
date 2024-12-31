@@ -26,6 +26,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyPickaxeItem extends PickaxeItem implements ICosmosEnergyItem {
 
@@ -222,6 +223,41 @@ public class CosmosEnergyPickaxeItem extends PickaxeItem implements ICosmosEnerg
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyPickaxeItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyPickaxeItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyPickaxeItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyPickaxeItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyPickaxeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyPickaxeItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyPickaxeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyPickaxeItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

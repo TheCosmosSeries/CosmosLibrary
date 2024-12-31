@@ -27,6 +27,9 @@
 	"cosmoslibrary.tooltip.energy_item.receive": "Max Receive Rate: ",
 	
 	"cosmoslibrary.tooltip.block_item.items_stored": "This block contains Items.",
+	"cosmoslibrary.tooltip.block_item.fluid_stored": "Fluid: ",
+	"cosmoslibrary.tooltip.block_item.fluid_fill_level": "Fill Level: ",
+	"cosmoslibrary.tooltip.block_item.fluid_stored_suff": " mB",
 	
 	"cosmoslibrary.info.pickaxe.name": "Pickaxe that uses energy",
 	"cosmoslibrary.info.pickaxe.power.name": "Power Left",
@@ -121,6 +124,7 @@
 	"cosmoslibrary.gui.energy_bar.suff": " FE.",
 	
 	"cosmoslibrary.gui.generation.pre": "Generating: ",
+	"cosmoslibrary.gui.generation.pre_output": "Outputting: ",
 	"cosmoslibrary.gui.generation.suff": " FE/t.",
 	
 	"cosmoslibrary.gui.energy.fe_rate": " FE/t.",

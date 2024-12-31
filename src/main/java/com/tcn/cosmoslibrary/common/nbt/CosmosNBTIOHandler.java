@@ -119,7 +119,6 @@ public class CosmosNBTIOHandler {
 			if (visitor.visitRootEntry(EndTag.TYPE) == StreamTagVisitor.ValueResult.CONTINUE) {
 				visitor.visitEnd();
 			}
-
 		} else {
 			switch (visitor.visitRootEntry(tagtype)) {
 			case HALT:
@@ -133,7 +132,6 @@ public class CosmosNBTIOHandler {
 				StringTag.skipString(dataInput);
 				tagtype.parse(dataInput, visitor, accounter);
 			}
-
 		}
 	}
 
@@ -147,15 +145,15 @@ public class CosmosNBTIOHandler {
 
 	private static Tag readUnnamedTag(DataInput dataInput, NbtAccounter accounter) throws IOException {
 		byte b0 = dataInput.readByte();
-		accounter.accountBytes(8); // Forge: Count everything!
+		accounter.accountBytes(8);
 		if (b0 == 0) {
 			return EndTag.INSTANCE;
 		} else {
-			accounter.readUTF(dataInput.readUTF()); // Forge: Count this string.
-			accounter.accountBytes(32); // Forge: 4 extra bytes for the object allocation.
+			accounter.readUTF(dataInput.readUTF());
+			accounter.accountBytes(32);
 
 			try {
-				return TagTypes.getType(b0).load(dataInput, /*p_128932_,*/ accounter);
+				return TagTypes.getType(b0).load(dataInput, accounter);
 			} catch (IOException ioexception) {
 				CrashReport crashreport = CrashReport.forThrowable(ioexception, "Loading NBT data");
 				CrashReportCategory crashreportcategory = crashreport.addCategory("NBT Tag");

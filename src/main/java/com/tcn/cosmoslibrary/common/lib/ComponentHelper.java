@@ -48,6 +48,10 @@ public final class ComponentHelper {
 		public static final String ITALIC = (char) 167 + "o";
 		public static final String END = (char) 167 + "r";
 	}
+
+	public static final boolean displayShiftForDetail = true;
+	public static final boolean displayCtrlForDetail = true;
+	public static final boolean displayAltForDetail = true;
 	
 	public static boolean isAltKeyDown(Minecraft mc) {
 		return (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_ALT) || InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_ALT));
@@ -66,14 +70,6 @@ public final class ComponentHelper {
 		return stringRows.size() * fontRenderer.lineHeight;
 	}
 	
-	public static String camelCase(String input) {
-		return input.substring(0, 1).toLowerCase() + input.substring(1);
-	}
-
-	public static String titleCase(String input) {
-		return input.substring(0, 1).toUpperCase() + input.substring(1);
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	public static String locString(String key) {
 		return I18n.get(key);
@@ -90,28 +86,31 @@ public final class ComponentHelper {
 	}
 
 	public static MutableComponent empty() {
-		return Component.translatable("");
+		return comp("");
 	}
 	
 	public static MutableComponent title(String key) {
-		return Component.translatable(key);
+		return comp(key);
 	}
 
 	public static MutableComponent comp(String key) {
-		return Component.translatable(key);
+		return style(ComponentColour.WHITE.dec(), "", key);
+	}
+
+	public static Component compRaw(String key) {
+		return style(ComponentColour.WHITE.dec(), "", key);
 	}
 	
 	/**
-	 * 
-	 * @param colourIn {@link Integer} - Text Colour
-	 * @param flags {@link String} - Style. In the format: "bold underline italic strikethrough obfuscated"
-	 * @param keyIn {@link String} - Text you actually want. Can be localized or unlocalized.
-	 * @return {@link MutableComponent} - Styled Component.
+	 * @param colourIn {@link Integer} - Text colour (<i>integer colour</i>)
+	 * @param flags {@link String} - Text decoration. In the format: <i>"bold underline italic strikethrough obfuscated"</i>
+	 * @param keyIn {@link String} - Text. Can be localized or unlocalized.
+	 * @return {@link MutableComponent} - Styled component.
 	 */
-	public static MutableComponent style(int colourIn, String flags, String keyIn) {
+	private static MutableComponent style(int colourIn, String flags, String keyIn) {
 		MutableComponent comp = Component.translatable(keyIn);
 		
-		comp.setStyle(Style.EMPTY
+		return comp.setStyle(Style.EMPTY
 			.withBold(flags.contains("bold"))
 			.withUnderlined(flags.contains("underline"))
 			.withItalic(flags.contains("italic"))
@@ -119,8 +118,6 @@ public final class ComponentHelper {
 			.withObfuscated(flags.contains("obfuscated"))
 			.withColor(TextColor.fromRgb(colourIn))
 		);
-		
-		return comp;
 	}
 
 	public static MutableComponent style(int colourIn, String keyIn) {
@@ -128,35 +125,35 @@ public final class ComponentHelper {
 	}
 
 	public static MutableComponent style(ComponentColour colourIn, String keyIn) {
-		return style(colourIn.dec(), "", keyIn);
+		return style(colourIn.dec(), keyIn);
 	}
 	
 	public static MutableComponent style(ComponentColour colourIn, String flags, String keyIn) {
 		return style(colourIn.dec(), flags, keyIn);
 	}
 
-	public static MutableComponent style3(int colourIn, String flags, String keyInA, String keyInB, String keyInC) {
-		return (MutableComponent) style(colourIn, flags, keyInA).append(style(colourIn, flags, keyInB)).append(style(colourIn, flags, keyInC));
+	public static MutableComponent style2(ComponentColour colourIn, String keyInA, String keyInB) {
+		return style2(colourIn, "", keyInA, keyInB);
+	}
+	
+	public static MutableComponent style2(ComponentColour colourIn, String flags, String keyInA, String keyInB) {
+		return style(colourIn, flags, keyInA).append(style(colourIn, flags, keyInB));
 	}
 
 	public static MutableComponent style3(int colourIn, String keyInA, String keyInB, String keyInC) {
-		return (MutableComponent) style(colourIn, "", keyInA).append(style(colourIn, "", keyInB)).append(style(colourIn, "", keyInC));
+		return style3(colourIn, "", keyInA, keyInB, keyInC);
+	}
+
+	public static MutableComponent style3(int colourIn, String flags, String keyInA, String keyInB, String keyInC) {
+		return style(colourIn, flags, keyInA).append(style(colourIn, flags, keyInB)).append(style(colourIn, flags, keyInC));
 	}
 
 	public static MutableComponent style3(ComponentColour colourIn, String keyInA, String keyInB, String keyInC) {
-		return (MutableComponent) style(colourIn, "", keyInA).append(style(colourIn, "", keyInB)).append(style(colourIn, "", keyInC));
+		return style3(colourIn, "", keyInA, keyInB, keyInC);
 	}
 
 	public static MutableComponent style3(ComponentColour colourIn, String flags, String keyInA, String keyInB, String keyInC) {
-		return (MutableComponent) style(colourIn, flags, keyInA).append(style(colourIn, flags, keyInB)).append(style(colourIn, flags, keyInC));
-	}
-
-	public static MutableComponent style2(ComponentColour colourIn, String flags, String keyInA, String keyInB) {
-		return (MutableComponent) style(colourIn, flags, keyInA).append(style(colourIn, flags, keyInB));
-	}
-	
-	public static MutableComponent style2(ComponentColour colourIn, String... keys) {
-		return (MutableComponent) style(colourIn, "", keys[0]).append(style(colourIn, "", keys[1]));
+		return style(colourIn, flags, keyInA).append(style(colourIn, flags, keyInB)).append(style(colourIn, flags, keyInC));
 	}
 	
 	public static String getFluidName(FluidStack fluid) {
@@ -166,7 +163,7 @@ public final class ComponentHelper {
 	public static String getFluidName(Fluid fluid) {
 		String fluidName = "";
 		if (fluid.getFluidType().getTemperature() > 1000) {
-			fluidName = fluidName + Value.RED;
+			fluidName = fluidName + Value.ORANGE;
 		} else {
 			fluidName = fluidName + Value.BLUE;
 		}
@@ -195,33 +192,57 @@ public final class ComponentHelper {
 	}
 
 	public static MutableComponent shiftForMoreDetails() {
-		return (MutableComponent) style(ComponentColour.WHITE, BASE.TOOLTIP_HOLD).append(style(ComponentColour.BLACK,  " ")).append(style(ComponentColour.ORANGE, "bold", BASE.TOOLTIP_SHIFT)
-				.append(style(ComponentColour.BLACK, " ")).append(style(ComponentColour.WHITE, BASE.TOOLTIP_MORE)));
+		return style(ComponentColour.WHITE, BASE.TOOLTIP_HOLD)
+			.append(style(ComponentColour.BLACK,  " "))
+			.append(style(ComponentColour.ORANGE, "bold", BASE.TOOLTIP_SHIFT)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(ComponentColour.WHITE, BASE.TOOLTIP_MORE))
+		);
 	}
 	
 	public static MutableComponent shiftForLessDetails() {
-		return (MutableComponent) style(ComponentColour.WHITE, BASE.TOOLTIP_RELEASE).append(style(ComponentColour.BLACK,  " ")).append(style(ComponentColour.ORANGE, "bold", BASE.TOOLTIP_SHIFT)
-				.append(style(ComponentColour.BLACK, " ")).append(style(ComponentColour.WHITE, BASE.TOOLTIP_LESS)));
+		return style(ComponentColour.WHITE, BASE.TOOLTIP_RELEASE)
+			.append(style(ComponentColour.BLACK,  " "))
+			.append(style(ComponentColour.ORANGE, "bold", BASE.TOOLTIP_SHIFT)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(ComponentColour.WHITE, BASE.TOOLTIP_LESS))
+		);
 	}
 	
 	public static MutableComponent ctrlForMoreDetails() {
-		return (MutableComponent) style(ComponentColour.WHITE, BASE.TOOLTIP_HOLD).append(style(ComponentColour.BLACK,  " ")).append(style(ComponentColour.LIGHT_GRAY, "bold", BASE.TOOLTIP_CTRL)
-				.append(style(ComponentColour.BLACK, " ")).append(style(ComponentColour.WHITE,  BASE.TOOLTIP_NBT)));
+		return style(ComponentColour.WHITE, BASE.TOOLTIP_HOLD)
+			.append(style(ComponentColour.BLACK,  " "))
+			.append(style(ComponentColour.LIGHT_GRAY, "bold", BASE.TOOLTIP_CTRL)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(ComponentColour.WHITE,  BASE.TOOLTIP_NBT))
+		);
 	}
 	
 	public static MutableComponent ctrlForLessDetails() {
-		return (MutableComponent) style(ComponentColour.WHITE, BASE.TOOLTIP_RELEASE).append(style(ComponentColour.BLACK, " ")).append(style(ComponentColour.LIGHT_GRAY, "bold", BASE.TOOLTIP_CTRL)
-				.append(style(ComponentColour.BLACK," ")).append(style(ComponentColour.WHITE, BASE.TOOLTIP_NBT_LESS)));
+		return style(ComponentColour.WHITE, BASE.TOOLTIP_RELEASE)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(ComponentColour.LIGHT_GRAY, "bold", BASE.TOOLTIP_CTRL)
+			.append(style(ComponentColour.BLACK," "))
+			.append(style(ComponentColour.WHITE, BASE.TOOLTIP_NBT_LESS))
+		);
 	}
 
 	public static MutableComponent altForMoreDetails(ComponentColour colourIn) {
-		return (MutableComponent) style(ComponentColour.WHITE, BASE.TOOLTIP_HOLD).append(style(ComponentColour.BLACK, " ")).append(style(colourIn, "bold", BASE.TOOLTIP_ALT)
-				.append(style(ComponentColour.BLACK, " ")).append(style(ComponentColour.WHITE, BASE.TOOLTIP_ENERGY)));
+		return style(ComponentColour.WHITE, BASE.TOOLTIP_HOLD)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(colourIn, "bold", BASE.TOOLTIP_ALT)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(ComponentColour.WHITE, BASE.TOOLTIP_ENERGY))
+		);
 	}
 	
 	public static MutableComponent altForLessDetails(ComponentColour colourIn) {
-		return (MutableComponent) style(ComponentColour.WHITE,  BASE.TOOLTIP_RELEASE).append(style(ComponentColour.BLACK, " ")).append(style(colourIn, "bold", BASE.TOOLTIP_ALT)
-				.append(style(ComponentColour.BLACK, " ")).append(style(ComponentColour.WHITE, BASE.TOOLTIP_ENERGY_LESS)));
+		return style(ComponentColour.WHITE,  BASE.TOOLTIP_RELEASE)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(colourIn, "bold", BASE.TOOLTIP_ALT)
+			.append(style(ComponentColour.BLACK, " "))
+			.append(style(ComponentColour.WHITE, BASE.TOOLTIP_ENERGY_LESS))
+		);
 	}
 
 	public static MutableComponent getTooltipInfo(String key) {
@@ -251,9 +272,4 @@ public final class ComponentHelper {
 	public static MutableComponent getErrorText(String key) {
 		return style(ComponentColour.RED, key);
 	}
-
-	public static boolean displayShiftForDetail = true;
-	public static boolean displayCtrlForDetail = true;
-	public static boolean displayAltForDetail = true;
-	
 }

@@ -36,6 +36,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
 
@@ -296,6 +297,41 @@ public class CosmosEnergyAxeItem extends AxeItem implements ICosmosEnergyItem {
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyAxeItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyAxeItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyAxeItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyAxeItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyAxeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyAxeItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyAxeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyAxeItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

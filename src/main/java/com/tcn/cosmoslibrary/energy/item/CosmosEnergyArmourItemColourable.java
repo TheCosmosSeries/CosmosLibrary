@@ -25,6 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable implements ICosmosEnergyItem {
 	private int maxEnergyStored;
@@ -180,6 +181,41 @@ public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyArmourItemColourable.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyArmourItemColourable.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyArmourItemColourable.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyArmourItemColourable.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyArmourItemColourable.this.canReceiveEnergy(stackIn) && CosmosEnergyArmourItemColourable.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyArmourItemColourable.this.canReceiveEnergy(stackIn) && CosmosEnergyArmourItemColourable.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

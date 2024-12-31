@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tcn.cosmoslibrary.CosmosReference;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -37,19 +37,19 @@ public class CosmosUIHelpElement extends AbstractWidget {
 		this.setHovered(mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height);
 		
 		if (this.isHovered) {
-			CosmosUISystem.setTextureWithColourAlpha(graphics.pose(), CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, new float[] { 1.0F, 1.0F, 1.0F, 0.6F });
+			CosmosUISystem.Setup.setTextureWithColourAlpha(graphics.pose(), CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, new float[] { 1.0F, 1.0F, 1.0F, 0.6F });
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, this.getX(), this.getY(), 0, 0, this.width, this.height);
 
-			CosmosUISystem.setTextureColour(this.colour);
+			CosmosUISystem.Setup.setTextureColour(this.colour);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, this.getX(), this.getY(), 0, 0, this.width, 1);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, this.getX(), this.getY() + this.height - 1, 0, 0, this.width, 1);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, this.getX(), this.getY() + 1, 0, 0, 1, this.height - 2);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN_HIGHLIGHT, this.getX() + this.width - 1, this.getY() + 1, 0, 0, 1, this.height - 2);
 		} else {
-			CosmosUISystem.setTextureWithColourAlpha(graphics.pose(), CosmosReference.RESOURCE.BASE.UI_LIGHTEN, new float[] { 1.0F, 1.0F, 1.0F, 0.4F });
+			CosmosUISystem.Setup.setTextureWithColourAlpha(graphics.pose(), CosmosReference.RESOURCE.BASE.UI_LIGHTEN, new float[] { 1.0F, 1.0F, 1.0F, 0.4F });
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN, this.getX(), this.getY(), 0, 0, this.width, this.height);
 			
-			CosmosUISystem.setTextureColour(this.colour);
+			CosmosUISystem.Setup.setTextureColour(this.colour);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN, this.getX(), this.getY(), 0, 0, this.width, 1);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN, this.getX(), this.getY() + this.height - 1, 0, 0, this.width, 1);
 			graphics.blit(CosmosReference.RESOURCE.BASE.UI_LIGHTEN, this.getX(), this.getY() + 1, 0, 0, 1, this.height - 2);

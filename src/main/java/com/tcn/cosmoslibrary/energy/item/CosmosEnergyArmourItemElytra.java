@@ -23,6 +23,7 @@ import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra implements Equipable, ICosmosEnergyItem {
 
@@ -194,6 +195,41 @@ public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra impleme
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyArmourItemElytra.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyArmourItemElytra.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyArmourItemElytra.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyArmourItemElytra.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyArmourItemElytra.this.canReceiveEnergy(stackIn) && CosmosEnergyArmourItemElytra.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyArmourItemElytra.this.canReceiveEnergy(stackIn) && CosmosEnergyArmourItemElytra.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

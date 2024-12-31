@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import com.tcn.cosmoslibrary.CosmosReference;
 import com.tcn.cosmoslibrary.CosmosReference.RESOURCE.INFO;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
@@ -73,7 +73,7 @@ public class CosmosColourButton extends CosmosButtonBase {
 	@Override
 	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
-			CosmosUISystem.setTextureWithColourAlpha(graphics.pose(), CosmosReference.RESOURCE.BASE.BUTTON_COLOUR, new float[] { 1.0F, 1.0F, 1.0F, 1.0F });
+			CosmosUISystem.Setup.setTextureWithColourAlpha(graphics.pose(), CosmosReference.RESOURCE.BASE.BUTTON_COLOUR, new float[] { 1.0F, 1.0F, 1.0F, 1.0F });
 			
 			this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			int i = this.getHoverState(this.isHovered);
@@ -85,7 +85,7 @@ public class CosmosColourButton extends CosmosButtonBase {
 			}
 			
 			if (!this.colour.equals(ComponentColour.EMPTY)) {
-				CosmosUISystem.setTextureColour(this.colour.equals(ComponentColour.POCKET_PURPLE) ? ComponentColour.POCKET_PURPLE_LIGHT : this.colour);
+				CosmosUISystem.Setup.setTextureColour(this.colour.equals(ComponentColour.POCKET_PURPLE) ? ComponentColour.POCKET_PURPLE_LIGHT : this.colour);
 				
 				if (this.width == 20 && this.height == 20) {
 					graphics.blit(CosmosReference.RESOURCE.BASE.BUTTON_COLOUR, this.x, this.y, INFO.BUTTON_STATE_X[1], INFO.BUTTON_STATE_Y[i], this.width, this.height);
@@ -94,7 +94,7 @@ public class CosmosColourButton extends CosmosButtonBase {
 				}
 			}
 			
-			CosmosUISystem.setTextureColour(ComponentColour.WHITE);
+			CosmosUISystem.Setup.setTextureColour(ComponentColour.WHITE);
 		}
 	}
 	

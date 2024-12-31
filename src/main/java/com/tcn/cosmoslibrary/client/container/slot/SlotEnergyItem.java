@@ -1,10 +1,10 @@
 package com.tcn.cosmoslibrary.client.container.slot;
 
-import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
-
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class SlotEnergyItem extends Slot {
 	
@@ -13,7 +13,7 @@ public class SlotEnergyItem extends Slot {
 	}
 
 	public boolean isItemValid(ItemStack stackIn) {
-		if (stackIn.getItem() instanceof ICosmosEnergyItem) {
+		if (stackIn.getCapability(Capabilities.EnergyStorage.ITEM) instanceof IEnergyStorage) {
 			return true;
 		}
 		
@@ -23,7 +23,7 @@ public class SlotEnergyItem extends Slot {
 	
 	@Override
 	public boolean mayPlace(ItemStack stackIn) {
-		if (stackIn.getItem() instanceof ICosmosEnergyItem) {
+		if (stackIn.getCapability(Capabilities.EnergyStorage.ITEM) instanceof IEnergyStorage) {
 			return true;
 		}
 		

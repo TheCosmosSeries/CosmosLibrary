@@ -3,7 +3,7 @@ package com.tcn.cosmoslibrary.client.ui.screen.option;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.serialization.Codec;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
 import net.minecraft.client.Minecraft;

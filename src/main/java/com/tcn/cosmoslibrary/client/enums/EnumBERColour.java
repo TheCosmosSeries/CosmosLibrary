@@ -84,10 +84,4 @@ public enum EnumBERColour {
 		
 		return VALUES[indexIn];
 	}
-	
-	/*
-	@Override
-	public String getSerializedName() {
-		return this.name;
-	}**/
 }

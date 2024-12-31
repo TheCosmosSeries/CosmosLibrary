@@ -1,7 +1,7 @@
 package com.tcn.cosmoslibrary.common.example;
 
 import com.tcn.cosmoslibrary.common.enums.EnumSideState;
-import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBlockEntitySided;
+import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBESided;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,10 +10,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Reference implementation of {@link IBlockEntitySided}. This is only meant to be an example for how {@link IBlockEntitySided} is used.
+ * Reference implementation of {@link IBESided}. This is only meant to be an example for how {@link IBESided} is used.
  * @author TheRealZeher
  */
-public abstract class SidedTileEntity extends BlockEntity implements IBlockEntitySided {
+public abstract class SidedTileEntity extends BlockEntity implements IBESided {
 		
 	public SidedTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos posIn, BlockState stateIn) {
 		super(tileEntityTypeIn, posIn, stateIn);

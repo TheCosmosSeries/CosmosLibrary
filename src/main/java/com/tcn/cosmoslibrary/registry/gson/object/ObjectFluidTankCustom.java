@@ -7,14 +7,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ObjectFluidTankCustom {
 	
-	private static final String NBT_FLUID_KEY = "fluid_tank_object";
-	private static final String NBT_FILL_LEVEL_KEY = "fill_level";
-	private static final String NBT_FLUID_CAPACITY_KEY = "capacity";
-	private static final String NBT_FLUID_VOLUME_KEY = "volume";
+	public static final String NBT_FLUID_KEY = "fluid_tank_object";
+	public static final String NBT_FILL_LEVEL_KEY = "fill_level";
+	public static final String NBT_FLUID_CAPACITY_KEY = "capacity";
+	public static final String NBT_FLUID_VOLUME_KEY = "volume";
 	
 	private FluidTank fluid_tank;
 	
@@ -56,14 +55,15 @@ public class ObjectFluidTankCustom {
 		String path = fluid.getString(Const.NBT_PATH_KEY);
 		
 		ResourceLocation fluidName = ResourceLocation.fromNamespaceAndPath(namespace, path);
+		
 		tank.setFluid(new FluidStack(BuiltInRegistries.FLUID.get(fluidName), volume));
 		
 		return new ObjectFluidTankCustom(tank, fill_level);
 	}
 	
 	public void writeToNBT(CompoundTag compound) {
-		ResourceLocation fluid_name = NeoForgeRegistries.FLUID_TYPES.getKey(fluid_tank.getFluid().getFluid().getFluidType());
-		
+		ResourceLocation fluid_name = BuiltInRegistries.FLUID.getKey(this.fluid_tank.getFluid().getFluid());
+				
 		CompoundTag fluid = new CompoundTag();
 		
 		fluid.putString(Const.NBT_NAMESPACE_KEY, fluid_name.getNamespace());

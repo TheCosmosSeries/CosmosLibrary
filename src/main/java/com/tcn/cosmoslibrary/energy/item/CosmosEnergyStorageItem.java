@@ -1,6 +1,6 @@
 package com.tcn.cosmoslibrary.energy.item;
 
-import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
+import com.tcn.cosmoslibrary.energy.interfaces.IEnergyStorageBulk;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyStorageItem extends CosmosEnergyItem {
 
@@ -49,7 +51,7 @@ public class CosmosEnergyStorageItem extends CosmosEnergyItem {
 
 	@Override
 	public void inventoryTick(ItemStack stackIn, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!worldIn.isClientSide) {
+		if (!worldIn.isClientSide()) {
 			if (this.isActive(stackIn)) {
 				if (this.hasEnergy(stackIn)) {
 					if (itemSlot >= 0 && itemSlot <= 8) {
@@ -58,14 +60,13 @@ public class CosmosEnergyStorageItem extends CosmosEnergyItem {
 							
 							for (int i = 0; i < inv.getContainerSize(); i++) {
 								ItemStack testStack = inv.getItem(i);
-								Item testItem = testStack.getItem();
 								
-								if (!(testItem instanceof CosmosEnergyStorageItem)) {
-									if (testItem instanceof ICosmosEnergyItem energyItem) {
-										if (energyItem.canReceiveEnergy(testStack)) {
-											int lowest = Math.min(energyItem.getMaxReceive(testStack), this.getMaxExtract(stackIn));
-											
-											this.extractEnergy(stackIn, energyItem.receiveEnergy(testStack, lowest, false), false);
+								Object object = testStack.getCapability(Capabilities.EnergyStorage.ITEM);
+								
+								if (!(object instanceof IEnergyStorageBulk)) {
+									if (object instanceof IEnergyStorage energyItem) {
+										if (energyItem.canReceive()) {
+											this.extractEnergy(stackIn, energyItem.receiveEnergy(this.getMaxExtract(stackIn), false), false);
 										}
 									}
 								}
@@ -123,4 +124,41 @@ public class CosmosEnergyStorageItem extends CosmosEnergyItem {
 			stackIn.set(DataComponents.CUSTOM_DATA, CustomData.of(stack_tag));
 		}
 	}
+
+	@Override
+	public IEnergyStorageBulk getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorageBulk() {
+			
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyStorageItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyStorageItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyStorageItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyStorageItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyStorageItem.this.canReceiveEnergy(stackIn) && CosmosEnergyStorageItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyStorageItem.this.canReceiveEnergy(stackIn) && CosmosEnergyStorageItem.this.doesCharge(stackIn);
+			}
+		};
+	}
+
 }

@@ -9,14 +9,15 @@ import net.minecraft.network.codec.StreamCodec;
 
 public enum EnumUIMode {
 	
-	DARK(0, "dark", "cosmoslibrary.enum.ui_mode.dark", false, ComponentColour.LIGHT_GRAY), 
-	LIGHT(1, "light", "cosmoslibrary.enum.ui_mode.light", true, ComponentColour.YELLOW);
+	DARK(0, "dark", "cosmoslibrary.enum.ui_mode.dark", false, ComponentColour.LIGHT_GRAY, ComponentColour.SCREEN_DARK), 
+	LIGHT(1, "light", "cosmoslibrary.enum.ui_mode.light", true, ComponentColour.YELLOW, ComponentColour.SCREEN_LIGHT);
 	
 	private int index;
 	private String name;
 	private String localized_name;
 	private boolean value;
 	private ComponentColour colour;
+	private ComponentColour textColour;
 
 	public static final StreamCodec<ByteBuf, EnumUIMode> STREAM_CODEC = new StreamCodec<ByteBuf, EnumUIMode>() {
 		@Override
@@ -30,12 +31,13 @@ public enum EnumUIMode {
         }
     };
     
-	EnumUIMode(int indexIn, String nameIn, String localizedNameIn, boolean valueIn, ComponentColour colourIn) {
+	EnumUIMode(int indexIn, String nameIn, String localizedNameIn, boolean valueIn, ComponentColour colourIn, ComponentColour textColourIn) {
 		this.index = indexIn;
 		this.name = nameIn;
 		this.localized_name = localizedNameIn;
 		this.value = valueIn;
 		this.colour = colourIn;
+		this.textColour = colourIn;
 	}
 	
 	public int getIndex() {
@@ -61,6 +63,10 @@ public enum EnumUIMode {
 	public ComponentColour getColour() {
 		return this.colour;
 	}
+	
+	public ComponentColour getTextColour() {
+		return this.textColour;
+	}	
 	
 	public static EnumUIMode getOpposite(EnumUIMode state) {
 		if (state.equals(DARK)) {

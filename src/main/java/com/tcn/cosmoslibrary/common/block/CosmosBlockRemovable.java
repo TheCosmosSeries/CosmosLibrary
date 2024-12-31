@@ -29,11 +29,10 @@ public class CosmosBlockRemovable extends CosmosBlock {
 		player.swing(InteractionHand.MAIN_HAND);
 		
 		worldIn.sendBlockUpdated(pos, state, state, 3);
-		//TileEntity tile = worldIn.getTileEntity(pos);
 		
 		if (CosmosUtil.holdingWrench(player) && player.isShiftKeyDown() && !worldIn.isClientSide) {
 			if (!worldIn.isClientSide) {
-				CompatHelper.spawnStack(CompatHelper.generateItemStackFromTile(this), worldIn, pos.getX(), pos.getY(), pos.getZ(), 0);
+				CompatHelper.spawnStack(CompatHelper.generateItemStackFromBlock(this), worldIn, pos.getX(), pos.getY(), pos.getZ(), 0);
 				worldIn.removeBlock(pos, false);
 				return ItemInteractionResult.SUCCESS;
 			}

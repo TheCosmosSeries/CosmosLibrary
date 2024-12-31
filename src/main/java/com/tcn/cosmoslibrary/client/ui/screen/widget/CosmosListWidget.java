@@ -4,9 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tcn.cosmoslibrary.CosmosReference;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem.FONT;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem.IS_HOVERING;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
@@ -79,10 +77,10 @@ public class CosmosListWidget extends AbstractWidget {
 		}
 		
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		this.hovered = IS_HOVERING.isHovering(mouseX, mouseY, screen_coords[0] + this.xPosition, screen_coords[0] + this.xPosition + this.width, screen_coords[1] + this.yPosition, screen_coords[1] + this.yPosition + this.height);
+		this.hovered = CosmosUISystem.Hovering.isHovering(mouseX, mouseY, screen_coords[0] + this.xPosition, screen_coords[0] + this.xPosition + this.width, screen_coords[1] + this.yPosition, screen_coords[1] + this.yPosition + this.height);
 		int hovered = this.getHoverState(this.hovered);
 
-		CosmosUISystem.enableAlpha();
+		CosmosUISystem.Setup.enableAlpha();
 		
 		if (this.yPosition + this.height <= boxMaxY) {
 			if (this.height == 20) {
@@ -105,9 +103,9 @@ public class CosmosListWidget extends AbstractWidget {
 			}
 			
 			if (indexIn == 0) {
-				FONT.drawCenteredString(graphics,font_renderer, screen_coords, this.xPosition + this.width / 2, this.yPosition - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//.append(ComponentHelper.locComp(hovered == 0 ? this.getDisplayColour() : ComponentColour.BLACK, false, " [Owner]")));
+				CosmosUISystem.FontRenderer.drawCenteredComponent(graphics,font_renderer, screen_coords, this.xPosition + this.width / 2, this.yPosition - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//.append(ComponentHelper.locComp(hovered == 0 ? this.getDisplayColour() : ComponentColour.BLACK, false, " [Owner]")));
 			} else {
-				FONT.drawCenteredString(graphics, font_renderer, screen_coords, this.xPosition + this.width / 2, this.yPosition - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//, "  " + font_renderer.width(this.getDisplayString()) + "  " + this.width));
+				CosmosUISystem.FontRenderer.drawCenteredComponent(graphics, font_renderer, screen_coords, this.xPosition + this.width / 2, this.yPosition - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//, "  " + font_renderer.width(this.getDisplayString()) + "  " + this.width));
 			}
 		}
 	}
@@ -122,10 +120,10 @@ public class CosmosListWidget extends AbstractWidget {
 		}
 		
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		this.hovered = IS_HOVERING.isHovering(mouseX, mouseY, screen_coords[0] + posX, screen_coords[0] + posX + this.width, screen_coords[1] + posY, screen_coords[1] + posY + this.height);
+		this.hovered = CosmosUISystem.Hovering.isHovering(mouseX, mouseY, screen_coords[0] + posX, screen_coords[0] + posX + this.width, screen_coords[1] + posY, screen_coords[1] + posY + this.height);
 		int hovered = this.getHoverState(this.hovered);
 
-		CosmosUISystem.enableAlpha();
+		CosmosUISystem.Setup.enableAlpha();
 		
 		if (posY + this.height <= boxMaxY) {
 			if (this.height == 20) {
@@ -148,9 +146,9 @@ public class CosmosListWidget extends AbstractWidget {
 			}
 			
 			if (indexIn == 0) {
-				FONT.drawCenteredString(graphics, font_renderer, screen_coords, posX + this.width / 2, posY - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//.append(ComponentHelper.locComp(hovered == 0 ? this.getDisplayColour() : ComponentColour.BLACK, false, " [Owner]")));
+				CosmosUISystem.FontRenderer.drawCenteredComponent(graphics, font_renderer, screen_coords, posX + this.width / 2, posY - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//.append(ComponentHelper.locComp(hovered == 0 ? this.getDisplayColour() : ComponentColour.BLACK, false, " [Owner]")));
 			} else {
-				FONT.drawCenteredString(graphics, font_renderer, screen_coords, posX + this.width / 2, posY - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//, "  " + font_renderer.width(this.getDisplayString()) + "  " + this.width));
+				CosmosUISystem.FontRenderer.drawCenteredComponent(graphics, font_renderer, screen_coords, posX + this.width / 2, posY - 30, ComponentHelper.style(hovered == 0 ? this.getDisplayColour() : ComponentColour.WHITE, this.getDisplayString()));//, "  " + font_renderer.width(this.getDisplayString()) + "  " + this.width));
 			}
 		}
 	}

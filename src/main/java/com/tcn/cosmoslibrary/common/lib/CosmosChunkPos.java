@@ -32,9 +32,7 @@ public class CosmosChunkPos extends CosmosVec2 {
     };
     
 	public static final CosmosChunkPos ZERO = new CosmosChunkPos(0, 0);
-	//private static final int NUM_X_BITS = 1 + Mth.log2(Mth.smallestEncompassingPowerOfTwo(30000000));
-	//private static final int NUM_Z_BITS = NUM_X_BITS;
-
+	
 	public CosmosChunkPos(int x, int y) {
 		super(x, y);
 	}
@@ -272,18 +270,7 @@ public class CosmosChunkPos extends CosmosVec2 {
 		public CosmosChunkPos.Mutable setPos(CosmosVec2 vec) {
 			return this.setPos(vec.getX(), vec.getZ());
 		}
-
-		/*
-		public CosmosChunkPos.Mutable setPos(long packedPos) {
-			return this.setPos(unpackX(packedPos), unpackZ(packedPos));
-		}
-		 */
-		/*
-		public ChunkPos.Mutable setPos(AxisRotation rotation, int x, int y, int z) {
-			return this.setPos(rotation..getCoordinate(x, y, z, Direction.Axis.X),
-					rotation.getCoordinate(x, y, z, Direction.Axis.Z));
-		}*/
-
+		
 		public CosmosChunkPos.Mutable setAndMove(CosmosVec2 pos, Direction direction) {
 			return this.setPos(pos.getX() + direction.getStepX(), pos.getZ() + direction.getStepZ());
 		}

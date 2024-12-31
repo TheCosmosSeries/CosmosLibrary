@@ -7,7 +7,6 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-@SuppressWarnings("resource")
 public class CosmosArmourItemElytra extends CosmosArmourItemColourable {
 	
 	private boolean damageable;
@@ -32,7 +31,7 @@ public class CosmosArmourItemElytra extends CosmosArmourItemColourable {
 	@Override
 	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
 		if (damageable) {
-			if (!entity.level().isClientSide && (flightTicks + 1) % 20 == 0) {
+			if (!entity.level().isClientSide() && (flightTicks + 1) % 20 == 0) {
 				stack.hurtAndBreak(1, entity, EquipmentSlot.CHEST);
 			}
 			return true;

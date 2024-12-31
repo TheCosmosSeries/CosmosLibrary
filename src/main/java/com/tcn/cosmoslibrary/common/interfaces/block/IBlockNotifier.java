@@ -17,11 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public interface IBlockNotifier {
 
-	public BlockState playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player);
+	public BlockState playerWillDestroy(Level levelIn, BlockPos pos, BlockState state, Player player);
 
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack);
+	public void setPlacedBy(Level levelIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack);
 
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving);
+	public void neighborChanged(BlockState state, Level levelIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving);
 
-	public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving);
+	public void onPlace(BlockState state, Level levelIn, BlockPos pos, BlockState oldState, boolean isMoving);
 }

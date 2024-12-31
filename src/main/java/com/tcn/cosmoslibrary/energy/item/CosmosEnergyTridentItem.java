@@ -58,6 +58,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 @SuppressWarnings("unused")
 public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnergyItem, ICosmosEnergyItemBEWLR {
@@ -322,6 +323,41 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyTridentItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyTridentItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyTridentItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyTridentItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyTridentItem.this.canReceiveEnergy(stackIn) && CosmosEnergyTridentItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyTridentItem.this.canReceiveEnergy(stackIn) && CosmosEnergyTridentItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

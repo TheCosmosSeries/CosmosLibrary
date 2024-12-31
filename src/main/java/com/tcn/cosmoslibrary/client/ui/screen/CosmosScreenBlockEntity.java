@@ -1,11 +1,12 @@
 package com.tcn.cosmoslibrary.client.ui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.tcn.cosmoslibrary.client.container.CosmosContainerMenuBlockEntity;
-import com.tcn.cosmoslibrary.client.ui.lib.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
+import com.tcn.cosmoslibrary.client.ui.screen.widget.CosmosButtonBase;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -27,6 +28,7 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	private int[] dualScreenIndex;
 	
 	private boolean renderTitleLabel = true;
+	private boolean titleLabelCentered = false;
 	private boolean renderInventoryLabel = true;
 
 	public CosmosScreenBlockEntity(J containerIn, Inventory playerInventoryIn, Component titleIn) {
@@ -35,30 +37,32 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	
 	@Override
 	protected void init() {
-		this.setScreenCoords(CosmosUISystem.getScreenCoords(this, this.imageWidth, this.imageHeight));
+		this.setScreenCoords(CosmosUISystem.Init.getScreenCoords(this, this.imageWidth, this.imageHeight));
 		super.init();
 		this.addButtons();
 	}
 	
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
+		this.renderBg(graphics, partialTicks, mouseX, mouseY);
 		super.render(graphics, mouseX, mouseY, partialTicks);
 
-		this.renderComponents(graphics.pose(), mouseX, mouseY, partialTicks);
+		this.renderComponents(graphics, mouseX, mouseY, partialTicks);
 		this.renderComponentHoverEffect(graphics, Style.EMPTY, mouseX, mouseY);
 		this.renderTooltip(graphics, mouseX, mouseY);
 	}
 	
-	protected void renderComponents(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) { }
+	protected void renderComponents(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) { 
+		this.addButtons();
+	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-		CosmosUISystem.renderStaticElement(this, graphics, this.screenCoords, 0, 0, 0, 0, Mth.clamp(this.imageWidth, 0, 256), this.imageHeight, TEXTURE);
+		CosmosUISystem.Render.renderStaticElement(graphics, this.screenCoords, 0, 0, 0, 0, Mth.clamp(this.imageWidth, 0, 256), this.imageHeight, TEXTURE);
 		
 		if (this.hasDualScreen) {
 			if(this.dualScreenIndex != null && this.DUAL_TEXTURE != null && this.DUAL_TEXTURE != null) {
-				CosmosUISystem.renderStaticElement(this, graphics, this.screenCoords, this.dualScreenIndex[0], this.dualScreenIndex[1], 0, 0, Mth.clamp(256 + this.dualScreenIndex[2], 0, 256), this.dualScreenIndex[3], DUAL_TEXTURE);
+				CosmosUISystem.Render.renderStaticElement(graphics, this.screenCoords, this.dualScreenIndex[0], this.dualScreenIndex[1], 0, 0, Mth.clamp(256 + this.dualScreenIndex[2], 0, 256), this.dualScreenIndex[3], DUAL_TEXTURE);
 			}
 		}
 	}
@@ -66,7 +70,11 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
 		if (this.renderTitleLabel) {
-			graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, CosmosUISystem.DEFAULT_COLOUR_FONT_LIST);
+			if (this.titleLabelCentered) {				
+				graphics.drawCenteredString(this.font, this.title, this.imageWidth / 2 + this.titleLabelX, this.titleLabelY, CosmosUISystem.DEFAULT_COLOUR_FONT_LIST);
+			} else {
+				graphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, CosmosUISystem.DEFAULT_COLOUR_FONT_LIST);
+			}
 		}
 		
 		if (this.renderInventoryLabel) {
@@ -79,8 +87,8 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	protected void addButtons() { 
 		this.clearWidgets();
 	}
-	
-	protected void pushButton(Button button) { }
+
+	protected void clickButton(Button buttonIn, boolean isLeftClick) { }
 	
 	protected void setImageDims(int widthIn, int heightIn) {
 		this.imageWidth = widthIn;
@@ -108,10 +116,16 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	protected void setNoTitleLabel() {
 		this.renderTitleLabel = false;
 	}
-	
+
 	protected void setTitleLabelDims(int posX, int posY) {
 		this.titleLabelX = posX;
 		this.titleLabelY = posY;
+	}
+
+	protected void setTitleLabelDimsCentered(int posXOffset, int posY) {
+		this.titleLabelX = posXOffset;
+		this.titleLabelY = posY;
+		this.titleLabelCentered = true;
 	}
 
 	protected void setNoInventoryLabel() {
@@ -132,11 +146,26 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	}
 	
 	public BlockEntity getBlockEntity() {
-		CosmosContainerMenuBlockEntity container = (CosmosContainerMenuBlockEntity) this.menu;
+		J container = this.menu;
 		Level level = container.getLevel();
 		BlockPos pos = container.getBlockPos();
 		
 		return level.getBlockEntity(pos);
 	}
-	
+
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+		for (GuiEventListener list : this.children()) {
+			if (list instanceof CosmosButtonBase button) {
+				if (button.isMouseOver(mouseX, mouseY) && button.isActive() && button.visible) {
+					if (mouseButton == 1) {
+						button.onClick(false);
+					} else if (mouseButton == 0) {
+						button.onClick(true);
+					}
+				}
+			}
+		}
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
+	}
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyItem extends CosmosItem implements ICosmosEnergyItem {
 	private int maxEnergyStored;
@@ -66,31 +67,31 @@ public class CosmosEnergyItem extends CosmosItem implements ICosmosEnergyItem {
 	@Override
 	public int getMaxEnergyStored(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyItem) ? 0 : ((CosmosEnergyItem)item).maxEnergyStored;
+		return !(item instanceof CosmosEnergyItem energyItem) ? 0 : energyItem.maxEnergyStored;
 	}
 	
 	@Override
 	public int getMaxExtract(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyItem) ? 0 : ((CosmosEnergyItem)item).maxExtract;
+		return !(item instanceof CosmosEnergyItem energyItem) ? 0 : energyItem.maxExtract;
 	}
 	
 	@Override
 	public int getMaxReceive(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyItem) ? 0 : ((CosmosEnergyItem)item).maxReceive;
+		return !(item instanceof CosmosEnergyItem energyItem) ? 0 : energyItem.maxReceive;
 	}
 
 	@Override
 	public int getMaxUse(ItemStack stackIn) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyItem) ? 0 : ((CosmosEnergyItem)item).maxUse;
+		return !(item instanceof CosmosEnergyItem energyItem) ? 0 : energyItem.maxUse;
 	}
 
 	@Override
-	public boolean doesExtract(ItemStack stackIn) {
+	public boolean doesExtract(ItemStack stackIn ) {
 		Item item = stackIn.getItem();
-		return !(item instanceof CosmosEnergyItem) ? false : ((CosmosEnergyItem)item).doesExtract;
+		return !(item instanceof CosmosEnergyItem energyItem) ? false : energyItem.doesExtract;
 	}
 
 	@Override
@@ -164,6 +165,41 @@ public class CosmosEnergyItem extends CosmosItem implements ICosmosEnergyItem {
 		}
 		
 		return 0;
+	}
+	
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyItem.this.canReceiveEnergy(stackIn) && CosmosEnergyItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyItem.this.canReceiveEnergy(stackIn) && CosmosEnergyItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

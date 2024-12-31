@@ -1,7 +1,8 @@
 package com.tcn.cosmoslibrary.runtime.network;
 
 import com.tcn.cosmoslibrary.CosmosLibrary;
-import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBlockEntityUIMode;
+import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUILockable;
+import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUIMode;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -19,9 +20,7 @@ public class ServerPayloadHandler {
 				ServerLevel world = server.getLevel(packet.dimension());
 				BlockEntity entity = world.getBlockEntity(packet.pos());
 				
-				if (entity instanceof IBlockEntityUIMode) {
-					IBlockEntityUIMode blockEntity = (IBlockEntityUIMode) entity;
-				
+				if (entity instanceof IBEUIMode blockEntity) {
 					blockEntity.cycleUIHelp();
 				} else {
 					CosmosLibrary.CONSOLE.debugWarn("[Packet Delivery Failure] <uihelp> Block Entity not equal to expected.");
@@ -40,9 +39,7 @@ public class ServerPayloadHandler {
 				
 				Player player = world.getPlayerByUUID(packet.uuid());
 				
-				if (entity instanceof IBlockEntityUIMode) {
-					IBlockEntityUIMode blockEntity = (IBlockEntityUIMode) entity;
-					
+				if (entity instanceof IBEUILockable blockEntity) {
 					if (blockEntity.checkIfOwner(player)) {
 						blockEntity.cycleUILock();
 					}
@@ -61,9 +58,7 @@ public class ServerPayloadHandler {
 				ServerLevel world = server.getLevel(packet.dimension());
 				BlockEntity entity = world.getBlockEntity(packet.pos());
 				
-				if (entity instanceof IBlockEntityUIMode) {
-					IBlockEntityUIMode blockEntity = (IBlockEntityUIMode) entity;
-				
+				if (entity instanceof IBEUIMode blockEntity) {
 					blockEntity.cycleUIMode();
 				} else {
 					CosmosLibrary.CONSOLE.debugWarn("[Packet Delivery Failure] <uimode> Block Entity not equal to expected.");

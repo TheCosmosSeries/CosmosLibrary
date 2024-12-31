@@ -34,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CosmosEnergyShieldItem extends ShieldItem implements ICosmosEnergyItem {
 	public static final int EFFECTIVE_BLOCK_DELAY = 5;
@@ -249,6 +250,41 @@ public class CosmosEnergyShieldItem extends ShieldItem implements ICosmosEnergyI
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
+		return new IEnergyStorage() {
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				return CosmosEnergyShieldItem.this.extractEnergy(stackIn, maxExtract, simulate);
+			}
+	
+			@Override
+			public int getEnergyStored() {
+				return CosmosEnergyShieldItem.this.getEnergy(stackIn);
+			}
+	
+			@Override
+			public int getMaxEnergyStored() {
+				return CosmosEnergyShieldItem.this.getMaxEnergyStored(stackIn);
+			}
+	
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				return CosmosEnergyShieldItem.this.receiveEnergy(stackIn, maxReceive, simulate);
+			}
+	
+			@Override
+			public boolean canReceive() {
+				return CosmosEnergyShieldItem.this.canReceiveEnergy(stackIn) && CosmosEnergyShieldItem.this.doesExtract(stackIn);
+			}
+	
+			@Override
+			public boolean canExtract() {
+				return CosmosEnergyShieldItem.this.canReceiveEnergy(stackIn) && CosmosEnergyShieldItem.this.doesCharge(stackIn);
+			}
+		};
 	}
 
 	@Override

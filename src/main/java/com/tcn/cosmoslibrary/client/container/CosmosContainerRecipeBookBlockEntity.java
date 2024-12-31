@@ -90,5 +90,4 @@ public abstract class CosmosContainerRecipeBookBlockEntity<J extends RecipeInput
 	public boolean shouldMoveToInventory(int p_150635_) {
 		return false;
 	}
-
 }

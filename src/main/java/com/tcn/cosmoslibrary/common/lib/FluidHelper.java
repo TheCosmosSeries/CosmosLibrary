@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.GameRules;
@@ -26,7 +25,7 @@ public class FluidHelper {
 	}
 
 	public static void dropStackInWorld(Level world, BlockPos pos, ItemStack stack) {
-		if (!world.isClientSide && world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+		if (!world.isClientSide() && world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 			float f = 0.7F;
 			double d0 = (double) (world.random.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
 			double d1 = (double) (world.random.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
@@ -37,15 +36,11 @@ public class FluidHelper {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static ItemStack getTankStackFromData(Block block) {
-		ItemStack stack = new ItemStack(Item.byBlock(block));
+		ItemStack stack = new ItemStack(block);
 		CompoundTag tag = new CompoundTag();
 		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-		
-		//stack.setTag(tag);
-		
-		stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data1 -> CustomData.of(tag));
+		//stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, data1 -> CustomData.of(tag));
 		return stack;
 	}
 }
