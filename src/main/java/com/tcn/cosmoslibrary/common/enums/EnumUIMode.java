@@ -10,12 +10,12 @@ import net.minecraft.network.codec.StreamCodec;
 public enum EnumUIMode {
 	
 	DARK(0, "dark", "cosmoslibrary.enum.ui_mode.dark", false, ComponentColour.LIGHT_GRAY, ComponentColour.SCREEN_DARK), 
-	LIGHT(1, "light", "cosmoslibrary.enum.ui_mode.light", true, ComponentColour.YELLOW, ComponentColour.SCREEN_LIGHT);
+	LIGHT(1, "light", "cosmoslibrary.enum.ui_mode.light", true, ComponentColour.YELLOW, ComponentColour.GRAY);
 	
 	private int index;
 	private String name;
 	private String localized_name;
-	private boolean value;
+	private boolean isLight;
 	private ComponentColour colour;
 	private ComponentColour textColour;
 
@@ -31,13 +31,13 @@ public enum EnumUIMode {
         }
     };
     
-	EnumUIMode(int indexIn, String nameIn, String localizedNameIn, boolean valueIn, ComponentColour colourIn, ComponentColour textColourIn) {
+	EnumUIMode(int indexIn, String nameIn, String localizedNameIn, boolean isLightIn, ComponentColour colourIn, ComponentColour textColourIn) {
 		this.index = indexIn;
 		this.name = nameIn;
 		this.localized_name = localizedNameIn;
-		this.value = valueIn;
+		this.isLight = isLightIn;
 		this.colour = colourIn;
-		this.textColour = colourIn;
+		this.textColour = textColourIn;
 	}
 	
 	public int getIndex() {
@@ -57,7 +57,7 @@ public enum EnumUIMode {
 	}
 
 	public boolean getValue() {
-		return this.value;
+		return this.isLight;
 	}
 
 	public ComponentColour getColour() {
@@ -66,6 +66,14 @@ public enum EnumUIMode {
 	
 	public ComponentColour getTextColour() {
 		return this.textColour;
+	}
+	
+	public boolean light() {
+		return this.isLight;
+	}
+	
+	public boolean dark() {
+		return !this.light();
 	}	
 	
 	public static EnumUIMode getOpposite(EnumUIMode state) {

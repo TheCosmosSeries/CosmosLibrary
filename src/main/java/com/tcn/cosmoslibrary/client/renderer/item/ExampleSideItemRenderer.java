@@ -10,6 +10,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
+@Deprecated
 public class ExampleSideItemRenderer implements BlockEntityRenderer<BlockEntity> {
 
 	public ExampleSideItemRenderer(BlockEntityRendererProvider.Context rendererDispatcherIn) {

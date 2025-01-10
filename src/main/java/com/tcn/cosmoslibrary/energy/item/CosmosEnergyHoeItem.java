@@ -11,6 +11,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 import com.tcn.cosmoslibrary.common.util.CosmosUtil;
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 
 import net.minecraft.core.BlockPos;
@@ -267,39 +268,9 @@ public class CosmosEnergyHoeItem extends HoeItem implements ICosmosEnergyItem {
 
 	@Override
 	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorage() {
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyHoeItem.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyHoeItem.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyHoeItem.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyHoeItem.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyHoeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyHoeItem.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyHoeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyHoeItem.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefault(stackIn, this);
 	}
-
+	
 	@Override
 	public boolean isBarVisible(ItemStack stackIn) {
 		return stackIn.has(DataComponents.CUSTOM_DATA) ? stackIn.get(DataComponents.CUSTOM_DATA).copyTag().contains("energy") : false;

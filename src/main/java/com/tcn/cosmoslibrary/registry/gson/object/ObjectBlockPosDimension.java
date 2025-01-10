@@ -11,6 +11,8 @@ public class ObjectBlockPosDimension {
 	private BlockPos pos;
 	private ResourceLocation dimension;
 	
+	public static final ObjectBlockPosDimension BLANK = new ObjectBlockPosDimension(BlockPos.ZERO, ResourceLocation.parse(""));
+	
 	public ObjectBlockPosDimension(BlockPos posIn, ResourceLocation dimensionIn) {
 		this.pos = posIn;
 		this.dimension = dimensionIn;

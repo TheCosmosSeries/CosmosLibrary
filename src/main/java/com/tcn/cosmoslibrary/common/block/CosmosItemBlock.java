@@ -22,6 +22,7 @@ public class CosmosItemBlock extends BlockItem {
 	public String info;
 	public String shift_desc_one;
 	public String shift_desc_two;
+	public String warning_text;
 
 	public CosmosItemBlock(Block block, Item.Properties properties, String info, String shift_desc_one, String shift_desc_two) {
 		super(block, properties);
@@ -29,6 +30,15 @@ public class CosmosItemBlock extends BlockItem {
 		this.info = info;
 		this.shift_desc_one = shift_desc_one;
 		this.shift_desc_two = shift_desc_two;
+	}
+
+	public CosmosItemBlock(Block block, Item.Properties properties, String info, String shift_desc_one, String shift_desc_two, String warningText) {
+		super(block, properties);
+		
+		this.info = info;
+		this.shift_desc_one = shift_desc_one;
+		this.shift_desc_two = shift_desc_two;
+		this.warning_text = warningText;
 	}
 	
 	@Override
@@ -46,6 +56,10 @@ public class CosmosItemBlock extends BlockItem {
 			} else {
 				tooltip.add(ComponentHelper.getTooltipOne(shift_desc_one));
 				tooltip.add(ComponentHelper.getTooltipTwo(shift_desc_two));
+				
+				if (this.warning_text != null) {
+					tooltip.add(ComponentHelper.getErrorText(warning_text));
+				}
 				
 				tooltip.add(ComponentHelper.shiftForLessDetails());
 			}

@@ -1,7 +1,5 @@
 package com.tcn.cosmoslibrary.client.ui.screen.widget;
 
-import java.util.function.Supplier;
-
 import com.tcn.cosmoslibrary.CosmosReference;
 import com.tcn.cosmoslibrary.CosmosReference.RESOURCE.INFO;
 import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
@@ -9,9 +7,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -19,41 +15,20 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class CosmosColourButton extends CosmosButtonBase {
 	
 	private ComponentColour colour = ComponentColour.EMPTY;
-	
-	protected int width;
-	protected int height;
-	public int x;
-	public int y;
-	protected boolean isHovered;
-
-	public CosmosColourButton(ComponentColour startingColourIn, int x, int y, int sizeX, int sizeY, boolean enabled, boolean visible, Component title, CosmosButtonBase.OnClick clickedAction) {
-		super(x, y, sizeX, sizeY, enabled, visible, title, clickedAction, new Button.CreateNarration() {
-			
-			@Override
-			public MutableComponent createNarrationMessage(Supplier<MutableComponent> p_253695_) {
-				return ComponentHelper.empty();
-			}
-		});
-		
-		this.colour = startingColourIn;
-		
-		this.x = x;
-		this.y = y;
-		this.width = sizeX;
-		this.height = sizeY;
-
-		this.active = enabled;
-		this.visible = visible;
-	}
-
-	public CosmosColourButton(ComponentColour startingColourIn, int x, int y, int size, boolean enabled, boolean visible, Component title, CosmosButtonBase.OnClick clickedAction) {
-		this(startingColourIn, x, y, size, size, enabled, visible, title, clickedAction);
-	}
 
 	public CosmosColourButton(ComponentColour startingColourIn, int x, int y, boolean enabled, boolean visible, Component title, CosmosButtonBase.OnClick clickedAction) {
 		this(startingColourIn, x, y, 20, enabled, visible, title, clickedAction);
 	}
 	
+	public CosmosColourButton(ComponentColour startingColourIn, int x, int y, int size, boolean enabled, boolean visible, Component title, CosmosButtonBase.OnClick clickedAction) {
+		this(startingColourIn, x, y, size, size, enabled, visible, title, clickedAction);
+	}
+
+	public CosmosColourButton(ComponentColour startingColourIn, int x, int y, int sizeX, int sizeY, boolean enabled, boolean visible, Component title, CosmosButtonBase.OnClick clickedAction) {
+		super(x, y, sizeX, sizeY, enabled, visible, title, clickedAction, (msg) -> ComponentHelper.empty());
+		this.colour = startingColourIn;
+	}
+
 	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
 		if (!this.active) {
@@ -100,14 +75,7 @@ public class CosmosColourButton extends CosmosButtonBase {
 	
 	@Override
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (!this.active) {
-			i = 2;
-		} else if (mouseOver) {
-			i = 1;
-		}
-		return i;
+		return !this.active ? 2 : mouseOver ? 1 : 0;
 	}
 	
 	public ComponentColour getColour() {

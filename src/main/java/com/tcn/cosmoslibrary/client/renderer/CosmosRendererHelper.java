@@ -24,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -32,10 +33,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 
 @OnlyIn(Dist.CLIENT)
 public class CosmosRendererHelper {
@@ -107,9 +110,13 @@ public class CosmosRendererHelper {
 		bufferIn.addVertex(matrixPos, x, y, z).setColor(colour).setUv(texU, texV).setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(1.0F, 1.0F, 1.0F);
 	}
 
+	public static void addF(VertexConsumer renderer, PoseStack stack, float x, float y, float z, float u, float v, float[] colours) {
+		addF(renderer, stack, x, y, z, u, v, colours[0], colours[1], colours[2], colours[3]);
+	}
+
 	public static void addF(VertexConsumer renderer, PoseStack stack, float x, float y, float z, float u, float v, float r, float g, float b, float a) {
-        renderer.addVertex(stack.last().pose(), x, y, z).setColor(r, g, b, a).setUv(u, v).setUv2(0, 240).setNormal(1, 0, 0);
-    }
+		addF(renderer, stack, x, y, z, u, v, 0, 240, r, g, b, a);
+	}
 
 	public static void addF(VertexConsumer renderer, PoseStack stack, float x, float y, float z, float u, float v, int u2, int v2, float r, float g, float b, float a) {
         renderer.addVertex(stack.last().pose(), x, y, z).setColor(r, g, b, a).setUv(u, v).setUv2(u2, v2).setNormal(1, 0, 0);
@@ -174,17 +181,9 @@ public class CosmosRendererHelper {
 							
 						poseStackIn.popPose();
 						if (flag1) {
-							if (renderFoil) {
-								ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, rendertype, true, stackIn.hasFoil());
-							} else {
-								ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, rendertype, true, false);
-							}
+							ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, rendertype, true, renderFoil ? stackIn.hasFoil() : false);
 						} else {
-							if (renderFoil) {
-								ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, rendertype, true, stackIn.hasFoil());
-							} else {
-								ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, rendertype, true, false);
-							}
+							ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, rendertype, true, renderFoil ? stackIn.hasFoil() : false);
 						}
 						renderer.renderModelLists(modelIn, stackIn, combinedLightIn, combinedOverlayIn, poseStackIn, ivertexbuilder);
 					}
@@ -204,7 +203,40 @@ public class CosmosRendererHelper {
 		return getMappedTextureHeight(spriteIn, inputHeightIn, 16, 0);
 	}
 	
+	
 	public static ModelResourceLocation getStandalone(String modId, String path) {
 		return ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(modId, path));
+	}
+
+	public static ModelResourceLocation getStandaloneItem(String modId, String path) {
+		return ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(modId, "item/" + path));
+	}
+	
+	
+	public static IClientFluidTypeExtensions getFluidExtention(Fluid fluid) {
+		return IClientFluidTypeExtensions.of(fluid.defaultFluidState());
+	}
+
+	
+	public static TextureAtlasSprite getFluidTexture(Fluid fluid) {
+		return getFluidTexture(getFluidExtention(fluid), InventoryMenu.BLOCK_ATLAS);
+	}
+	
+	public static TextureAtlasSprite getFluidTexture(IClientFluidTypeExtensions extensions) {
+		return getFluidTexture(extensions, InventoryMenu.BLOCK_ATLAS);
+	}
+	
+	public static TextureAtlasSprite getFluidTexture(IClientFluidTypeExtensions extensions, ResourceLocation location) {
+		return Minecraft.getInstance().getModelManager().getAtlas(location).getSprite(extensions.getStillTexture());
+	}
+
+	
+	public static float[] getFluidColours(Fluid fluid) {
+		return getFluidColours(getFluidExtention(fluid));
+	}
+	
+	public static float[] getFluidColours(IClientFluidTypeExtensions extensions) {
+		int color = extensions.getTintColor();
+	    return new float[] { ((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, ((color >> 0) & 0xFF) / 255F, ((color >> 24) & 0xFF) / 255F };
 	}
 }

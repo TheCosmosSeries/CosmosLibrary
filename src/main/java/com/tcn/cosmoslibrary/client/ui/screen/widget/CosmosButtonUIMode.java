@@ -1,7 +1,5 @@
 package com.tcn.cosmoslibrary.client.ui.screen.widget;
 
-import java.util.function.Supplier;
-
 import com.tcn.cosmoslibrary.CosmosReference;
 import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.enums.EnumUIMode;
@@ -10,7 +8,6 @@ import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -19,7 +16,7 @@ import net.neoforged.api.distmarker.OnlyIn;
  * @author TheCosmicNebula_
  */
 @OnlyIn(Dist.CLIENT)
-public class CosmosButtonUIMode extends Button {
+public class CosmosButtonUIMode extends Button implements IHelpModeIgnore {
 	
 	private int[] index = new int[] { 0, 12, 24, 36 };
 	
@@ -34,13 +31,7 @@ public class CosmosButtonUIMode extends Button {
 	public boolean visible = true;
 
 	public CosmosButtonUIMode(EnumUIMode typeIn, int x, int y, boolean small, boolean enabled, boolean visible, Component title, Button.OnPress pressedAction) {
-		this(typeIn, x, y, small ? 8 : 12 , enabled, visible, title, pressedAction, new Button.CreateNarration() {
-			
-			@Override
-			public MutableComponent createNarrationMessage(Supplier<MutableComponent> narration) {
-				return ComponentHelper.empty();
-			}
-		});
+		this(typeIn, x, y, small ? 8 : 12 , enabled, visible, title, pressedAction, (msg) -> ComponentHelper.empty());
 	}
 	
 	public CosmosButtonUIMode(EnumUIMode typeIn, int x, int y, int size, boolean enabled, boolean visible, Component title, Button.OnPress pressedAction, Button.CreateNarration narration) {
@@ -104,13 +95,6 @@ public class CosmosButtonUIMode extends Button {
 	}
 	
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (!this.active) {
-			i = 2;
-		} else if (mouseOver) {
-			i = 1;
-		}
-		return i;
+		return !this.active ? 2 : mouseOver ? 1 : 0;
 	}
 }

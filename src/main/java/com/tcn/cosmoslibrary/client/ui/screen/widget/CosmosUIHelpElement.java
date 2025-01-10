@@ -12,11 +12,15 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
-public class CosmosUIHelpElement extends AbstractWidget {
+public class CosmosUIHelpElement extends AbstractWidget implements IHelpModeIgnore {
 	
 	private Component[] desc;
 	public boolean visible;
 	private ComponentColour colour;
+
+	public CosmosUIHelpElement(int xIn, int yIn, int widthIn, int heightIn, Component... descIn) {
+		this(xIn, yIn, widthIn, heightIn, ComponentColour.GREEN, descIn);
+	}
 
 	public CosmosUIHelpElement(int xIn, int yIn, int widthIn, int heightIn, ComponentColour colourIn, Component... descIn) {
 		super(xIn, yIn, widthIn, heightIn, descIn[0]);
@@ -25,12 +29,8 @@ public class CosmosUIHelpElement extends AbstractWidget {
 		this.desc = descIn;
 	}
 
-	public CosmosUIHelpElement(int xIn, int yIn, int widthIn, int heightIn, Component... descIn) {
-		this(xIn, yIn, widthIn, heightIn, ComponentColour.GREEN, descIn);
-	}
-
 	@Override
-	public void updateWidgetNarration(NarrationElementOutput p_169152_) { }
+	public void updateWidgetNarration(NarrationElementOutput output) { }
 	
 	@Override
 	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -86,13 +86,6 @@ public class CosmosUIHelpElement extends AbstractWidget {
 	}
 	
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (!this.active) {
-			i = 2;
-		} else if (mouseOver) {
-			i = 1;
-		}
-		return i;
+		return !this.active ? 2 : mouseOver ? 1 : 0;
 	}
 }

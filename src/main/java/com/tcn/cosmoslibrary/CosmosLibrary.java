@@ -1,7 +1,7 @@
 package com.tcn.cosmoslibrary;
 
-import com.tcn.cosmoslibrary.common.runtime.CosmosConsoleManager;
 import com.tcn.cosmoslibrary.runtime.ModBusSubscriberCosmos;
+import com.tcn.cosmoslibrary.runtime.common.CosmosConsoleManager;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;

@@ -38,6 +38,6 @@ public enum EnumIndustryTier {
 	}
 
 	public boolean notCreative() {
-		return !this.creative;
+		return !this.creative();
 	}
 }

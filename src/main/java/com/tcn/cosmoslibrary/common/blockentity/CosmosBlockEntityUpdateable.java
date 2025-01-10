@@ -1,6 +1,6 @@
 package com.tcn.cosmoslibrary.common.blockentity;
 
-import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUpdateable;
+import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUpdates;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CosmosBlockEntityUpdateable extends BlockEntity implements IBEUpdateable {
+public class CosmosBlockEntityUpdateable extends BlockEntity implements IBEUpdates.Base {
 
 	public CosmosBlockEntityUpdateable(BlockEntityType<?> typeIn, BlockPos posIn, BlockState stateIn) {
 		super(typeIn, posIn, stateIn);

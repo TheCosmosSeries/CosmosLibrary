@@ -13,13 +13,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.tcn.cosmoslibrary.CosmosReference;
+import com.tcn.cosmoslibrary.client.renderer.CosmosRendererHelper;
 import com.tcn.cosmoslibrary.common.enums.EnumUIMode;
-import com.tcn.cosmoslibrary.common.interfaces.IEnergyEntity;
 import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUIMode;
 import com.tcn.cosmoslibrary.common.interfaces.blockentity.IEnergyHolder;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
+import com.tcn.cosmoslibrary.energy.interfaces.IEnergyEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -27,21 +28,18 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
@@ -68,6 +66,7 @@ public class CosmosUISystem {
 	public static final int BROWN = 0x61210B;
 	
 	public static final float[] NORMAL_COLOUR = new float[] { 1.0F, 1.0F, 1.0F, 1.0F };
+	public static final float[] DARKEN_COLOUR = new float[] { 0.5F, 0.5F, 0.5F, 1.0F };
 	
 	public class Init {
 		public static int[] getScreenCoords(Screen screen, int imageWidth, int imageHeight) {
@@ -124,26 +123,26 @@ public class CosmosUISystem {
 			RenderSystem.disableBlend();
 			RenderSystem.disableDepthTest();
 		}
+
+		public static void setTextureColour(ComponentColour colourIn) {
+			setTextureColour(colourToRGBA(colourIn));
+		}
+
+		public static float[] colourToRGBA(ComponentColour colourIn) {
+			return colourToRGBA(colourIn, 1.0F);
+		}
 		
 		public static float[] colourToRGBA(ComponentColour colourIn, float alphaIn) {
 			float[] rgb = ComponentColour.rgbFloatArray(colourIn);
 			return new float[] { rgb[0], rgb[1], rgb[2], alphaIn };
 		}
 		
-		public static float[] colourToRGBA(ComponentColour colourIn) {
-			return colourToRGBA(colourIn, 1.0F);
-		}
-		
-		public static void setTextureColour(ComponentColour colourIn) {
-			setTextureColour(colourToRGBA(colourIn));
+		public static void setTextureColour(float redIn, float greenIn, float blueIn) {
+			setTextureColour(redIn, greenIn, blueIn, 1.0F);
 		}
 	
 		public static void setTextureColour(float redIn, float greenIn, float blueIn, float alphaIn) {
 			setTextureColour(new float[] { redIn, greenIn, blueIn, alphaIn });
-		}
-	
-		public static void setTextureColour(float redIn, float greenIn, float blueIn) {
-			setTextureColour(new float[] { redIn, greenIn, blueIn, 1.0F });
 		}
 	
 		public static void setTextureColour(float[] colourIn) {
@@ -181,7 +180,7 @@ public class CosmosUISystem {
 		}
 	
 		public static void renderEnergyDisplay(GuiGraphics graphics, ComponentColour colourIn, int energyIn, int maxEnergyIn, int[] screenCoords, int drawX, int drawY, int widthIn, int heightIn, boolean horizontal) {
-			renderEnergyDisplay(graphics, colourIn, energyIn, maxEnergyIn, (energyIn / 1000) * (horizontal ? widthIn : heightIn) / (maxEnergyIn / 1000), screenCoords, drawX, drawY, widthIn, heightIn, horizontal);
+			renderEnergyDisplay(graphics, colourIn, energyIn, maxEnergyIn, (energyIn / 20) * (horizontal ? widthIn : heightIn) / (maxEnergyIn / 20), screenCoords, drawX, drawY, widthIn, heightIn, horizontal);
 		}
 
 		public static void renderEnergyDisplay(GuiGraphics graphics, ComponentColour colourIn, int energyIn, int maxEnergyIn, int scaleIn, int[] screenCoords, int drawX, int drawY, int widthIn, int heightIn, boolean horizontal) {
@@ -190,16 +189,10 @@ public class CosmosUISystem {
 			renderStaticElement(graphics, screenCoords, drawX, drawY, 0, 0, widthIn, heightIn, Setup.colourToRGBA(ComponentColour.LIGHT_GRAY), location);
 			
 			if (energyIn > 0) {				
-				int adjustedScale = Math.max(1, (energyIn / 1000) * scaleIn / (maxEnergyIn / 1000));
+				int adjustedScale = Math.max(1, (energyIn / 20) * scaleIn / (maxEnergyIn / 20));
 				renderStaticElement(graphics, screenCoords, drawX, drawY + (horizontal ? 0 : heightIn - adjustedScale), horizontal ? (0 + adjustedScale) : 0, horizontal ? 0 : 255 - adjustedScale, horizontal ?  adjustedScale : widthIn, horizontal ? heightIn : adjustedScale, Setup.colourToRGBA(colourIn), location);
 			}
 			Setup.setTextureColour(NORMAL_COLOUR);
-		}
-		
-		@Deprecated(forRemoval = true, since = "1.22")
-		public static void renderSlot(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, int[] slot_location) {
-			Setup.setTexture(graphics.pose(), CosmosReference.RESOURCE.BASE.GUI_SLOT_LOC);
-			graphics.blit(CosmosReference.RESOURCE.BASE.GUI_SLOT_LOC, screenCoords[0] + drawX, screenCoords[1] + drawY, slot_location[0], slot_location[1], slot_location[2], slot_location[3]);
 		}
 		
 		public static void renderBackground(Screen screen, GuiGraphics graphics, int[] screenCoords, ResourceLocation location) {
@@ -213,53 +206,45 @@ public class CosmosUISystem {
 		public static void renderFluidTank(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, IFluidTank tank, int scaledIn, int scaleMax) {
 			PoseStack poseStack = graphics.pose();
 			
+			int x = screenCoords[0] + drawX;
+			int y = screenCoords[1] + drawY;
+			
 			if (tank.getFluidAmount() > 0) {
 				Fluid renderFluid = tank.getFluid().getFluid();
 				
-				IClientFluidTypeExtensions props = IClientFluidTypeExtensions.of(renderFluid.defaultFluidState());
-				TextureAtlas texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS);
-				ResourceLocation textureLoc = props.getStillTexture();
-				TextureAtlasSprite fluidTexture = texture.getSprite(textureLoc);
+				TextureAtlasSprite tex = CosmosRendererHelper.getFluidTexture(renderFluid);
+				Setup.setTextureColour(CosmosRendererHelper.getFluidColours(renderFluid));
 				
-				int color = props.getTintColor();
-				
-				float r = ((color >> 16) & 0xFF) / 255f; // red
-			    float g = ((color >> 8) & 0xFF) / 255f; // green
-			    float b = ((color >> 0) & 0xFF) / 255f; // blue
-			    float a = ((color >> 24) & 0xFF) / 255f; // alpha
-			    
-			    Setup.setTextureColour(r, g, b, a);
-				
-			    if (fluidTexture != null) {
+			    if (tex != null) {
 			    	poseStack.pushPose();
 			    	
 			    	if (scaledIn > 0) {
 			    		int limited = Mth.clamp(scaledIn, 0, 16);
-			    		Extension.blit16(graphics, screenCoords[0] + drawX, screenCoords[1] + drawY + scaleMax - limited, 0, 16, limited, fluidTexture);
+			    		Extension.blit16(graphics, x, y + scaleMax - limited, 0, 16, limited, tex);
 			    	}
 			    	
 					if (scaledIn > 16) {
 						int scaled = scaledIn - 16;
 						int limited = Mth.clamp(scaled, 0, 16);
-						Extension.blit16(graphics, screenCoords[0] + drawX, screenCoords[1] + drawY + (scaleMax - 16) - limited, 0, 16, limited, fluidTexture);
+						Extension.blit16(graphics, x, y + (scaleMax - 16) - limited, 0, 16, limited, tex);
 					}
 					
 					if (scaledIn > 32) {
 						int scaled = scaledIn - 32;
 						int limited = Mth.clamp(scaled, 0, 16);
-						Extension.blit16(graphics, screenCoords[0] + drawX, screenCoords[1] + drawY + (scaleMax - 32) - limited, 0, 16, limited, fluidTexture);
+						Extension.blit16(graphics, x, y + (scaleMax - 32) - limited, 0, 16, limited, tex);
 					}
 					
 					if (scaledIn > 48) {
 						int scaled = scaledIn - 48;
 						int limited = Mth.clamp(scaled, 0, 16);
-						Extension.blit16(graphics, screenCoords[0] + drawX, screenCoords[1] + drawY + (scaleMax - 48) - limited, 0, 16, limited, fluidTexture);
+						Extension.blit16(graphics, x, y + (scaleMax - 48) - limited, 0, 16, limited, tex);
 					}
 					
 					if (scaledIn > 64) {
 						int scaled = scaledIn - 64;
 						int limited = Mth.clamp(scaled, 0, 16);
-						Extension.blit16(graphics, screenCoords[0] + drawX, screenCoords[1] + drawY + (scaleMax - 64) - limited, 0, 16, limited, fluidTexture);
+						Extension.blit16(graphics, x, y + (scaleMax - 64) - limited, 0, 16, limited, tex);
 					}
 					
 					poseStack.popPose();
@@ -288,6 +273,10 @@ public class CosmosUISystem {
 			}
 		}
 		
+		public static void renderScaledElementDownInvNestled(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, int textureX, int textureY, int width, int height, int scaledIn, ResourceLocation location) {
+			renderStaticElementInternal(graphics, screenCoords[0] + drawX, screenCoords[1] + drawY + scaledIn, textureX, textureY + scaledIn, width, height - scaledIn, NORMAL_COLOUR, location);
+		}
+		
 		public static void renderScaledElementUpNestled(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, int textureInX, int textureInY, int width, int height, int scaledIn, ResourceLocation location) {
 //			graphics.blit(location, screenCoords[0] + drawX, (screenCoords[1] + drawY + height) - scaledIn, textureInX, (textureInY + height) - scaledIn, width, scaledIn);
 			renderStaticElementInternal(graphics, screenCoords[0] + drawX, (screenCoords[1] + drawY + height) - scaledIn, textureInX, (textureInY + height) - scaledIn, width, scaledIn, NORMAL_COLOUR, location);
@@ -305,6 +294,7 @@ public class CosmosUISystem {
 		public static void renderScaledElementRightNestled(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, int textureInX, int textureInY, int height, int scaledIn, ResourceLocation location) {
 			renderStaticElement(graphics, screenCoords, drawX, drawY, textureInX, textureInY, scaledIn + 1, height, location);
 		}
+		
 		
 		public static void renderStaticElementWithUIMode(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, int textureInX, int textureInY, int width, int height, IBEUIMode entity, ResourceLocation[] locations) {
 			renderStaticElementWithUIMode(graphics, screenCoords, drawX, drawY, textureInX, textureInY, width, height, Setup.colourToRGBA(ComponentColour.WHITE), entity.getUIMode(), locations);

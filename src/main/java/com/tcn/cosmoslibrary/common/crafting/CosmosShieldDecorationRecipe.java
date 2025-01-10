@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-@SuppressWarnings("deprecation")
 public class CosmosShieldDecorationRecipe extends CustomRecipe {
 
 	public CosmosShieldDecorationRecipe(CraftingBookCategory categoryIn) {
@@ -47,7 +46,7 @@ public class CosmosShieldDecorationRecipe extends CustomRecipe {
 						return false;
 					}
 
-					if (itemstack2.get(DataComponents.BLOCK_ENTITY_DATA).getUnsafe() != null) {
+					if (itemstack2.get(DataComponents.BLOCK_ENTITY_DATA).copyTag() != null) {
 						return false;
 					}
 
@@ -79,7 +78,7 @@ public class CosmosShieldDecorationRecipe extends CustomRecipe {
 		if (itemstack1.isEmpty()) {
 			return itemstack1;
 		} else {
-			CompoundTag compoundtag = itemstack.get(DataComponents.BLOCK_ENTITY_DATA).getUnsafe();
+			CompoundTag compoundtag = itemstack.get(DataComponents.BLOCK_ENTITY_DATA).copyTag();
 			CompoundTag compoundtag1 = compoundtag == null ? new CompoundTag() : compoundtag.copy();
 			compoundtag1.putInt("Base", ((BannerItem) itemstack.getItem()).getColor().getId());
 			BlockItem.setBlockEntityData(itemstack1, BlockEntityType.BANNER, compoundtag1);

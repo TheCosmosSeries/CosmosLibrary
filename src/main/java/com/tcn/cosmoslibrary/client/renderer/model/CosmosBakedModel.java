@@ -11,7 +11,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-@SuppressWarnings("deprecation")
+//@SuppressWarnings("deprecation")
+@Deprecated
 public class CosmosBakedModel implements BakedModel {
 	
 	private final BakedModel internal;

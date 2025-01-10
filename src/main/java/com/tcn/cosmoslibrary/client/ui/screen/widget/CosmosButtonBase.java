@@ -1,5 +1,7 @@
 package com.tcn.cosmoslibrary.client.ui.screen.widget;
 
+import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -27,8 +29,16 @@ public class CosmosButtonBase extends Button {
 	
 	protected final CosmosButtonBase.OnClick onClick;
 
+	public CosmosButtonBase(int x, int y, int width, int height, boolean enabled, boolean visible, Component title) {
+		this(x, y, width, height, enabled, visible, title, (msg) -> { return ComponentHelper.empty(); });
+	}
+
+	public CosmosButtonBase(int x, int y, int width, int height, boolean enabled, boolean visible, Component title, Button.CreateNarration narration) {
+		this(x, y, width, height, enabled, visible, title, (button, isLeftClick) -> {}, narration);
+	}
+
 	public CosmosButtonBase(int x, int y, int width, int height, boolean enabled, boolean visible, Component title, CosmosButtonBase.OnClick clickedAction, Button.CreateNarration narration) {
-		super(x, y, width, height, title, (button) -> {clickedAction.onClick(button, true);}, narration);
+		super(x, y, width, height, title, (button) -> { clickedAction.onClick(button, true); }, narration);
 				
 		this.x = x;
 		this.y = y;
@@ -41,20 +51,6 @@ public class CosmosButtonBase extends Button {
 		this.onClick = clickedAction;
 	}
 
-	public CosmosButtonBase(int x, int y, int width, int height, boolean enabled, boolean visible, Component title, Button.CreateNarration narration) {
-		super(x, y, width, height, title, (button) -> {}, narration);
-				
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-
-		this.active = enabled;
-		this.visible = visible;
-		
-		this.onClick = (button, isLeftClick) -> {};
-	}
-
 	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
 		if (!this.active || !this.visible) {
@@ -65,11 +61,7 @@ public class CosmosButtonBase extends Button {
 	}
 
 	@Override
-	public void onPress() {
-		if (this.active || this.visible) {
-			//this.onClick.onClick(this, true);
-		}
-	}
+	public void onPress() { }
 	
 	public void onClick(boolean isLeftClick) {
 		if (this.active && this.visible) {
@@ -82,21 +74,10 @@ public class CosmosButtonBase extends Button {
 	}
 	
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if (this.visible) {
-			//super.renderWidget(graphics, mouseX, mouseY, partialTicks);
-		}
-	}
+	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) { }
 	
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (!this.active) {
-			i = 2;
-		} else if (mouseOver) {
-			i = 1;
-		}
-		return i;
+		return !this.active ? 2 : mouseOver ? 1 : 0;
 	}
 	
 	public interface OnClick {

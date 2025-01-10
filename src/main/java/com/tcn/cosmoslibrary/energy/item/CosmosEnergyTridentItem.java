@@ -11,6 +11,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 import com.tcn.cosmoslibrary.common.util.CosmosUtil;
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItemBEWLR;
 import com.tcn.cosmoslibrary.energy.item.CosmosEnergyItem;
@@ -76,9 +77,7 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 	private int useDuration;
 	private int enchantValue;
 	
-	private Supplier<BlockEntityWithoutLevelRenderer> bewlrSupplier;
-
-	public CosmosEnergyTridentItem(Item.Properties properties, CosmosEnergyItem.Properties energyProperties, int useDuration, int enchantmentValue, Supplier<BlockEntityWithoutLevelRenderer> bewlrSupplierIn) {
+	public CosmosEnergyTridentItem(Item.Properties properties, CosmosEnergyItem.Properties energyProperties, int useDuration, int enchantmentValue) {
 		super(properties);
 
 		this.maxEnergyStored = energyProperties.maxEnergyStored;
@@ -91,8 +90,6 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 		this.barColour = energyProperties.barColour;
 		this.useDuration = useDuration;
 		this.enchantValue = enchantmentValue;
-		
-		this.bewlrSupplier = bewlrSupplierIn;
 	}
 
     public static ItemAttributeModifiers createAttributes(float attackDamageIn, float attackSpeedIn) {
@@ -120,16 +117,6 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 		super.appendHoverText(stack, context, tooltip, flagIn);
 	}
 	
-	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return bewlrSupplier.get()!= null ? bewlrSupplier.get() : Minecraft.getInstance().getItemRenderer().getBlockEntityRenderer();
-			}
-		});
-	}
-
 	@Override
 	public int getUseDuration(ItemStack stack, LivingEntity entityIn) {
 		return this.useDuration;
@@ -327,37 +314,7 @@ public class CosmosEnergyTridentItem extends TridentItem implements ICosmosEnerg
 
 	@Override
 	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorage() {
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyTridentItem.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyTridentItem.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyTridentItem.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyTridentItem.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyTridentItem.this.canReceiveEnergy(stackIn) && CosmosEnergyTridentItem.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyTridentItem.this.canReceiveEnergy(stackIn) && CosmosEnergyTridentItem.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefault(stackIn, this);
 	}
 
 	@Override

@@ -19,6 +19,10 @@ public class CosmosFluidBlock extends LiquidBlock {
 	private ResourceKey<DamageType> damageSource;
 	private float damageAmount;
 	
+	public CosmosFluidBlock(FlowingFluid fluid, Properties properties) {
+		this(fluid, properties, false, null, 0.0F);
+	}
+	
 	public CosmosFluidBlock(FlowingFluid fluid, Properties properties, boolean damageInside, @Nullable ResourceKey<DamageType> damageSource, float damageAmount) {
 		super(fluid, properties);
 		
@@ -28,9 +32,8 @@ public class CosmosFluidBlock extends LiquidBlock {
 		if (damageInside) {
 			if (damageSource != null) {
 				this.damageSource = damageSource;
-			} else throw(new NullPointerException("DamageSource cannot be null!"));
+			} else throw(new NullPointerException("DamageSource cannot be null! Here be dragons!"));
 		}
-		
 	}
 	
 	@Override

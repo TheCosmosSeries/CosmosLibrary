@@ -4,8 +4,7 @@ public enum EnumRenderType {
 	TRANSPARENT,
 	OPAQUE;
 	
-	
-	public boolean isTransparent() {
+	public boolean transparent() {
 		return this.equals(TRANSPARENT);
 	}
 }

@@ -1,5 +1,7 @@
 package com.tcn.cosmoslibrary.common.lib;
 
+import java.text.DecimalFormat;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
@@ -39,5 +41,9 @@ public class MathHelper {
 	
 	public static BlockPos offsetBlockPos(BlockPos posInOne, BlockPos posInTwo) {
 		return new BlockPos(posInOne.getX() - posInTwo.getX(), posInOne.getY() - posInTwo.getY(), posInOne.getZ() - posInTwo.getZ());
+	}
+	
+	public static String decimalString(int numberToFormat) {
+		return new DecimalFormat("#,###,###,###").format(numberToFormat);
 	}
 }

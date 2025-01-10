@@ -1,5 +1,6 @@
 package com.tcn.cosmoslibrary.energy.item;
 
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.IEnergyStorageBulk;
 
 import net.minecraft.core.component.DataComponents;
@@ -127,38 +128,6 @@ public class CosmosEnergyStorageItem extends CosmosEnergyItem {
 
 	@Override
 	public IEnergyStorageBulk getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorageBulk() {
-			
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyStorageItem.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyStorageItem.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyStorageItem.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyStorageItem.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyStorageItem.this.canReceiveEnergy(stackIn) && CosmosEnergyStorageItem.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyStorageItem.this.canReceiveEnergy(stackIn) && CosmosEnergyStorageItem.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefaultBulk(stackIn, this);
 	}
-
 }

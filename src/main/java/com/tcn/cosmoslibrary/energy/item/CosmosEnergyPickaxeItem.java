@@ -9,6 +9,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 import com.tcn.cosmoslibrary.common.util.CosmosUtil;
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 
 import net.minecraft.core.BlockPos;
@@ -227,37 +228,7 @@ public class CosmosEnergyPickaxeItem extends PickaxeItem implements ICosmosEnerg
 
 	@Override
 	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorage() {
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyPickaxeItem.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyPickaxeItem.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyPickaxeItem.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyPickaxeItem.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyPickaxeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyPickaxeItem.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyPickaxeItem.this.canReceiveEnergy(stackIn) && CosmosEnergyPickaxeItem.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefault(stackIn, this);
 	}
 
 	@Override

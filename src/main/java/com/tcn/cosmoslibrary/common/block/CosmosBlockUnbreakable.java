@@ -22,5 +22,4 @@ public class CosmosBlockUnbreakable extends Block {
 	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
 		return false;
 	}
-	
 }

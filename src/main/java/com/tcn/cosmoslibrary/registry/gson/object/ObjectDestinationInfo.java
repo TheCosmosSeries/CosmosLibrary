@@ -11,6 +11,8 @@ public class ObjectDestinationInfo {
 	private float yaw;
 	private float pitch;
 	
+	public static final ObjectDestinationInfo BLANK = new ObjectDestinationInfo(BlockPos.ZERO, 0, 0);
+	
 	public ObjectDestinationInfo(BlockPos posIn, float yawIn, float pitchIn) {
 		this.pos = posIn;
 		this.setYaw(yawIn);

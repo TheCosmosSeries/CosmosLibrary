@@ -60,17 +60,29 @@ public class IBEUpdated {
 		public void pushEnergy(Direction directionIn);
 	}
 
-	public interface Minimal {
-		public void sendUpdates();
+	public interface Energy extends Minimal {
 		public boolean hasEnergy();
 		public int getEnergyScaled(int scale);
 	}
 	
-	public interface Fluid {
+	public interface Minimal {
+		public void sendUpdates();
+	}
+	
+	public interface Fluid extends Minimal {
 		public boolean isFluidEmpty();
 		public net.minecraft.world.level.material.Fluid getCurrentStoredFluid();
 		public int getCurrentFluidAmount();
 		public int getFluidLevelScaled(int one);
 		public int getFluidFillLevel();
+		public void emptyFluidTank();
+	}
+	
+	public interface FluidDual {
+		public boolean isFluidEmpty(int tank);
+		public net.minecraft.world.level.material.Fluid getCurrentStoredFluid(int tank);
+		public int getCurrentFluidAmount(int tank);
+		public int getFluidLevelScaled(int tank, int one);
+		public int getFluidFillLevel(int tank);
 	}
 }

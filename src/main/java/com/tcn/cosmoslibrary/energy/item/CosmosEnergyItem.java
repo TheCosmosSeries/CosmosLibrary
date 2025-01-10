@@ -10,6 +10,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 import com.tcn.cosmoslibrary.common.util.CosmosUtil;
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 
 import net.minecraft.core.component.DataComponents;
@@ -169,37 +170,7 @@ public class CosmosEnergyItem extends CosmosItem implements ICosmosEnergyItem {
 	
 	@Override
 	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorage() {
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyItem.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyItem.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyItem.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyItem.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyItem.this.canReceiveEnergy(stackIn) && CosmosEnergyItem.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyItem.this.canReceiveEnergy(stackIn) && CosmosEnergyItem.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefault(stackIn, this);
 	}
 
 	@Override

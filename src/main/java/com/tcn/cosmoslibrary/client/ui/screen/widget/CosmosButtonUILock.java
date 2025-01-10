@@ -1,7 +1,5 @@
 package com.tcn.cosmoslibrary.client.ui.screen.widget;
 
-import java.util.function.Supplier;
-
 import com.tcn.cosmoslibrary.CosmosReference;
 import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.enums.EnumUILock;
@@ -10,7 +8,6 @@ import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -35,13 +32,7 @@ public class CosmosButtonUILock extends Button {
 	public boolean visible = true;
 
 	public CosmosButtonUILock(EnumUILock modeIn, int x, int y, boolean enabled, boolean visible, Component title, Button.OnPress pressedAction) {
-		this(modeIn, x, y, 12, 12, enabled, visible, title, pressedAction, new Button.CreateNarration() {
-			
-			@Override
-			public MutableComponent createNarrationMessage(Supplier<MutableComponent> p_253695_) {
-				return ComponentHelper.empty();
-			}
-		});
+		this(modeIn, x, y, 12, 12, enabled, visible, title, pressedAction, (msg) -> ComponentHelper.empty());
 	}
 
 	public CosmosButtonUILock(EnumUILock modeIn, int x, int y, int width, int height, boolean enabled, boolean visible, Component title, Button.OnPress pressedAction, Button.CreateNarration narration) {
@@ -92,13 +83,6 @@ public class CosmosButtonUILock extends Button {
 	}
 	
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (!this.active) {
-			i = 2;
-		} else if (mouseOver) {
-			i = 1;
-		}
-		return i;
+		return !this.active ? 2 : mouseOver ? 1 : 0;
 	}
 }

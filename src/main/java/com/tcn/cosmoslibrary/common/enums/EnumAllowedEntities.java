@@ -25,44 +25,26 @@ public enum EnumAllowedEntities {
 		this.displayColour = displayColour;
 	}
 
-	/**
-	 * Get the index of this EnumSideState. Order is [NO_CONN-INTERFACE_NORMAL-INTERFACE_OUTPUT-INTERFACE_INPUT-DISABLED].
-	 */
 	public int getIndex() {
 		return this.index;
 	}
 	
-	/**
-	 * Get the name of this EnumSideState.
-	 */
 	public String getName() {
 		return this.name;
 	}
 	
-	/**
-	 * Get the localized name for display.
-	 */
 	public MutableComponent getColouredComp() {
 		return ComponentHelper.style(this.displayColour, "bold", this.localizedName);
 	}
 	
-	/**
-	 * Get the localized_name without localization.
-	 */
 	public String getUnlocalizedName() {
 		return this.localizedName;
 	}
 	
-	/**
-	 * Get the colour for displayed text.
-	 */
 	public ComponentColour getTextColour() {
 		return this.displayColour;
 	}
 
-	/**
-	 * Returns the next state.
-	 */
 	public EnumAllowedEntities getNextState() {
 		switch(this) {
 			case NONE:
@@ -80,10 +62,6 @@ public enum EnumAllowedEntities {
 		}
 	}
 
-	/**
-	 * Returns the next state from a given state.
-	 * @param previous [state from]
-	 */
 	public static EnumAllowedEntities getNextState(EnumAllowedEntities previous) {
 		switch(previous) {
 			case NONE:
@@ -101,10 +79,6 @@ public enum EnumAllowedEntities {
 		}
 	}
 
-	/**
-	 * Returns the next state from a given state, in reverse order.
-	 * @param previous [state from]
-	 */
 	public static EnumAllowedEntities getNextStateReverse(EnumAllowedEntities previous) {
 		switch(previous) {
 			case NONE:
@@ -123,10 +97,6 @@ public enum EnumAllowedEntities {
 		}
 	}
 
-	/**
-	 * Returns the next state from a given state.
-	 * @param previous [state from]
-	 */
 	public static EnumAllowedEntities getStateFromIndex(int index) {
 		switch(index) {
 			case 0:

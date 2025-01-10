@@ -10,6 +10,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 import com.tcn.cosmoslibrary.common.util.CosmosUtil;
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 
 import net.minecraft.core.Holder;
@@ -185,37 +186,7 @@ public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable
 
 	@Override
 	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorage() {
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyArmourItemColourable.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyArmourItemColourable.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyArmourItemColourable.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyArmourItemColourable.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyArmourItemColourable.this.canReceiveEnergy(stackIn) && CosmosEnergyArmourItemColourable.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyArmourItemColourable.this.canReceiveEnergy(stackIn) && CosmosEnergyArmourItemColourable.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefault(stackIn, this);
 	}
 
 	@Override
@@ -230,7 +201,6 @@ public class CosmosEnergyArmourItemColourable extends CosmosArmourItemColourable
 	
 	@Override
 	public int getBarWidth(ItemStack stackIn) {
-		Item item = stackIn.getItem();
-		return !(item instanceof ICosmosEnergyItem energyItem) ? 0 : Mth.clamp(Math.round((float) energyItem.getScaledEnergy(stackIn, 13)), 0, 13);
+		return !(stackIn.getItem() instanceof ICosmosEnergyItem energyItem) ? 0 : Mth.clamp(Math.round((float) energyItem.getScaledEnergy(stackIn, 13)), 0, 13);
 	}
 }

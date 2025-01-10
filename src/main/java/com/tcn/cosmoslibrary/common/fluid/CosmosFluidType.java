@@ -17,48 +17,56 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 
-/**
- * Basic implementation of {@link FluidType} that supports specifying still and flowing textures in the constructor.
- *
- * @author Choonster (<a href="https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.19.x/LICENSE.txt">MIT License</a>)
- *
- * Change by: Kaupenjoe
- * Added overlayTexture and tintColor as well. Also converts tint color into fog color
- */
 public class CosmosFluidType extends FluidType {
     private final ResourceLocation stillTexture;
     private final ResourceLocation flowingTexture;
     private final ResourceLocation overlayTexture;
+    private final ResourceLocation overlayTextureFull;
+    
     private final int tintColor;
     private final Vector3f fogColor;
+    private final float fogStart;
+    private final float fogEnd;
 
-    public CosmosFluidType(final ResourceLocation stillTexture, final ResourceLocation flowingTexture, final ResourceLocation overlayTexture, final int tintColor, final Vector3f fogColor, final Properties properties) {
+    public CosmosFluidType(
+    	ResourceLocation stillTexture, ResourceLocation flowingTexture, 
+    	ResourceLocation overlayTexture, ResourceLocation overlayTextureFull, 
+    	int tintColor, Vector3f fogColor,
+    	float fogStart, float fogEnd, FluidType.Properties properties
+    ) {
         super(properties);
         this.stillTexture = stillTexture;
         this.flowingTexture = flowingTexture;
         this.overlayTexture = overlayTexture;
+        this.overlayTextureFull = overlayTextureFull;        
         this.tintColor = tintColor;
         this.fogColor = fogColor;
+        this.fogStart = fogStart;
+        this.fogEnd = fogEnd;
     }
 
     public ResourceLocation getStillTexture() {
-        return stillTexture;
+        return this.stillTexture;
     }
 
     public ResourceLocation getFlowingTexture() {
-        return flowingTexture;
+        return this.flowingTexture;
     }
 
     public int getTintColor() {
-        return tintColor;
+        return this.tintColor;
     }
 
     public ResourceLocation getOverlayTexture() {
-        return overlayTexture;
+        return this.overlayTexture;
+    }
+
+    public ResourceLocation getOverlayTextureFull() {
+        return this.overlayTextureFull;
     }
 
     public Vector3f getFogColor() {
-        return fogColor;
+        return this.fogColor;
     }
 
     @Override
@@ -66,38 +74,38 @@ public class CosmosFluidType extends FluidType {
         consumer.accept(new IClientFluidTypeExtensions() {
             @Override
             public ResourceLocation getStillTexture() {
-                return stillTexture;
+                return CosmosFluidType.this.getStillTexture();
             }
 
             @Override
             public ResourceLocation getFlowingTexture() {
-                return flowingTexture;
+                return CosmosFluidType.this.getFlowingTexture();
             }
 
             @Override
             public @Nullable ResourceLocation getOverlayTexture() {
-                return overlayTexture;
+                return CosmosFluidType.this.getOverlayTexture();
             }
 
             @Override
             public int getTintColor() {
-                return tintColor;
+                return CosmosFluidType.this.getTintColor();
             }
             
             @Override
             public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
+                return CosmosFluidType.this.getOverlayTextureFull();
             }
 
             @Override
             public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level,  int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-                return fogColor;
+                return CosmosFluidType.this.getFogColor();
             }
 
             @Override
             public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
-                RenderSystem.setShaderFogStart(1f);
-                RenderSystem.setShaderFogEnd(3f);
+                RenderSystem.setShaderFogStart(CosmosFluidType.this.fogStart);
+                RenderSystem.setShaderFogEnd(CosmosFluidType.this.fogEnd);
             }
         });
     }

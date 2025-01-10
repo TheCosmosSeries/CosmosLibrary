@@ -1,7 +1,5 @@
 package com.tcn.cosmoslibrary.client.ui.screen.widget;
 
-import java.util.function.Supplier;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tcn.cosmoslibrary.CosmosReference.RESOURCE.BASE;
 import com.tcn.cosmoslibrary.CosmosReference.RESOURCE.INFO;
@@ -9,45 +7,25 @@ import com.tcn.cosmoslibrary.client.ui.CosmosUISystem;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-/**
- * 
- * Flexible Button, with various types to change the texture.
- * Removes the need for a Button Class per type.
- * 
- * @author TheCosmicNebula	_
- * 
- */
 @OnlyIn(Dist.CLIENT)
 public class CosmosButtonWithType extends CosmosButtonBase {
 	
-	/*
-	 * Enum to hold various button types, with their respective texture paths.
-	 */
 	public enum TYPE {
 		ICON (0, "icon", BASE.BUTTON_ICON_PATH, BASE.BUTTON_ICON_PATH_ALT),
 		GENERAL (1, "general", BASE.BUTTON_GENERAL_PATH, BASE.BUTTON_GENERAL_PATH_ALT),
-		ENERGY (0, "energy", BASE.BUTTON_ENERGY_PATH, BASE.BUTTON_ENERGY_PATH_ALT),
-		FLUID (0, "fluid", BASE.BUTTON_FLUID_PATH, BASE.BUTTON_FLUID_PATH_ALT),
-		ITEM (0, "item", BASE.BUTTON_ITEM_PATH, BASE.BUTTON_ITEM_PATH_ALT),
-		STORAGE (0, "storage", BASE.BUTTON_STORAGE_PATH, BASE.BUTTON_STORAGE_PATH_ALT);
+		ENERGY (2, "energy", BASE.BUTTON_ENERGY_PATH, BASE.BUTTON_ENERGY_PATH_ALT),
+		FLUID (3, "fluid", BASE.BUTTON_FLUID_PATH, BASE.BUTTON_FLUID_PATH_ALT),
+		ITEM (4, "item", BASE.BUTTON_ITEM_PATH, BASE.BUTTON_ITEM_PATH_ALT),
+		STORAGE (5, "storage", BASE.BUTTON_STORAGE_PATH, BASE.BUTTON_STORAGE_PATH_ALT);
 		
-		//Index.
 		private int index;
-		
-		//Basic name.
 		private String name;
-		
-		//ResourceLocation for texture.
 		private final ResourceLocation textureNormal;
-		
-		//ResourceLocation for texture.
 		private final ResourceLocation textureAlt;
 		
 		TYPE (int index, String name, ResourceLocation textureNormalIn, ResourceLocation textureAltIn) {
@@ -75,37 +53,17 @@ public class CosmosButtonWithType extends CosmosButtonBase {
 	}
 	
 	private TYPE buttonType;
-	protected int width;
-	protected int height;
-	public int x;
-	public int y;
-	protected boolean isHovered;
-	public boolean active = true;
-	public boolean visible = true;
 	private int identifier;
-
-	public CosmosButtonWithType(TYPE typeIn, int x, int y, int size, boolean enabled, boolean visible, int identifier, Component title, CosmosButtonBase.OnClick clickedAction) {
-		super(x, y, size, size, enabled, visible, title, clickedAction, new Button.CreateNarration() {
-
-			@Override
-			public MutableComponent createNarrationMessage(Supplier<MutableComponent> p_253695_) {
-				return ComponentHelper.empty();
-			}
-		});
-		
-		this.buttonType = typeIn;
-		this.active = enabled;
-		
-		this.x = x;
-		this.y = y;
-		this.width = size;
-		this.height = size;
-		
-		this.identifier = identifier;
-	}
 
 	public CosmosButtonWithType(TYPE typeIn, int x, int y, boolean enabled, boolean visible, int identifier, Component title, CosmosButtonBase.OnClick clickedAction) {
 		this(typeIn, x, y, 20, enabled, visible, identifier, title, clickedAction);
+	}
+
+	public CosmosButtonWithType(TYPE typeIn, int x, int y, int size, boolean enabled, boolean visible, int identifier, Component title, CosmosButtonBase.OnClick clickedAction) {
+		super(x, y, size, size, enabled, visible, title, clickedAction, (msg) -> ComponentHelper.empty());
+		
+		this.buttonType = typeIn;
+		this.identifier = identifier;
 	}
 
 	@Override
@@ -190,14 +148,8 @@ public class CosmosButtonWithType extends CosmosButtonBase {
 		}
 	}
 	
+	@Override
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (!this.active) {
-			i = 2;
-		} else if (mouseOver) {
-			i = 1;
-		}
-		return i;
+		return !this.active ? 2 : mouseOver ? 1 : 0;
 	}
 }

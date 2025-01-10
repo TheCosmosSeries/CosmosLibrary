@@ -15,32 +15,36 @@ public class ObjectFluidTankCustom {
 	public static final String NBT_FLUID_CAPACITY_KEY = "capacity";
 	public static final String NBT_FLUID_VOLUME_KEY = "volume";
 	
-	private FluidTank fluid_tank;
+	private FluidTank fluidTank;
 	
-	private int fill_level;
+	private int fillLvl;
 	
 	@SuppressWarnings("unused")
 	private ObjectFluidTankCustom() { }
-		
-	public ObjectFluidTankCustom(FluidTank fluid_tank, int fill_level) {
-		this.fluid_tank = fluid_tank;
-		this.fill_level = fill_level;
+	
+	public ObjectFluidTankCustom(int fluidCapacityIn, int fillLevelIn) {
+		this(new FluidTank(fluidCapacityIn), fillLevelIn);
+	}
+	
+	public ObjectFluidTankCustom(FluidTank fluidTankIn, int fillLevelIn) {
+		this.fluidTank = fluidTankIn;
+		this.fillLvl = fillLevelIn;
 	}
 	
 	public FluidTank getFluidTank() {
-		return this.fluid_tank;
+		return this.fluidTank;
 	}
 	
-	public void setFluidTank(FluidTank player_name) {
-		this.fluid_tank = player_name;
+	public void setFluidTank(FluidTank fluidTankIn) {
+		this.fluidTank = fluidTankIn;
 	}
 	
 	public int getFillLevel() {
-		return this.fill_level;
+		return this.fillLvl;
 	}
 	
-	public void setFillLevel(int fill_level) {
-		this.fill_level = fill_level;
+	public void setFillLevel(int fillLevelIn) {
+		this.fillLvl = fillLevelIn;
 	}
 	
 	public static ObjectFluidTankCustom readFromNBT(CompoundTag compound) {
@@ -62,7 +66,7 @@ public class ObjectFluidTankCustom {
 	}
 	
 	public void writeToNBT(CompoundTag compound) {
-		ResourceLocation fluid_name = BuiltInRegistries.FLUID.getKey(this.fluid_tank.getFluid().getFluid());
+		ResourceLocation fluid_name = BuiltInRegistries.FLUID.getKey(this.fluidTank.getFluid().getFluid());
 				
 		CompoundTag fluid = new CompoundTag();
 		

@@ -10,6 +10,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
 import com.tcn.cosmoslibrary.common.util.CosmosUtil;
+import com.tcn.cosmoslibrary.energy.CosmosEnergyUtil;
 import com.tcn.cosmoslibrary.energy.interfaces.ICosmosEnergyItem;
 
 import net.minecraft.core.component.DataComponents;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.EventHooks;
 
+@SuppressWarnings("unused")
 public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 	private int maxEnergyStored;
 	private int maxExtract;
@@ -125,7 +127,7 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 				if (!((double) f < 0.1D)) {
 					List<ItemStack> list = draw(stack, itemstack, playerentity);
                     if (level instanceof ServerLevel serverlevel && !list.isEmpty()) {
-                        this.shoot(serverlevel, playerentity, playerentity.getUsedItemHand(), stack, list, f * this.damage, 1.0F, f == 1.0F, null);
+                        this.shoot(serverlevel, playerentity, playerentity.getUsedItemHand(), stack, list, f * 3.0F, 1.0F, f == 1.0F, null);
 						this.extractEnergy(stack, this.getMaxUse(stack) / 2, false);
                     }
 
@@ -270,37 +272,7 @@ public class CosmosEnergyBowItem extends BowItem implements ICosmosEnergyItem {
 
 	@Override
 	public IEnergyStorage getEnergyCapability(ItemStack stackIn) {
-		return new IEnergyStorage() {
-			@Override
-			public int extractEnergy(int maxExtract, boolean simulate) {
-				return CosmosEnergyBowItem.this.extractEnergy(stackIn, maxExtract, simulate);
-			}
-	
-			@Override
-			public int getEnergyStored() {
-				return CosmosEnergyBowItem.this.getEnergy(stackIn);
-			}
-	
-			@Override
-			public int getMaxEnergyStored() {
-				return CosmosEnergyBowItem.this.getMaxEnergyStored(stackIn);
-			}
-	
-			@Override
-			public int receiveEnergy(int maxReceive, boolean simulate) {
-				return CosmosEnergyBowItem.this.receiveEnergy(stackIn, maxReceive, simulate);
-			}
-	
-			@Override
-			public boolean canReceive() {
-				return CosmosEnergyBowItem.this.canReceiveEnergy(stackIn) && CosmosEnergyBowItem.this.doesExtract(stackIn);
-			}
-	
-			@Override
-			public boolean canExtract() {
-				return CosmosEnergyBowItem.this.canReceiveEnergy(stackIn) && CosmosEnergyBowItem.this.doesCharge(stackIn);
-			}
-		};
+		return CosmosEnergyUtil.getDefault(stackIn, this);
 	}
 
 	@Override

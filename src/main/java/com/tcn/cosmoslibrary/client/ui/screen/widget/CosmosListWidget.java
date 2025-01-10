@@ -58,13 +58,7 @@ public class CosmosListWidget extends AbstractWidget {
 	}
 
 	protected int getHoverState(boolean mouseOver) {
-		int i = 0;
-
-		if (mouseOver) {
-			i = 1;
-		}
-		
-		return i;
+		return mouseOver ? 1 : 0;
 	}
 	
 	public void renderWidget(GuiGraphics graphics, Font font_renderer, int[] screen_coords, int mouseX, int mouseY, int indexIn, int boxMaxY) {
@@ -162,6 +156,7 @@ public class CosmosListWidget extends AbstractWidget {
 		this.yPosition += (this.height + spacing);
 	}
 	
+	@Override
 	public void setPosition(int x, int y) {
 		this.xPosition = x;
 		this.yPosition = y;
@@ -223,12 +218,8 @@ public class CosmosListWidget extends AbstractWidget {
 	}
 
 	@Override
-	protected void renderWidget(GuiGraphics p_282139_, int p_268034_, int p_268009_, float p_268085_) {
-		// TODO Auto-generated method stub
-	}
+	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY_, float ticks) { }
 
 	@Override
-	protected void updateWidgetNarration(NarrationElementOutput p_259858_) {
-		// TODO Auto-generated method stub
-	}
+	protected void updateWidgetNarration(NarrationElementOutput output) { }
 }

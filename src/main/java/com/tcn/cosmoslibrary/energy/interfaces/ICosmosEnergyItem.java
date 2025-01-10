@@ -1,14 +1,14 @@
 package com.tcn.cosmoslibrary.energy.interfaces;
 
+import com.tcn.cosmoslibrary.common.capability.IEnergyCapItem;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 
-public interface ICosmosEnergyItem {
+public interface ICosmosEnergyItem extends IEnergyCapItem {
 
 	int maxEnergyStored = 0;
 	int maxExtract = 0;
@@ -64,6 +64,4 @@ public interface ICosmosEnergyItem {
 	
 	public int receiveEnergy(ItemStack stackIn, int energy, boolean simulate);
 	public int extractEnergy(ItemStack stackIn, int energy, boolean simulate);
-	
-	public IEnergyStorage getEnergyCapability(ItemStack stackIn);
 }

@@ -10,5 +10,4 @@ public class CosmosOptions extends Options {
 	public CosmosOptions(Minecraft minecraft, File file) {
 		super(minecraft, file);
 	}
-
 }
