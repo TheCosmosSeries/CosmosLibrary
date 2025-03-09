@@ -12,22 +12,8 @@ public class SlotEnergyItem extends Slot {
 		super(containerIn, indexIn, xPos, yPos);
 	}
 
-	public boolean isItemValid(ItemStack stackIn) {
-		if (stackIn.getCapability(Capabilities.EnergyStorage.ITEM) instanceof IEnergyStorage) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	
 	@Override
 	public boolean mayPlace(ItemStack stackIn) {
-		if (stackIn.getCapability(Capabilities.EnergyStorage.ITEM) instanceof IEnergyStorage) {
-			return true;
-		}
-		
-		return false;
+		return stackIn.getCapability(Capabilities.EnergyStorage.ITEM) instanceof IEnergyStorage;
 	}
-	
 }

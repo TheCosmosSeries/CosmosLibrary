@@ -8,6 +8,7 @@ import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 
+@Deprecated
 public class CosmosWorldGenHelper {
 	public static List<PlacementModifier> orePlacement(PlacementModifier countModifierIn, PlacementModifier modifierIn) {
 		return List.of(countModifierIn, InSquarePlacement.spread(), modifierIn, BiomeFilter.biome());

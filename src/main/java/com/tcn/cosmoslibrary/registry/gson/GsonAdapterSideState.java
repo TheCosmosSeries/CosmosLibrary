@@ -17,11 +17,7 @@ public class GsonAdapterSideState implements JsonSerializer<EnumSideState>, Json
 
 	@Override
 	public EnumSideState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject object = json.getAsJsonObject();
-		
-		int index = object.get("index").getAsInt();
-		
-		return EnumSideState.getStateFromIndex(index);
+		return EnumSideState.getStateFromIndex(json.getAsJsonObject().get("index").getAsInt());
 	}
 
 	@Override

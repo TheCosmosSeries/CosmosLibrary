@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.tcn.cosmoslibrary.client.renderer.item.CosmosShieldBEWLR;
+import com.tcn.cosmoslibrary.client.renderer.item.CosmosShieldItemBEWLR;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper.Value;
@@ -96,7 +96,7 @@ public class CosmosEnergyShieldItem extends ShieldItem implements ICosmosEnergyI
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return new CosmosShieldBEWLR(CosmosEnergyShieldItem.this.normal, CosmosEnergyShieldItem.this.noPattern);
+				return new CosmosShieldItemBEWLR(CosmosEnergyShieldItem.this.normal, CosmosEnergyShieldItem.this.noPattern);
 			}
 		});
 	}

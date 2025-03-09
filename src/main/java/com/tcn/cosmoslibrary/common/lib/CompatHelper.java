@@ -27,7 +27,6 @@ public class CompatHelper {
 		
 		ItemStack stack = new ItemStack(block);
 		
-		
 		if (tile != null) {
 			tile.saveToItem(stack, provider);
 		}

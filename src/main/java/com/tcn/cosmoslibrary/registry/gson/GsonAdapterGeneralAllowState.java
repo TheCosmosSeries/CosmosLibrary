@@ -17,11 +17,7 @@ public class GsonAdapterGeneralAllowState implements JsonSerializer<EnumGeneralA
 
 	@Override
 	public EnumGeneralAllowState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject object = json.getAsJsonObject();
-		
-		int index = object.get("index").getAsInt();
-		
-		return EnumGeneralAllowState.getStateFromIndex(index);
+		return EnumGeneralAllowState.getStateFromIndex(json.getAsJsonObject().get("index").getAsInt());
 	}
 
 	@Override

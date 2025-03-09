@@ -5,22 +5,20 @@ import net.minecraft.world.item.ItemStack;
 
 public class CosmosItem extends Item {
 	
-	public boolean has_effect;
+	public boolean isFoil;
 	
 	public CosmosItem(Item.Properties properties){
-		super(properties);
-		
-		this.has_effect = false;
+		this(properties, false);
 	}
 	
-	public CosmosItem(Item.Properties properties, boolean has_effect){
+	public CosmosItem(Item.Properties properties, boolean isFoilIn){
 		super(properties);
 		
-		this.has_effect = has_effect;
+		this.isFoil = isFoilIn;
 	}
 	
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		return this.has_effect;
+		return this.isFoil;
 	}
 }

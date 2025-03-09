@@ -89,13 +89,12 @@ public class CosmosChunkPos extends CosmosVec2 {
 		return asLong(this.x, this.z);
 	}
 
-	public static long asLong(int p_45590_, int p_45591_) {
-		return (long) p_45590_ & 4294967295L | ((long) p_45591_ & 4294967295L) << 32;
+	public static long asLong(int x, int z) {
+		return (long) x & 4294967295L | ((long) z & 4294967295L) << 32;
 	}
 
-	public static long asLong(BlockPos p_151389_) {
-		return asLong(SectionPos.blockToSectionCoord(p_151389_.getX()),
-				SectionPos.blockToSectionCoord(p_151389_.getZ()));
+	public static long asLong(BlockPos posIn) {
+		return asLong(SectionPos.blockToSectionCoord(posIn.getX()), SectionPos.blockToSectionCoord(posIn.getZ()));
 	}
 
 	public static long atSectionBottomY(long packedPos) {
@@ -202,8 +201,7 @@ public class CosmosChunkPos extends CosmosVec2 {
 		return new CosmosChunkPos.Mutable(this.getX(), this.getZ());
 	}
 
-	public static Iterable<CosmosChunkPos> getRandomPositions(Random rand, int amount, int minX, int minZ, int maxX,
-			int maxZ) {
+	public static Iterable<CosmosChunkPos> getRandomPositions(Random rand, int amount, int minX, int minZ, int maxX, int maxZ) {
 		int i = maxX - minX + 1;
 		int k = maxZ - minZ + 1;
 		return () -> {

@@ -44,20 +44,14 @@ public class CosmosLayerElytra<T extends LivingEntity, M extends EntityModel<T>>
 	public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		ItemStack stackIn = entityLivingBaseIn.getItemBySlot(EquipmentSlot.CHEST);
 		
-		if (shouldRender(stackIn, entityLivingBaseIn)) {
+		if (this.shouldRender(stackIn, entityLivingBaseIn)) {
 			ResourceLocation resourcelocation;
 			
 			if (entityLivingBaseIn instanceof AbstractClientPlayer abstractclientplayer) {
 				PlayerSkin playerskin = abstractclientplayer.getSkin();
-				
-				//Removed cape texture override -> very da stupid
-				if (playerskin.elytraTexture() != null) {
-					resourcelocation = playerskin.elytraTexture();
-				} else {
-					resourcelocation = getElytraTexture(stackIn, entityLivingBaseIn);
-				}
+				resourcelocation = playerskin.elytraTexture() != null ? playerskin.elytraTexture() : this.getElytraTexture(stackIn, entityLivingBaseIn);
 			} else {
-				resourcelocation = getElytraTexture(stackIn, entityLivingBaseIn);
+				resourcelocation = this.getElytraTexture(stackIn, entityLivingBaseIn);
 			}
 			
 			int colour = ComponentColour.LIGHT_GRAY.decOpaque();
@@ -70,7 +64,6 @@ public class CosmosLayerElytra<T extends LivingEntity, M extends EntityModel<T>>
 					
 					if (nbtData.contains("wing_colour")) {
 						int wingColour = nbtData.getInt("wing_colour");
-						
 						colour = FastColor.ARGB32.opaque(wingColour);
 					}
 				}
@@ -82,7 +75,6 @@ public class CosmosLayerElytra<T extends LivingEntity, M extends EntityModel<T>>
 			this.elytraModel.setupAnim(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(resourcelocation), stackIn.hasFoil());
 			this.elytraModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
-			
 			matrixStackIn.popPose();
 		}
 	}

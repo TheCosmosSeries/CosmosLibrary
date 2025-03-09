@@ -8,30 +8,24 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotColourItem extends Slot {
 
-	public Item item;
-	public int limit;
+	public Item overrideItem;
+	private int stackSize;
 
-	public SlotColourItem(Container containerIn, int indexIn, int xPos, int yPos, Item itemIn, int stackLimitIn) {
+	public SlotColourItem(Container containerIn, int indexIn, int xPos, int yPos, Item overrideItemIn, int stackSizeIn) {
 		super(containerIn, indexIn, xPos, yPos);
-		this.item = itemIn;
-		this.limit = stackLimitIn;
+		this.overrideItem = overrideItemIn;
+		this.stackSize = stackSizeIn;
 	}
 
 	@Override
 	public boolean mayPlace(ItemStack stackIn) {
 		if (stackIn != null) {
-			Item item = stackIn.getItem();
-			
-			if (item != null) {
-				DyeColor dyeColour = DyeColor.getColor(stackIn);
-				
-				if (dyeColour != null) {
-					return true;
-				} else if (item == this.item) {
-					return true;
-				} else {
-					return false;
-				}
+			if (DyeColor.getColor(stackIn) != null) {
+				return true;
+			} else if (stackIn.getItem().equals(this.overrideItem)) {
+				return true;
+			} else {
+				return false;
 			}
 		}
 		return false;
@@ -39,6 +33,6 @@ public class SlotColourItem extends Slot {
 
 	@Override
 	public int getMaxStackSize() {
-		return this.limit;
+		return this.stackSize;
 	}
 }

@@ -7,26 +7,22 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotSpecifiedItem extends Slot {
 
-	public Item item;
-	public int stackLimit;
+	public Item specifiedItem;
+	public int stackSize;
 
-	public SlotSpecifiedItem(Container containerIn, int indexIn, int xPos, int yPos, Item itemIn, int stackLimitIn) {
+	public SlotSpecifiedItem(Container containerIn, int indexIn, int xPos, int yPos, Item specifiedItemIn, int stackSizeIn) {
 		super(containerIn, indexIn, xPos, yPos);
-		this.item = itemIn;
-		this.stackLimit = stackLimitIn;
+		this.specifiedItem = specifiedItemIn;
+		this.stackSize = stackSizeIn;
 	}
 
 	@Override
 	public boolean mayPlace(ItemStack stackIn) {
-		if (stackIn != null) {
-			Item item = stackIn.getItem();
-			return (item != null) && (item == this.item);
-		}
-		return false;
+		return stackIn != null ? stackIn.getItem().equals(this.specifiedItem) : false;
 	}
 
 	@Override
 	public int getMaxStackSize() {
-		return this.stackLimit;
+		return this.stackSize;
 	}
 }

@@ -34,7 +34,7 @@ public class CosmosItemInfo extends Item {
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, context, tooltip, flagIn);
 		
-		if (!shift_desc_one.isEmpty() && !shift_desc_two.isEmpty()) {
+		if (!this.shift_desc_one.isEmpty() && !this.shift_desc_two.isEmpty()) {
 			if (!ComponentHelper.isShiftKeyDown(Minecraft.getInstance())) {
 				tooltip.add(ComponentHelper.getTooltipInfo(this.info));
 				
@@ -42,8 +42,8 @@ public class CosmosItemInfo extends Item {
 					tooltip.add(ComponentHelper.shiftForMoreDetails());
 				}
 			} else {
-				tooltip.add(ComponentHelper.getTooltipOne(shift_desc_one));
-				tooltip.add(ComponentHelper.getTooltipTwo(shift_desc_two));
+				tooltip.add(ComponentHelper.getTooltipOne(this.shift_desc_one));
+				tooltip.add(ComponentHelper.getTooltipTwo(this.shift_desc_two));
 				
 				tooltip.add(ComponentHelper.shiftForLessDetails());
 			}

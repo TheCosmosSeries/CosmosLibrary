@@ -3,7 +3,6 @@ package com.tcn.cosmoslibrary.core.teleport;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
 @SuppressWarnings("deprecation")
 public enum EnumSafeTeleport {
@@ -63,29 +62,23 @@ public enum EnumSafeTeleport {
 	public final int offsetZ;
 
 	private EnumSafeTeleport(int x, int y, int z) {
-		offsetX = x;
-		offsetY = y;
-		offsetZ = z;
-	}
-	
-	private static boolean isAir(Level levelIn, BlockPos posIn) {
-		BlockState state = levelIn.getBlockState(posIn);
-		
-		return state.isAir();
-	}
-	
-	private static boolean isLiquid(Level levelIn, BlockPos posIn) {
-		BlockState state = levelIn.getBlockState(posIn);
-		
-		return state.liquid();
+		this.offsetX = x;
+		this.offsetY = y;
+		this.offsetZ = z;
 	}
 
 	private static boolean isAirOrLiquid(Level levelIn, BlockPos posIn) {
-		BlockState state = levelIn.getBlockState(posIn);
-		
-		return state.isAir() || state.liquid();
+		return isAir(levelIn, posIn) || isLiquid(levelIn, posIn);
 	}
 	
+	private static boolean isAir(Level levelIn, BlockPos posIn) {
+		return levelIn.getBlockState(posIn).isAir();
+	}
+	
+	private static boolean isLiquid(Level levelIn, BlockPos posIn) {
+		return levelIn.getBlockState(posIn).liquid();
+	}
+
 	public static EnumSafeTeleport getValidTeleportLocation(Level levelIn, BlockPos posIn) {
 		for (EnumSafeTeleport direction : VALID_DIRECTIONS) {
 			BlockPos testPos = new BlockPos(posIn.getX() + direction.offsetX, posIn.getY() + direction.offsetY, posIn.getZ() + direction.offsetZ);
@@ -117,6 +110,6 @@ public enum EnumSafeTeleport {
 	}
 
 	public BlockPos toBlockPos() {
-		return new BlockPos(offsetX, offsetY, offsetZ);
+		return new BlockPos(this.offsetX, this.offsetY, this.offsetZ);
 	}
 }

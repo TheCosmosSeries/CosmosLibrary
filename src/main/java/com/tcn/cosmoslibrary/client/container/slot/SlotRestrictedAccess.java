@@ -11,11 +11,12 @@ public class SlotRestrictedAccess extends Slot {
 	public boolean mayPlace;
 	public boolean mayPickup;
 
+	public SlotRestrictedAccess(Container containerIn, int indexIn, int xPos, int yPos, boolean mayPlace) {
+		this(containerIn, indexIn, xPos, yPos, 64, mayPlace, true);
+	}
+	
 	public SlotRestrictedAccess(Container containerIn, int indexIn, int xPos, int yPos, boolean mayPlace, boolean mayPickup) {
-		super(containerIn, indexIn, xPos, yPos);
-		this.stackSize = 64;
-		this.mayPlace = mayPlace;
-		this.mayPickup = mayPickup;
+		this(containerIn, indexIn, xPos, yPos, 64, mayPlace, mayPickup);
 	}
 	
 	public SlotRestrictedAccess(Container containerIn, int indexIn, int xPos, int yPos, int stackSizeIn, boolean mayPlace, boolean mayPickup) {

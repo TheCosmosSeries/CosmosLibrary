@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+@Deprecated(forRemoval = true, since = "10.7.0.0")
 public abstract class ACosmosBlockEntity extends BlockEntity {
 
     public ACosmosBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos posIn, BlockState stateIn) {

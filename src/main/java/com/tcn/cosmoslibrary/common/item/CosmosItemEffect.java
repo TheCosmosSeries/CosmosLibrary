@@ -10,7 +10,7 @@ public class CosmosItemEffect extends CosmosItem {
 	}
 	
 	@Override
-	public boolean isFoil(ItemStack itemStack) {
+	public boolean isFoil(ItemStack stackIn) {
 		return true;	
 	}
 }

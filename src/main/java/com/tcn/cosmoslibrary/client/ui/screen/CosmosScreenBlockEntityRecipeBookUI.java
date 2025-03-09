@@ -19,9 +19,9 @@ import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUILockable;
 import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUIMode;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
-import com.tcn.cosmoslibrary.runtime.network.PacketUIHelp;
-import com.tcn.cosmoslibrary.runtime.network.PacketUILock;
-import com.tcn.cosmoslibrary.runtime.network.PacketUIMode;
+import com.tcn.cosmoslibrary.runtime.network.packet.PacketUIHelp;
+import com.tcn.cosmoslibrary.runtime.network.packet.PacketUILock;
+import com.tcn.cosmoslibrary.runtime.network.packet.PacketUIMode;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -454,7 +454,7 @@ public class CosmosScreenBlockEntityRecipeBookUI<A extends RecipeInput, B extend
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		for (GuiEventListener list : this.children()) {
 			if (list instanceof CosmosButtonBase button) {
-				if (button.isMouseOver(mouseX, mouseY) && button.isActive() && button.visible) {
+				if (button.isMouseOver(mouseX, mouseY) && button.isActive() && button.isVisible()) {
 					if (mouseButton == 1) {
 						button.onClick(false);
 					} else if (mouseButton == 0) {

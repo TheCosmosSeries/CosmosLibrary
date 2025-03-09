@@ -17,11 +17,7 @@ public class GsonAdapterTrapState implements JsonSerializer<EnumTrapState>, Json
 
 	@Override
 	public EnumTrapState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject object = json.getAsJsonObject();
-		
-		int index = object.get("index").getAsInt();
-		
-		return EnumTrapState.getStateFromIndex(index);
+		return EnumTrapState.getStateFromIndex(json.getAsJsonObject().get("index").getAsInt());
 	}
 
 	@Override

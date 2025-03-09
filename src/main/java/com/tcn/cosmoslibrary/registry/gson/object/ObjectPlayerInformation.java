@@ -48,10 +48,7 @@ public class ObjectPlayerInformation {
 		if (compound.contains(key)) {
 			CompoundTag nbt = compound.getCompound(key);
 			
-			String name = nbt.getString(NBT_PLAYER_NAME_KEY);
-			UUID id = nbt.getUUID(NBT_PLAYER_UUID_KEY);
-			
-			return new ObjectPlayerInformation(name, id);
+			return new ObjectPlayerInformation(nbt.getString(NBT_PLAYER_NAME_KEY), nbt.getUUID(NBT_PLAYER_UUID_KEY));
 		}
 		
 		return null;
@@ -67,10 +64,7 @@ public class ObjectPlayerInformation {
 	}
 	
 	public static ObjectPlayerInformation readFromNBT(CompoundTag compound) {
-		String name = compound.getString(NBT_PLAYER_NAME_KEY);
-		UUID id = compound.getUUID(NBT_PLAYER_UUID_KEY);
-		
-		return new ObjectPlayerInformation(name, id);
+		return new ObjectPlayerInformation(compound.getString(NBT_PLAYER_NAME_KEY), compound.getUUID(NBT_PLAYER_UUID_KEY));
 	}
 	
 	public void writeToNBT(CompoundTag compound) {

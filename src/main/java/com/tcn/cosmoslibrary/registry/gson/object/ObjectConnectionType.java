@@ -42,13 +42,7 @@ public class ObjectConnectionType {
 		int y = block_pos.getInt(CosmosNBTHelper.Const.NBT_POS_Y_KEY);
 		int z = block_pos.getInt(CosmosNBTHelper.Const.NBT_POS_Z_KEY);
 
-		BlockPos pos = new BlockPos(x, y, z);
-		
-		String s = compound.getString(NBT_TYPE_KEY);
-		
-		EnumConnectionType type = EnumConnectionType.getStateFromName(s);
-		
-		return new ObjectConnectionType(pos, type);
+		return new ObjectConnectionType(new BlockPos(x, y, z), EnumConnectionType.getStateFromName(compound.getString(NBT_TYPE_KEY)));
 	}
 	
 	public void writeToNBT(CompoundTag compound) {

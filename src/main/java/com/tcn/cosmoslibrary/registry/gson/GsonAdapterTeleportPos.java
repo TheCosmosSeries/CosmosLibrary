@@ -23,16 +23,11 @@ public class GsonAdapterTeleportPos implements JsonSerializer<ObjectDestinationI
 		JsonObject object = json.getAsJsonObject();
 		JsonObject block_pos = object.getAsJsonObject(Const.NBT_POS_KEY);
 		
-		float yaw = object.get(Const.NBT_POS_YAW_KEY).getAsFloat();
-		float pitch = object.get(Const.NBT_POS_PITCH_KEY).getAsFloat();
-		
 		int x = block_pos.get(Const.NBT_POS_X_KEY).getAsInt();
 		int y = block_pos.get(Const.NBT_POS_Y_KEY).getAsInt();
 		int z = block_pos.get(Const.NBT_POS_Z_KEY).getAsInt();
 		
-		BlockPos pos = new BlockPos(x, y, z);
-		
-		return new ObjectDestinationInfo(pos, yaw, pitch);
+		return new ObjectDestinationInfo(new BlockPos(x, y, z), object.get(Const.NBT_POS_YAW_KEY).getAsFloat(), object.get(Const.NBT_POS_PITCH_KEY).getAsFloat());
 	}
 
 	@Override

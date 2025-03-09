@@ -1,7 +1,5 @@
 package com.tcn.cosmoslibrary.common.lib;
 
-import java.util.List;
-
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -15,7 +13,6 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -66,8 +63,7 @@ public final class ComponentHelper {
 	}
 	
 	public static int getSplitStringHeight(Font fontRenderer, FormattedText input, int width) {
-		List<FormattedCharSequence> stringRows = fontRenderer.split(input, width);
-		return stringRows.size() * fontRenderer.lineHeight;
+		return fontRenderer.split(input, width).size() * fontRenderer.lineHeight;
 	}
 	
 	@OnlyIn(Dist.CLIENT)

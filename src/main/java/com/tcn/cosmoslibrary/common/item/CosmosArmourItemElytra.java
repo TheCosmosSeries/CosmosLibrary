@@ -16,21 +16,17 @@ public class CosmosArmourItemElytra extends CosmosArmourItemColourable {
 	}
 
 	public boolean isFlyEnabled(ItemStack stackIn) {
-		if (this.damageable) {
-			return stackIn.getDamageValue() < stackIn.getMaxDamage() - 1;
-		}
-
-		return true;
+		return this.damageable ? stackIn.getDamageValue() < stackIn.getMaxDamage() - 1 : true;
 	}
 	
 	@Override
 	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
-		return isFlyEnabled(stack);
+		return this.isFlyEnabled(stack);
 	}
 
 	@Override
 	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-		if (damageable) {
+		if (this.damageable) {
 			if (!entity.level().isClientSide() && (flightTicks + 1) % 20 == 0) {
 				stack.hurtAndBreak(1, entity, EquipmentSlot.CHEST);
 			}
@@ -38,5 +34,4 @@ public class CosmosArmourItemElytra extends CosmosArmourItemColourable {
 		}
 		return true;
 	}
-	
 }

@@ -31,12 +31,7 @@ public class GsonAdapterConnectionType implements JsonSerializer<ObjectConnectio
 		int y = block_pos.get(Const.NBT_POS_Y_KEY).getAsInt();
 		int z = block_pos.get(Const.NBT_POS_Z_KEY).getAsInt();
 		
-		BlockPos pos = new BlockPos(x, y, z);
-		String name = object.get(NBT_TYPE_KEY).getAsString();
-		
-		EnumConnectionType type = EnumConnectionType.getStateFromName(name);
-		
-		return new ObjectConnectionType(pos, type);
+		return new ObjectConnectionType(new BlockPos(x, y, z), EnumConnectionType.getStateFromName(object.get(NBT_TYPE_KEY).getAsString()));
 	}
 
 	@Override

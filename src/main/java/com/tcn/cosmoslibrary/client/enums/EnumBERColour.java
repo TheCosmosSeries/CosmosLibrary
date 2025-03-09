@@ -78,10 +78,6 @@ public enum EnumBERColour {
 	}
 	
 	public static EnumBERColour fromIndex(int indexIn) {
-		if (indexIn < 0 || indexIn >= VALUES.length) {
-			indexIn = 0;
-		}
-		
-		return VALUES[indexIn];
+		return indexIn < 0 || indexIn >= VALUES.length ? VALUES[0] : VALUES[indexIn];
 	}
 }

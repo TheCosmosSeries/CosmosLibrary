@@ -5,6 +5,7 @@ import com.tcn.cosmoslibrary.common.capability.IEnergyCapItem;
 import com.tcn.cosmoslibrary.common.capability.IFluidCapBE;
 import com.tcn.cosmoslibrary.common.capability.IFluidCapItem;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.LayeredDraw;
@@ -29,6 +30,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -39,8 +41,8 @@ public class CosmosRuntime {
 
 	@OnlyIn(Dist.CLIENT)
 	public class Client {
-		@Deprecated
 		@OnlyIn(Dist.CLIENT)
+		@Deprecated
 		public static void setRenderLayers(RenderType renderType, Block... blocks) {
 			for (Block block : blocks) {
 				ItemBlockRenderTypes.setRenderLayer(block, renderType);
@@ -98,16 +100,6 @@ public class CosmosRuntime {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public static IClientItemExtensions getItemRendererExtension(BlockEntityWithoutLevelRenderer renderer) {
-			return new IClientItemExtensions() {
-				@Override
-				public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-					return renderer;
-				}
-			};
-		}
-
-		@OnlyIn(Dist.CLIENT)
 		public static void registerBEWLRToItems(RegisterClientExtensionsEvent event, BlockEntityWithoutLevelRenderer renderer, Item... items) {
 			for (Item item : items) {
 				registerBEWLRToItem(event, renderer, item);
@@ -119,9 +111,20 @@ public class CosmosRuntime {
 			event.registerItem(getItemRendererExtension(renderer), item);
 		}
 		
-
-		@SafeVarargs
 		@OnlyIn(Dist.CLIENT)
+		public static IClientItemExtensions getItemRendererExtension(BlockEntityWithoutLevelRenderer renderer) {
+			return new IClientItemExtensions() {
+				@Override
+				public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+					return renderer;
+				}
+			};
+		}
+		
+		
+		
+		@OnlyIn(Dist.CLIENT)
+		@SafeVarargs
 		public static <T extends BlockEntity> void registerBERenderers(EntityRenderersEvent.RegisterRenderers event, BlockEntityRendererProvider<T> provider, BlockEntityType<? extends T>... types) {
 			for (BlockEntityType<? extends T> type : types) {
 				registerBERenderer(event, provider, type);
@@ -134,18 +137,30 @@ public class CosmosRuntime {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public static void regiserCameraOverlay(RegisterGuiLayersEvent event, String id, LayeredDraw.Layer layer) {
-			registerOverlay(event, VanillaGuiLayers.CAMERA_OVERLAYS, id, layer);
+		public static void regiserCameraOverlay(RegisterGuiLayersEvent event, String modId, String id, LayeredDraw.Layer layer) {
+			registerOverlay(event, VanillaGuiLayers.CAMERA_OVERLAYS, modId, id, layer);
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public static void registerOverlay(RegisterGuiLayersEvent event, ResourceLocation guiLayer, String id, LayeredDraw.Layer layer) {
-			event.registerAbove(guiLayer, ResourceLocation.parse(id), layer);
+		public static void regiserHotbarOverlay(RegisterGuiLayersEvent event, String modId, String id, LayeredDraw.Layer layer) {
+			registerOverlay(event, VanillaGuiLayers.HOTBAR, modId, id, layer);
+		}
+
+		@OnlyIn(Dist.CLIENT)
+		public static void registerOverlay(RegisterGuiLayersEvent event, ResourceLocation guiLayer, String modId, String id, LayeredDraw.Layer layer) {
+			event.registerAbove(guiLayer, ResourceLocation.fromNamespaceAndPath(modId, id), layer);
 		}
 
 		@OnlyIn(Dist.CLIENT)
 		public static void regiserConfigScreen(ModContainer container, IConfigScreenFactory extension) {
 			container.registerExtensionPoint(IConfigScreenFactory.class, extension);
+		}
+		
+		@OnlyIn(Dist.CLIENT)
+		public static void registerKeyMappings(RegisterKeyMappingsEvent event, KeyMapping... mappings) {
+			for (KeyMapping mapping : mappings) {
+				event.register(mapping);
+			}
 		}
 	}
 

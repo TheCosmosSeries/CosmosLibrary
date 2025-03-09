@@ -17,11 +17,7 @@ public class GsonAdapterEnergyState implements JsonSerializer<EnumEnergyState>, 
 
 	@Override
 	public EnumEnergyState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject object = json.getAsJsonObject();
-		
-		int index = object.get("index").getAsInt();
-		
-		return EnumEnergyState.getStateFromIndex(index);
+		return EnumEnergyState.getStateFromIndex(json.getAsJsonObject().get("index").getAsInt());
 	}
 
 	@Override

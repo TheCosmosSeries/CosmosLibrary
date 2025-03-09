@@ -22,18 +22,19 @@ public class SlotArmourItem extends Slot {
 		this.slotIndex = slotIndexIn;
 	}
 
+	@Override
 	public int getMaxStackSize() {
 		return 1;
 	}
 
+	@Override
 	public boolean mayPlace(ItemStack stackIn) {
 		return stackIn.canEquip(this.SLOT_IDS[this.slotIndex], this.player);
 	}
 
+	@Override
 	public boolean mayPickup(Player playerIn) {
 		ItemStack itemstack = this.getItem();
-		
-		
 		return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE) ? false : super.mayPickup(playerIn);
 	}
 }

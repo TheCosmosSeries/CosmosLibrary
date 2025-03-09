@@ -17,11 +17,7 @@ public class GsonAdapterLockState implements JsonSerializer<EnumLockState>, Json
 
 	@Override
 	public EnumLockState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject object = json.getAsJsonObject();
-		
-		int index = object.get("index").getAsInt();
-		
-		return EnumLockState.getStateFromIndex(index);
+		return EnumLockState.getStateFromIndex(json.getAsJsonObject().get("index").getAsInt());
 	}
 
 	@Override

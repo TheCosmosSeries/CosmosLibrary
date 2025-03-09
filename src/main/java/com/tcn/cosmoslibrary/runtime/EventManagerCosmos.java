@@ -23,10 +23,8 @@ public class EventManagerCosmos {
 		Player player = (Player) event.getEntity();
 		ItemStack stack = player.getUseItem();
 		
-		if (damage > 0.0F && !stack.isEmpty() && stack.getItem() instanceof CosmosEnergyShieldItem && player.isUsingItem()) {
-			CosmosEnergyShieldItem shieldItem = (CosmosEnergyShieldItem) stack.getItem();
-			
-			shieldItem.damageItem(stack, 0, player, (playerX) -> {  });
+		if (damage > 0.0F && !stack.isEmpty() && stack.getItem() instanceof CosmosEnergyShieldItem shieldItem && player.isUsingItem()) {
+			shieldItem.damageItem(stack, 0, player, (playerX) -> {  /* Do 0 damage to shield item. */ });
 		}
 	}
 }

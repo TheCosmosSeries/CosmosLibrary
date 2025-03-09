@@ -18,32 +18,26 @@ import net.minecraft.world.level.Level;
 public abstract class CosmosContainerRecipeBookBlockEntity<J extends RecipeInput, R extends Recipe<J>> extends RecipeBookMenu<J, R> {
 
 	protected final ContainerLevelAccess access;
-	protected final Player player;
 
-	private final Level world;
 	private final BlockPos pos;
+	private final Level level;
+	protected final Player player;
 
 	protected CosmosContainerRecipeBookBlockEntity(MenuType<?> menuTypeIn, int indexIn, Inventory playerInventoryIn, @Nullable ContainerLevelAccess accessIn, BlockPos posIn) {
 		super(menuTypeIn, indexIn);
-		
-		this.pos = posIn;
-		this.world = playerInventoryIn.player.level();
-		
+
 		this.access = accessIn;
+		this.pos = posIn;
+		this.level = playerInventoryIn.player.level();
 		this.player = playerInventoryIn.player;
 	}
 
-	@Override
-	public boolean stillValid(Player playerIn) {
-		return false;
+	public BlockPos getBlockPos() {
+		return this.pos;
 	}
 
 	public Level getLevel() {
-		return world;
-	}
-
-	public BlockPos getBlockPos() {
-		return pos;
+		return this.level;
 	}
 
 	public Player getPlayer() {
@@ -51,13 +45,13 @@ public abstract class CosmosContainerRecipeBookBlockEntity<J extends RecipeInput
 	}
 	
 	@Override
-	public void fillCraftSlotsStackedContents(StackedContents p_40117_) { }
+	public void fillCraftSlotsStackedContents(StackedContents contents) { }
 
 	@Override
 	public void clearCraftingContent() { }
 
 	@Override
-	public boolean recipeMatches(RecipeHolder<R> p_40118_) {
+	public boolean recipeMatches(RecipeHolder<R> recipe) {
 		return false;
 	}
 
@@ -87,7 +81,7 @@ public abstract class CosmosContainerRecipeBookBlockEntity<J extends RecipeInput
 	}
 
 	@Override
-	public boolean shouldMoveToInventory(int p_150635_) {
+	public boolean shouldMoveToInventory(int index) {
 		return false;
 	}
 }

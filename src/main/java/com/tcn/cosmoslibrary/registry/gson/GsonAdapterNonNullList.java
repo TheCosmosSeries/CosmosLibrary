@@ -21,18 +21,15 @@ public class GsonAdapterNonNullList implements JsonSerializer<NonNullList<ItemSt
 
 	@Override
 	public NonNullList<ItemStack> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonPrimitive object = json.getAsJsonPrimitive();
-		String string = object.getAsString();
 		CompoundTag compoundOut = new CompoundTag();
 		
 		try {
-			compoundOut = TagParser.parseTag(string);
+			compoundOut = TagParser.parseTag(json.getAsJsonPrimitive().getAsString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		int size = compoundOut.getInt("size");
-		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
+		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(compoundOut.getInt("size"), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(compoundOut, list, ServerLifecycleHooks.getCurrentServer().registryAccess());
 		
 		return list;
@@ -44,9 +41,7 @@ public class GsonAdapterNonNullList implements JsonSerializer<NonNullList<ItemSt
 		ContainerHelper.saveAllItems(compound, src, ServerLifecycleHooks.getCurrentServer().registryAccess());
 		compound.putInt("size", src.size());
 		
-		String nbt_string = compound.toString();
-		
-		return new JsonPrimitive(nbt_string);
+		return new JsonPrimitive(compound.toString());
 	}
 
 }

@@ -27,19 +27,19 @@ public class CosmosConsoleManager {
 		DEBUG_WARNING(5, "debug_warning", "DEBUG_WARN", "Debug Warning", " [DEBUG WARN] ", Level.WARN);
 		
 		private int index;
-		private String simple_name;
-		private String cap_name;
-		private String display_name;
-		private String console_name;
-		private Level log_level;
+		private String simpleName;
+		private String capName;
+		private String displayName;
+		private String consoleName;
+		private Level logLevel;
 		
 		private LEVEL(int indexIn, String simpleNameIn, String capNameIn, String displayNameIn, String consoleNameIn, Level levelIn) {
 			this.index = indexIn;
-			this.simple_name = simpleNameIn;
-			this.cap_name = capNameIn;
-			this.display_name = displayNameIn;
-			this.console_name = consoleNameIn;
-			this.log_level = levelIn;
+			this.simpleName = simpleNameIn;
+			this.capName = capNameIn;
+			this.displayName = displayNameIn;
+			this.consoleName = consoleNameIn;
+			this.logLevel = levelIn;
 		}
 		
 		public int getIndex() {
@@ -47,38 +47,40 @@ public class CosmosConsoleManager {
 		}
 		
 		public String getSimpleName() {
-			return this.simple_name;
+			return this.simpleName;
 		}
 		
 		public String getCapName() {
-			return this.cap_name;
+			return this.capName;
 		}
 		
 		public String getDisplayName() {
-			return this.display_name;
+			return this.displayName;
 		}
 		
 		public String getConsoleName() {
-			return this.console_name;
+			return this.consoleName;
 		}
 		
 		public Level getLevel() {
-			return this.log_level;
+			return this.logLevel;
 		}
 	}
 
-	private Logger LOGGER;
-	private String MOD_ID;
+	private String modId;
 	private boolean debugEnabled;
 	private boolean infoEnabled;
 
 	public CosmosConsoleManager(String modId) {
-		this(modId, true, true);
+		this(modId, true);
+	}
+	
+	public CosmosConsoleManager(String modId, boolean enabledIn) {
+		this(modId, enabledIn, enabledIn);
 	}
 	
 	public CosmosConsoleManager(String modId, boolean debugEnabledIn, boolean infoEnabledIn) {
-		this.LOGGER = LogManager.getLogger();
-		this.MOD_ID = modId;
+		this.modId = modId;
 		this.debugEnabled = debugEnabledIn;
 		this.infoEnabled = infoEnabledIn;
 	}
@@ -92,63 +94,63 @@ public class CosmosConsoleManager {
 	}
 	
 	public void print(Object object) {
-		this.messageString(LEVEL.PRINT, object);
+		this.printObjectString(LEVEL.PRINT, object);
 	}
 	
 	public void info(Object object) {
-		this.messageString(LEVEL.INFO, object);
+		this.printObjectString(LEVEL.INFO, object);
 	}
 
 	public void debug(Object object) {
-		this.messageString(LEVEL.DEBUG, object);
+		this.printObjectString(LEVEL.DEBUG, object);
 	}
 
 	public void debugWarn(Object object) {
-		this.messageString(LEVEL.DEBUG_WARNING, object);
+		this.printObjectString(LEVEL.DEBUG_WARNING, object);
 	}
 
 	public void startup(Object object) {
-		this.messageString(LEVEL.STARTUP, object);
+		this.printObjectString(LEVEL.STARTUP, object);
 	}
 
 	public void shutdown(Object object) {
-		this.messageString(LEVEL.SHUTDOWN, object);
+		this.printObjectString(LEVEL.SHUTDOWN, object);
 	}
 
 	public void warning(Object object) {
-		this.messageString(LEVEL.WARNING, object);
+		this.warning(object, null);
 	}
 
 	public void warning(Object object, Throwable e) {
-		this.messageString(LEVEL.WARNING, object, e);
+		this.printObjectString(LEVEL.WARNING, object, e);
 	}
 
 	public void fatal(Object object) {
-		this.messageString(LEVEL.FATAL, object);
+		this.fatal(object, null);
 	}
 
 	public void fatal(Object object, Throwable e) {
-		this.messageString(LEVEL.FATAL, object, e);
-	}
-	
-	private void messageString(LEVEL level, Object object) {
-		this.message(level, object.toString());
+		this.printObjectString(LEVEL.FATAL, object, e);
 	}
 
-	private void messageString(LEVEL level, Object object, Throwable e) {
-		this.message(level, object.toString(), e);
+	private void printString(LEVEL level, String message) {
+		this.printRaw(level, message, null);
 	}
 	
-	private void message(LEVEL level, String message) {
-		this.message(level, message, null);
+	private void printObjectString(LEVEL level, Object object) {
+		this.printRaw(level, object.toString(), null);
 	}
 
-	public void message(LEVEL level, Object object, Throwable t) {
+	private void printObjectString(LEVEL level, Object object, Throwable e) {
+		this.printRaw(level, object.toString(), e);
+	}
+	
+	public void printRaw(LEVEL level, Object object, Throwable t) {
 		if (!this.debugEnabled && level.equals(LEVEL.DEBUG) || !this.infoEnabled && level.equals(LEVEL.INFO)) {
 			return;
 		}
 		
-		System.out.println("[" + CosmosUtil.getTimeHMS() + "] [Cosmos Thread/" + level.getCapName() + "] [" + this.MOD_ID + "] [" + this.getSimpleCallerCallerClassName() + "] [" + this.getSimpleCallerClassName() + "]: " + object);
+		System.out.println("[" + CosmosUtil.getTimeHMS() + "] [cosmos-thread/" + level.getCapName() + "] [" + this.modId + "] [" + this.getSimpleCallerCallerClassName() + "] [" + this.getSimpleCallerClassName() + "]: " + object);
 		
 		if (t != null) {
 			t.printStackTrace();
@@ -157,7 +159,7 @@ public class CosmosConsoleManager {
 	
 	/**
 	 * Gets the current time.
-	 * @return The current time in the format: [YYYY-MM-DD | HH-MM-SS]
+	 * @return The current time in the format: [HH-mm-ss]
 	 */
 	public String getTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");

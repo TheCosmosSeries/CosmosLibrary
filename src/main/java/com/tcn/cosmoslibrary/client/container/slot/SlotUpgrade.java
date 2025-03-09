@@ -7,22 +7,17 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotUpgrade extends Slot {
 
-	public Item item;
+	public Item specifiedItem;
 
-	public SlotUpgrade(Container containerIn, int indexIn, int xPos, int yPos, Item itemIn) {
+	public SlotUpgrade(Container containerIn, int indexIn, int xPos, int yPos, Item specifiedItemIn) {
 		super(containerIn, indexIn, xPos, yPos);
 
-		this.item = itemIn;
+		this.specifiedItem = specifiedItemIn;
 	}
 
 	@Override
-	public boolean mayPlace(ItemStack par1ItemStack) {
-		if (par1ItemStack != null) {
-			Item item = par1ItemStack.getItem();
-
-			return item != null && item.equals(this.item);
-		}
-		return false;
+	public boolean mayPlace(ItemStack stackIn) {
+		return stackIn != null ? stackIn.getItem().equals(this.specifiedItem) : false;
 	}
 
 	@Override

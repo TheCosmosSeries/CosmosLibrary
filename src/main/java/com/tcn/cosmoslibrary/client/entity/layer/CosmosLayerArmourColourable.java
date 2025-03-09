@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.tcn.cosmoslibrary.common.item.CosmosArmourItemColourable;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 
@@ -28,7 +27,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -39,22 +37,32 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 public class CosmosLayerArmourColourable<E extends LivingEntity, M extends HumanoidModel<E>, A extends HumanoidModel<E>> extends RenderLayer<E, M> {
 	
 	private enum TYPE {
-		BASE,
-		OVERLAY,
-		ALPHA;
+		BASE(0),
+		OVERLAY(1),
+		ALPHA(2);
+		
+		int index;
+		
+		TYPE(int indexIn) {
+			this.index = indexIn;
+		}
+		
+		public int getIndex() {
+			return this.index;
+		}
 	}
 	
 	private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
 	
 	private final A innerModel;
 	private final A outerModel;
-//    private final TextureAtlas armorTrimAtlas;
+//	private final TextureAtlas armorTrimAtlas;
 
 	public CosmosLayerArmourColourable(RenderLayerParent<E, M> entityRenderer, A innerModelIn, A outerModelIn, ModelManager modelManager) {
 		super(entityRenderer);
 		this.innerModel = innerModelIn;
 		this.outerModel = outerModelIn;
-//        this.armorTrimAtlas = modelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);
+//		this.armorTrimAtlas = modelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);
 	}
 
 	@Override
@@ -78,8 +86,7 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 				boolean flag1 = stackIn.hasFoil();
 //				ArmorMaterial armormaterial = armourItem.getMaterial().value();
 
-                IClientItemExtensions extensions = IClientItemExtensions.of(stackIn);
-                extensions.setupModelAnimations(livingEntityIn, stackIn, slotTypeIn, model, limbSwingIn, limbSwingAmountIn, partialTicksIn, ageInTicksIn, netHeadYawIn, headPitchIn);
+                IClientItemExtensions.of(stackIn).setupModelAnimations(livingEntityIn, stackIn, slotTypeIn, model, limbSwingIn, limbSwingAmountIn, partialTicksIn, ageInTicksIn, netHeadYawIn, headPitchIn);
 				
 				if (stackIn.has(DataComponents.CUSTOM_DATA)) {
 					CompoundTag stackTag = stackIn.get(DataComponents.CUSTOM_DATA).copyTag();
@@ -88,12 +95,8 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 						CompoundTag nbtData = stackTag.getCompound("nbt_data");
 						
 						if (nbtData.contains("colour")) {
-							int colour = FastColor.ARGB32.opaque(nbtData.getInt("colour"));
-							
-							this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, colour, false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
+							this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, FastColor.ARGB32.opaque(nbtData.getInt("colour")), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
 						}
-					} else {
-						this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, ComponentColour.POCKET_PURPLE_LIGHT.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
 					}
 				} else {
 					this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, ComponentColour.POCKET_PURPLE_LIGHT.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
@@ -105,43 +108,34 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 		}
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	protected void setPartVisibility(A modelIn, EquipmentSlot slotIn) {
 		modelIn.setAllVisible(false);
 		switch (slotIn) {
-		case HEAD:
-			modelIn.head.visible = true;
-			modelIn.hat.visible = true;
-			break;
-		case CHEST:
-			modelIn.body.visible = true;
-			modelIn.rightArm.visible = true;
-			modelIn.leftArm.visible = true;
-			break;
-		case LEGS:
-			modelIn.body.visible = true;
-			modelIn.rightLeg.visible = true;
-			modelIn.leftLeg.visible = true;
-			break;
-		case FEET:
-			modelIn.rightLeg.visible = true;
-			modelIn.leftLeg.visible = true;
+			case HEAD:
+				modelIn.head.visible = true;
+				modelIn.hat.visible = true;
+				break;
+			case CHEST:
+				modelIn.body.visible = true;
+				modelIn.rightArm.visible = true;
+				modelIn.leftArm.visible = true;
+				break;
+			case LEGS:
+				modelIn.body.visible = true;
+				modelIn.rightLeg.visible = true;
+				modelIn.leftLeg.visible = true;
+				break;
+			case FEET:
+				modelIn.rightLeg.visible = true;
+				modelIn.leftLeg.visible = true;
+				break;
+			default:
+				break;
 		}
-
 	}
 
 	private void renderModel(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, boolean foilIn, Model modelIn, int colour, boolean alphaLayer, ResourceLocation armorResource) {
-		if (alphaLayer) {
-			RenderType type = RenderType.entityTranslucent(armorResource);
-			
-			VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, type, foilIn);
-			modelIn.renderToBuffer(poseStack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
-		} else {
-			RenderType type = RenderType.armorCutoutNoCull(armorResource);
-			
-			VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, type, false);
-			modelIn.renderToBuffer(poseStack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
-		}
+		modelIn.renderToBuffer(poseStack, ItemRenderer.getArmorFoilBuffer(bufferIn, alphaLayer ? RenderType.entityTranslucent(armorResource) : RenderType.armorCutoutNoCull(armorResource), foilIn), packedLightIn, OverlayTexture.NO_OVERLAY, colour);
 	}
 
 	private A getArmorModel(EquipmentSlot slotIn) {
@@ -157,56 +151,19 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 	}
 	
 	public ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, TYPE typeIn, @Nullable String type) {
-		Item item = stack.getItem();
-		
-		if (item instanceof CosmosArmourItemColourable armour) {
+		if (stack.getItem() instanceof CosmosArmourItemColourable armour) {
 			List<ArmorMaterial.Layer> layers = armour.getMaterial().value().layers();
 			
-			if (layers.size() > 2) {				
-				if (typeIn == TYPE.BASE) {
-					String s1 = ClientHooks.getArmorTexture(entity, stack, layers.get(0), this.usesInnerModel(slot), slot).toString();
-
-					ResourceLocation resourcelocation = ARMOR_LOCATION_CACHE.get(s1);
-					
-					if (resourcelocation == null) {
-						resourcelocation = ResourceLocation.parse(s1);
-						ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
-					}
-			
-					return resourcelocation;
-				} else if (typeIn == TYPE.OVERLAY) {
-					String s1 = ClientHooks.getArmorTexture(entity, stack, layers.get(1), this.usesInnerModel(slot), slot).toString();
-
-					ResourceLocation resourcelocation = ARMOR_LOCATION_CACHE.get(s1);
-					
-					if (resourcelocation == null) {
-						resourcelocation = ResourceLocation.parse(s1);
-						ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
-					}
-			
-					return resourcelocation;
-				} else if (typeIn == TYPE.ALPHA) {
-					String s1 = ClientHooks.getArmorTexture(entity, stack, layers.get(2), this.usesInnerModel(slot), slot).toString();
-
-					ResourceLocation resourcelocation = ARMOR_LOCATION_CACHE.get(s1);
-					
-					if (resourcelocation == null) {
-						resourcelocation = ResourceLocation.parse(s1);
-						ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
-					}
-			
-					return resourcelocation;
-				} else {
-					String s1 = ClientHooks.getArmorTexture(entity, stack, layers.get(0), this.usesInnerModel(slot), slot).toString();
-					ResourceLocation resourcelocation = ARMOR_LOCATION_CACHE.get(s1);
-					
-					if (resourcelocation == null) {
-						resourcelocation = ResourceLocation.parse(s1);
-						ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
-					}
-			
-					return resourcelocation;
+			if (layers.size() > 2) {
+				String s1 = ClientHooks.getArmorTexture(entity, stack, layers.get(typeIn.getIndex()), this.usesInnerModel(slot), slot).toString();
+				ResourceLocation resourcelocation = ARMOR_LOCATION_CACHE.get(s1);
+				
+				if (resourcelocation == null) {
+					resourcelocation = ResourceLocation.parse(s1);
+					ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
 				}
+				
+				return resourcelocation;
 			} else {
 				String s1 = ClientHooks.getArmorTexture(entity, stack, layers.get(0), this.usesInnerModel(slot), slot).toString();
 				ResourceLocation resourcelocation = ARMOR_LOCATION_CACHE.get(s1);
@@ -215,7 +172,7 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 					resourcelocation = ResourceLocation.parse(s1);
 					ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
 				}
-		
+				
 				return resourcelocation;
 			}
 		} else {

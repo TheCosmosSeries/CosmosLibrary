@@ -21,14 +21,10 @@ public class GsonAdapterItemStack implements JsonSerializer<ItemStack>, JsonDese
 
 	@Override
 	public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonPrimitive object = json.getAsJsonPrimitive();
-		
-		String string = object.getAsString();
-		
 		CompoundTag nbt = new CompoundTag();
 		
 		try {
-			nbt = TagParser.parseTag(string);
+			nbt = TagParser.parseTag(json.getAsJsonPrimitive().getAsString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,8 +39,6 @@ public class GsonAdapterItemStack implements JsonSerializer<ItemStack>, JsonDese
 		CompoundTag nbt = new CompoundTag();
 		src.save(ServerLifecycleHooks.getCurrentServer().registryAccess(), nbt);
 		
-		String nbt_string = nbt.toString();
-		
-		return new JsonPrimitive(nbt_string);
+		return new JsonPrimitive(nbt.toString());
 	}
 }

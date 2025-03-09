@@ -157,7 +157,7 @@ public class CosmosScreenBlockEntity<J extends CosmosContainerMenuBlockEntity> e
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		for (GuiEventListener list : this.children()) {
 			if (list instanceof CosmosButtonBase button) {
-				if (button.isMouseOver(mouseX, mouseY) && button.isActive() && button.visible) {
+				if (button.isMouseOver(mouseX, mouseY) && button.isActive() && button.isVisible()) {
 					if (mouseButton == 1) {
 						button.onClick(false);
 					} else if (mouseButton == 0) {

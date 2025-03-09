@@ -50,12 +50,7 @@ public class ObjectDestinationInfo {
 		int y = block_pos.getInt(Const.NBT_POS_Y_KEY);
 		int z = block_pos.getInt(Const.NBT_POS_Z_KEY);
 
-		BlockPos pos = new BlockPos(x, y, z);
-		
-		float yaw = compound.getFloat(Const.NBT_POS_YAW_KEY);
-		float pitch = compound.getFloat(Const.NBT_POS_PITCH_KEY);
-		
-		return new ObjectDestinationInfo(pos, yaw, pitch);
+		return new ObjectDestinationInfo(new BlockPos(x, y, z), compound.getFloat(Const.NBT_POS_YAW_KEY), compound.getFloat(Const.NBT_POS_PITCH_KEY));
 	}
 	
 	public void writeToNBT(CompoundTag compound) {

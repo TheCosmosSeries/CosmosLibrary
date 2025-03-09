@@ -9,12 +9,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotColourableArmourItem extends Slot {
 
-	public int limit;
+	public int stackSize;
 
-	public SlotColourableArmourItem(Container containerIn, int indexIn, int xPos, int yPos, int stackLimitIn) {
+	public SlotColourableArmourItem(Container containerIn, int indexIn, int xPos, int yPos, int stackSizeIn) {
 		super(containerIn, indexIn, xPos, yPos);
 		
-		this.limit = stackLimitIn;
+		this.stackSize = stackSizeIn;
 	}
 
 	@Override
@@ -32,12 +32,11 @@ public class SlotColourableArmourItem extends Slot {
 				return false;
 			}
 		}
-		
 		return false;
 	}
 
 	@Override
 	public int getMaxStackSize() {
-		return this.limit;
+		return this.stackSize;
 	}
 }

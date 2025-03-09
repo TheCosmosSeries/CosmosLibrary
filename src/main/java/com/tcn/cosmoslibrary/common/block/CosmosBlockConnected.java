@@ -46,8 +46,6 @@ public class CosmosBlockConnected extends CosmosBlock {
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos pos, BlockPos facingPos) {
-		//super.updateShape(stateIn, facing, facingState, worldIn, pos, facingPos);
-		
 		return stateIn.setValue(DOWN,  this.canSideConnect(worldIn, pos, Direction.DOWN))
 				.setValue(EAST,  this.canSideConnect(worldIn, pos, Direction.EAST))
 				.setValue(NORTH, this.canSideConnect(worldIn, pos, Direction.NORTH))

@@ -18,15 +18,15 @@ public class CosmosBlockEntityUpdateable extends BlockEntity implements IBEUpdat
 	public void sendUpdates(boolean forceUpdate) {
 		this.setChanged();
 		
-		if (this.level != null) {
+		if (this.getLevel() != null) {
 			BlockState state = this.getBlockState();
 			
-			this.level.sendBlockUpdated(this.getBlockPos(), state, state, 3);
-			this.level.markAndNotifyBlock(this.getBlockPos(), this.level.getChunkAt(this.getBlockPos()), state, state, 3, 0);
+			this.getLevel().sendBlockUpdated(this.getBlockPos(), state, state, 3);
+			this.getLevel().markAndNotifyBlock(this.getBlockPos(), this.level.getChunkAt(this.getBlockPos()), state, state, 3, 0);
 			
 			if (forceUpdate) {
-				if (!this.level.isClientSide) {
-					level.setBlockAndUpdate(this.getBlockPos(), state.updateShape(Direction.DOWN, state, this.level, this.getBlockPos(), this.getBlockPos().below()));
+				if (!this.getLevel().isClientSide()) {
+					getLevel().setBlockAndUpdate(this.getBlockPos(), state.updateShape(Direction.DOWN, state, this.level, this.getBlockPos(), this.getBlockPos().below()));
 				}
 			}
 		}

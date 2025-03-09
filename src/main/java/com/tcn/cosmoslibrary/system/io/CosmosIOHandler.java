@@ -10,17 +10,13 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 public class CosmosIOHandler {
 	
 	public static File getFile(String pathIn, boolean createFile) {
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-		StringBuilder filePath = new StringBuilder(pathIn);
-		
-		File returnFile = server.getFile(filePath.toString()).toFile();
+		File returnFile = ServerLifecycleHooks.getCurrentServer().getFile(new StringBuilder(pathIn).toString()).toFile();
 		
 		if (!returnFile.exists()) {
 			if (createFile) {
 				createFile(returnFile);
 			}
 		}
-		
 		return returnFile;
 	}
 
@@ -33,13 +29,10 @@ public class CosmosIOHandler {
 		}
 	}
 	
-	public static String getServerLevelId(MinecraftServer serverIn) { //TODO: needs to be changed to f_129744_ when building.
-		final Object levelId = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, serverIn, "storageSource");
-		
-		if (levelId instanceof LevelStorageSource.LevelStorageAccess access) {
+	public static String getServerLevelId(MinecraftServer serverIn) { //TODO: needs to be changed to f_129744_ when building (FORGE only).
+		if (ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, serverIn, "storageSource") instanceof LevelStorageSource.LevelStorageAccess access) {
 			return access.getLevelId();
 		}
-		
 		return "";
 	}
 }

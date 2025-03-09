@@ -3,6 +3,10 @@ package com.tcn.cosmoslibrary.runtime.network;
 import com.tcn.cosmoslibrary.CosmosLibrary;
 import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUILockable;
 import com.tcn.cosmoslibrary.common.interfaces.blockentity.IBEUIMode;
+import com.tcn.cosmoslibrary.runtime.network.packet.ICosmosPacket;
+import com.tcn.cosmoslibrary.runtime.network.packet.PacketUIHelp;
+import com.tcn.cosmoslibrary.runtime.network.packet.PacketUILock;
+import com.tcn.cosmoslibrary.runtime.network.packet.PacketUIMode;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -26,7 +30,7 @@ public class ServerPayloadHandler {
 					CosmosLibrary.CONSOLE.debugWarn("[Packet Delivery Failure] <uihelp> Block Entity not equal to expected.");
 				}
 			}).exceptionally(e -> {
-				context.disconnect(Component.translatable("[Packet Delivery Failure] <uihelp> Block Entity not equal to expected.", e.getMessage()));
+				context.disconnect(Component.translatable("[Packet Delivery Failure] <uihelp> ", e.getMessage()));
 				return null;
 			});
 		}
@@ -47,7 +51,7 @@ public class ServerPayloadHandler {
 					CosmosLibrary.CONSOLE.debugWarn("[Packet Delivery Failure] <uilock> Block Entity not equal to expected.");
 				}
 			}).exceptionally(e -> {
-				context.disconnect(Component.translatable("[Packet Delivery Failure] <uilock> Block Entity not equal to expected.", e.getMessage()));
+				context.disconnect(Component.translatable("[Packet Delivery Failure] <uilock> ", e.getMessage()));
 				return null;
 			});
 		}
@@ -64,7 +68,7 @@ public class ServerPayloadHandler {
 					CosmosLibrary.CONSOLE.debugWarn("[Packet Delivery Failure] <uimode> Block Entity not equal to expected.");
 				}
 			}).exceptionally(e -> {
-				context.disconnect(Component.translatable("[Packet Delivery Failure] <uilock> Block Entity not equal to expected.", e.getMessage()));
+				context.disconnect(Component.translatable("[Packet Delivery Failure] <uilock> ", e.getMessage()));
 				return null;
 			});
 		}

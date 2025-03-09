@@ -11,34 +11,28 @@ import net.minecraft.world.level.Level;
 public abstract class CosmosContainerMenuBlockEntity extends AbstractContainerMenu {
 
 	protected final ContainerLevelAccess access;
-	protected final Player player;
-
-	private final Level world;
+	
 	private final BlockPos pos;
+	private final Level level;
+	protected final Player player;
 
 	protected CosmosContainerMenuBlockEntity(MenuType<?> menuTypeIn, int indexIn, Inventory playerInventoryIn, ContainerLevelAccess accessIn, BlockPos posIn) {
 		super(menuTypeIn, indexIn);
-		
-		this.pos = posIn;
-		this.world = playerInventoryIn.player.level();
-		
+
 		this.access = accessIn;
+		this.pos = posIn;
+		this.level = playerInventoryIn.player.level();
 		this.player = playerInventoryIn.player;
 	}
 
-	@Override
-	public boolean stillValid(Player playerIn) {
-		return false;
-	}
-
-	public Level getLevel() {
-		return world;
-	}
-
 	public BlockPos getBlockPos() {
-		return pos;
+		return this.pos;
 	}
 	
+	public Level getLevel() {
+		return this.level;
+	}
+
 	public Player getPlayer() {
 		return this.player;
 	}

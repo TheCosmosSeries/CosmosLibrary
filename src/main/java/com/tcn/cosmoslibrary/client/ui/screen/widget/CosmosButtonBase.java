@@ -24,8 +24,8 @@ public class CosmosButtonBase extends Button {
 	
 	protected boolean isHovered;
 	
-	public boolean active = true;
-	public boolean visible = true;
+	protected boolean active = true;
+	protected boolean visible = true;
 	
 	protected final CosmosButtonBase.OnClick onClick;
 
@@ -63,8 +63,20 @@ public class CosmosButtonBase extends Button {
 	@Override
 	public void onPress() { }
 	
+	@Override
+	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) { }
+
+	@Override
+	public boolean isActive() {
+		return this.active;
+	}
+	
+	protected int getHoverState(boolean mouseOver) {
+		return !this.isActive() ? 2 : mouseOver ? 1 : 0;
+	}
+
 	public void onClick(boolean isLeftClick) {
-		if (this.active && this.visible) {
+		if (this.isActive() && this.isVisible()) {
 			this.onClick.onClick(this, isLeftClick);
 			
 			if (!isLeftClick) {
@@ -73,15 +85,12 @@ public class CosmosButtonBase extends Button {
 		}
 	}
 	
-	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) { }
-	
-	protected int getHoverState(boolean mouseOver) {
-		return !this.active ? 2 : mouseOver ? 1 : 0;
-	}
-	
 	public interface OnClick {
 		void onClick(Button buttonIn, boolean isLeftClick);
+	}
+	
+	public boolean isVisible() {
+		return this.visible;
 	}
 	
 }

@@ -17,11 +17,7 @@ public class GsonAdapterGeneratedState implements JsonSerializer<EnumGeneratedSt
 
 	@Override
 	public EnumGeneratedState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		JsonObject object = json.getAsJsonObject();
-		
-		int index = object.get("index").getAsInt();
-		
-		return EnumGeneratedState.getStateFromIndex(index);
+		return EnumGeneratedState.getStateFromIndex(json.getAsJsonObject().get("index").getAsInt());
 	}
 
 	@Override

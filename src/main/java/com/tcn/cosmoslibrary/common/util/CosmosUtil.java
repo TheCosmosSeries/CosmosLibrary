@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 
 import com.ibm.icu.text.DecimalFormat;
 import com.tcn.cosmoslibrary.common.interfaces.item.ICosmosTool;
+import com.tcn.cosmoslibrary.common.interfaces.item.ICosmosToolAdvanced;
 import com.tcn.cosmoslibrary.common.item.CosmosArmourItemColourable;
 import com.tcn.cosmoslibrary.common.item.CosmosArmourItemElytra;
-import com.tcn.cosmoslibrary.common.item.CosmosItemTool;
 import com.tcn.cosmoslibrary.common.lib.ComponentColour;
 
 import net.minecraft.core.BlockPos;
@@ -49,7 +49,7 @@ public class CosmosUtil {
 		
 		Item currentItem = playerIn.getInventory().getSelected().getItem();
 		
-		if (currentItem instanceof CosmosItemTool itemTool) {
+		if (currentItem instanceof ICosmosToolAdvanced itemTool) {
 			return itemTool.isActive(playerIn.getInventory().getSelected());
 		} else if (currentItem instanceof ICosmosTool) {
 			return true;
@@ -59,13 +59,7 @@ public class CosmosUtil {
 	}
 	
 	public static boolean holdingFluidHandler(ItemStack stackIn) {
-		Object object = stackIn.getCapability(Capabilities.FluidHandler.ITEM);
-		
-		if (object instanceof IFluidHandler fluidHandler) {
-			return true;
-		} else {
-			return false;
-		}
+		return stackIn.getCapability(Capabilities.FluidHandler.ITEM) instanceof IFluidHandler;
 	}
 	
 	public static void setToAir(Level worldIn, BlockPos pos) {

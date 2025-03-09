@@ -39,7 +39,6 @@ public class CosmosNBTIOHandler {
 				} catch (Throwable throwable1) {
 					throwable2.addSuppressed(throwable1);
 				}
-
 				throw throwable2;
 			}
 
@@ -50,7 +49,6 @@ public class CosmosNBTIOHandler {
 			} catch (Throwable throwable) {
 				throwable3.addSuppressed(throwable);
 			}
-
 			throw throwable3;
 		}
 
