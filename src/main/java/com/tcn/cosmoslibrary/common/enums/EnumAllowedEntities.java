@@ -11,7 +11,9 @@ public enum EnumAllowedEntities {
 	NON_PLAYERS_ONLY(1, "entities_only", "cosmoslibrary.enum.allowed_entities.entities_only", ComponentColour.YELLOW),
 	PLAYERS_ONLY(2, "players_only", "cosmoslibrary.enum.allowed_entities.players_only", ComponentColour.CYAN),
 	ITEMS_ONLY(3, "items_only", "cosmoslibrary.enum.allowed_entities.items_only", ComponentColour.ORANGE),
-	ALL(4, "all", "cosmoslibrary.enum.allowed_entities.all", ComponentColour.GREEN);
+	ALL(4, "all", "cosmoslibrary.enum.allowed_entities.all", ComponentColour.GREEN),
+	HOSTILE_MOBS(5, "hostile_mobs", "cosmoslibrary.enum.allowed_entities.hostile_mobs", ComponentColour.LIGHT_RED),
+	MOBS(6, "mobs", "cosmoslibrary.enum.allowed_entities.mobs", ComponentColour.LIME);
 	
 	private final int index;
 	private final String name;
@@ -54,6 +56,10 @@ public enum EnumAllowedEntities {
 			case PLAYERS_ONLY:
 				return ITEMS_ONLY;
 			case ITEMS_ONLY:
+				return HOSTILE_MOBS;
+			case HOSTILE_MOBS:
+				return MOBS;
+			case MOBS:
 				return ALL;
 			case ALL:
 				return NONE;
@@ -71,6 +77,10 @@ public enum EnumAllowedEntities {
 			case PLAYERS_ONLY:
 				return ITEMS_ONLY;
 			case ITEMS_ONLY:
+				return HOSTILE_MOBS;
+			case HOSTILE_MOBS:
+				return MOBS;
+			case MOBS:
 				return ALL;
 			case ALL:
 				return NONE;
@@ -84,6 +94,10 @@ public enum EnumAllowedEntities {
 			case NONE:
 				return ALL;
 			case ALL:
+				return MOBS;
+			case MOBS:
+				return HOSTILE_MOBS;
+			case HOSTILE_MOBS:
 				return ITEMS_ONLY;
 			case ITEMS_ONLY:
 				return PLAYERS_ONLY;
@@ -109,6 +123,10 @@ public enum EnumAllowedEntities {
 				return ITEMS_ONLY;
 			case 4:
 				return ALL;
+			case 5:
+				return HOSTILE_MOBS;
+			case 6:
+				return MOBS;
 			default:
 				throw new IllegalStateException("No state exists with index: [" + index + "]");
 		}

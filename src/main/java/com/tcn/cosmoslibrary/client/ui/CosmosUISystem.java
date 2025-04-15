@@ -28,6 +28,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
@@ -40,6 +41,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
@@ -295,7 +297,6 @@ public class CosmosUISystem {
 			renderStaticElement(graphics, screenCoords, drawX, drawY, textureInX, textureInY, scaledIn + 1, height, location);
 		}
 		
-		
 		public static void renderStaticElementWithUIMode(GuiGraphics graphics, int[] screenCoords, int drawX, int drawY, int textureInX, int textureInY, int width, int height, IBEUIMode entity, ResourceLocation[] locations) {
 			renderStaticElementWithUIMode(graphics, screenCoords, drawX, drawY, textureInX, textureInY, width, height, Setup.colourToRGBA(ComponentColour.WHITE), entity.getUIMode(), locations);
 		}
@@ -464,7 +465,6 @@ public class CosmosUISystem {
 			MutableComponent[] description = {
 				ComponentHelper.style(ComponentColour.PURPLE, "", "Stored: " + Value.RED + stored)
 			};
-			
 			return Arrays.asList(description);
 		}
 		
@@ -473,7 +473,6 @@ public class CosmosUISystem {
 				ComponentHelper.style(ComponentColour.CYAN, "", "Fluid: " + name), 
 				ComponentHelper.style(ComponentColour.ORANGE, "", "Amount: " + amount + " / " + capacity + " mB")
 			};
-			
 			return Arrays.asList(description);
 		}
 		
@@ -482,7 +481,6 @@ public class CosmosUISystem {
 				ComponentHelper.style(ComponentColour.CYAN, "", "Empty:"), 
 				ComponentHelper.style(ComponentColour.ORANGE, "", "Amount: 0 mB")
 			};
-			
 			return Arrays.asList(description);
 		}
 		
@@ -491,7 +489,6 @@ public class CosmosUISystem {
 				ComponentHelper.style(ComponentColour.GREEN, "", "Empty tank."), 
 				ComponentHelper.style(ComponentColour.RED, "", "Warning: " + Value.ORANGE + "Cannot be undone!")
 			};
-			
 			return Arrays.asList(description);
 		}
 
@@ -499,7 +496,6 @@ public class CosmosUISystem {
 			MutableComponent[] description = {
 				ComponentHelper.style(ComponentColour.GREEN, "", "Shift click " + Value.LIGHT_GRAY + "to empty tank.")
 			};
-			
 			return Arrays.asList(description);
 		}
 				
@@ -508,12 +504,11 @@ public class CosmosUISystem {
 				ComponentHelper.style(ComponentColour.PURPLE, "", "Stored: " + Value.ORANGE + storedIn), 
 				ComponentHelper.style(ComponentColour.RED, "", "Producing: " + Value.CYAN + generationRateIn + Value.RED + " FE/t.")
 			};
-			
 			return Arrays.asList(description);
 		}
 	}
 
-    /** - DO NOT USE THIS - */
+    /** - DO NOT USE THIS --INTERNAL ONLY--  - */
 	protected static class Extension {
 		private static void blit16(GuiGraphics graphicsIn, int x, int y, int blitOffset, int width, int height, TextureAtlasSprite sprite) {
 	        blitSprite16(graphicsIn, sprite, x, y, blitOffset, width, height);
@@ -526,8 +521,10 @@ public class CosmosUISystem {
 		}
 
 		private static void innerBlitMipped(GuiGraphics graphicsIn, ResourceLocation atlasLocation, int x1, int x2, int y1, int y2, int blitOffset, float minU, float maxU, float minV, float maxV) {
-			float ref = 0.001F * (16 - (y2 - y1));
-
+			int height = ObfuscationReflectionHelper.getPrivateValue(TextureAtlas.class, Minecraft.getInstance().getModelManager().getAtlas(atlasLocation), "height");
+			
+			float ref = (16 - (y2 - y1)) / (float) height;
+			
 			RenderSystem.setShaderTexture(0, atlasLocation);
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			Matrix4f matrix4f = graphicsIn.pose().last().pose();

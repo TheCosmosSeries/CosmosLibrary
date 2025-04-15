@@ -5,6 +5,7 @@ import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 
+@Deprecated
 public class CosmosOptions extends Options {
 	
 	public CosmosOptions(Minecraft minecraft, File file) {

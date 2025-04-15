@@ -146,7 +146,7 @@ public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra impleme
 	public double getScaledEnergy(ItemStack stackIn, int scaleIn) {
 		Item item = stackIn.getItem();
 		
-		if (item instanceof ICosmosEnergyItem energyItem) {
+		if (item instanceof ICosmosEnergyItem) {
 			return (double) this.getEnergy(stackIn) * scaleIn / (double) this.getMaxEnergyStored(stackIn);
 		}
 		
@@ -157,7 +157,7 @@ public class CosmosEnergyArmourItemElytra extends CosmosArmourItemElytra impleme
 	public double getScaledEnergy(ItemStack stackIn, float scaleIn) {
 		Item item = stackIn.getItem();
 		
-		if (item instanceof ICosmosEnergyItem energyItem) {
+		if (item instanceof ICosmosEnergyItem) {
 			return (double) this.getEnergy(stackIn) * scaleIn / (double) this.getMaxEnergyStored(stackIn);
 		}
 		

@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 
@@ -145,7 +147,7 @@ public class CosmosRendererHelper {
 			fontRendererIn.drawInBatch(textIn, width, 0.0F, 553648127, false, matrix4f, bufferIn, Font.DisplayMode.NORMAL, -alpha, combinedLightIn);
 		}
 		
-		fontRendererIn.drawInBatch(textIn, width, 0.0F, -1, shadowOn, matrix4f, bufferIn, Font.DisplayMode.POLYGON_OFFSET, 0, combinedLightIn);
+		fontRendererIn.drawInBatch(textIn, width, 0.0F, 0, shadowOn, matrix4f, bufferIn, Font.DisplayMode.SEE_THROUGH, 0, combinedLightIn);
 		poseStackIn.popPose();
 	}
 
@@ -195,14 +197,16 @@ public class CosmosRendererHelper {
 	
 	@OnlyIn(Dist.CLIENT)
 	public static float getMappedTextureHeight(TextureAtlasSprite spriteIn, float inputHeightIn, float inputMinIn, float inputMaxIn) {
-		return ((0.0625F / (512.0F / spriteIn.contents().height())) * (Mth.map(inputHeightIn, inputMinIn, inputMaxIn, 0, 8)));
+		TextureAtlas atlas = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS);
+		int height = ObfuscationReflectionHelper.getPrivateValue(TextureAtlas.class, atlas, "height");
+		
+		return ((0.0625F / ((height / 2) / spriteIn.contents().height())) * (Mth.map(inputHeightIn, inputMinIn, inputMaxIn, 0, 8)));
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public static float getMappedTextureHeight(TextureAtlasSprite spriteIn, float inputHeightIn) {
 		return getMappedTextureHeight(spriteIn, inputHeightIn, 16, 0);
 	}
-	
 	
 	public static ModelResourceLocation getStandalone(String modId, String path) {
 		return ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(modId, path));

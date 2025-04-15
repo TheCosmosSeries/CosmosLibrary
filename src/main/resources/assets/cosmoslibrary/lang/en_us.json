@@ -97,6 +97,8 @@
 	"cosmoslibrary.enum.allowed_entities.players_only": "Player Entities",
 	"cosmoslibrary.enum.allowed_entities.items_only": "Item Entities",
 	"cosmoslibrary.enum.allowed_entities.all": "All Entities",
+	"cosmoslibrary.enum.allowed_entities.hostile_mobs": "Hostile Mobs",
+	"cosmoslibrary.enum.allowed_entities.mobs": "Friendly Mobs",
 	
 	"cosmoslibrary.enum.ui_mode.dark": "Dark",
 	"cosmoslibrary.enum.ui_mode.light": "Light",

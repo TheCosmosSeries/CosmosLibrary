@@ -28,6 +28,7 @@ import com.tcn.cosmoslibrary.common.lib.ComponentHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractOptionSliderButton;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.CommonComponents;
@@ -163,17 +164,17 @@ public class CosmosOptionInstance<T> {
 		return minecraftIn.font.split(captionIn, widthIn);
 	}
 
-	public AbstractWidget createButton(CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn) {
+	public AbstractWidget createButton(int xPosIn, int yPosIn, int widthIn, int heightIn) {
 		CosmosOptionInstance.TooltipSupplier<T> tooltipsupplier = this.tooltip.apply(Minecraft.getInstance());
-		return this.values.createButton(tooltipsupplier, optionsIn, xPosIn, yPosIn, this.resetButton ? (widthIn - heightIn - (heightIn / 2)) : widthIn, heightIn, this.getMessage(optionsIn), this.getSplitter()).apply(this);
+		return this.values.createButton(tooltipsupplier, xPosIn, yPosIn, this.resetButton ? (widthIn - heightIn - (heightIn / 2)) : widthIn, heightIn, this.getMessage(), this.getSplitter()).apply(this);
 	}
 
-	public AbstractWidget createResetButton(CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn) {
+	public AbstractWidget createResetButton(int xPosIn, int yPosIn, int widthIn, int heightIn) {
 		CosmosOptionInstance.TooltipSupplier<T> tooltipsupplier = this.tooltip.apply(Minecraft.getInstance());
-		return this.values.createResetButton(tooltipsupplier, optionsIn, xPosIn + widthIn - heightIn, yPosIn, heightIn, heightIn, ComponentHelper.style(ComponentColour.TURQUOISE, "R")).apply(this);
+		return this.values.createResetButton(tooltipsupplier, xPosIn + widthIn - heightIn, yPosIn, heightIn, heightIn, ComponentHelper.style(ComponentColour.TURQUOISE, "R")).apply(this);
 	}
 
-	public MutableComponent getMessage(Options options) {
+	public MutableComponent getMessage() {
 		return this.caption;
 	}
 	
@@ -295,21 +296,21 @@ public class CosmosOptionInstance<T> {
 		}
 
 		@Override
-		default Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> toolTipIn, CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn) {
+		default Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> toolTipIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn) {
 			return (instance) -> {
 				return CosmosCycleButton.builder(instance.toString).withValues(this.valueListSupplier()).withTooltip(toolTipIn).withInitialValue(instance.value).create(xPosIn, yPosIn, widthIn, heightIn, instance.caption, splitterIn, (button, tObject) -> {
 					this.valueSetter().set(instance, tObject);
-					optionsIn.save();
+//					optionsIn.save();
 				});
 			};
 		}
 		
 		@Override
-		default Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> toolTipIn, CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn) {
+		default Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> toolTipIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn) {
 			return (instance) -> {
 				Button.Builder builder = new Button.Builder(messageIn, (button) -> {
 					instance.set(instance.defaultValue);
-					optionsIn.save();
+//					optionsIn.save();
 				});
 				builder.pos(xPosIn, yPosIn);
 				builder.size(widthIn, heightIn);
@@ -431,13 +432,13 @@ public class CosmosOptionInstance<T> {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	static final class OptionInstanceSliderButton<N> extends AbstractOptionSliderButton {
+	static final class OptionInstanceSliderButton<N> extends AbstractSliderButton {
 		private final CosmosOptionInstance<N> instance;
 		private final CosmosOptionInstance.SliderableValueSet<N> values;
 		private final CosmosOptionInstance.TooltipSupplier<N> tooltip;
 
-		OptionInstanceSliderButton(CosmosOptions optionsIn, int xPos, int yPos, int widthIn, int heightIn, CosmosOptionInstance<N> instanceIn, CosmosOptionInstance.SliderableValueSet<N> valueSetIn, CosmosOptionInstance.TooltipSupplier<N> tooltipIn) {
-			super(optionsIn, xPos, yPos, widthIn, heightIn, valueSetIn.toSliderValue(instanceIn.get()));
+		OptionInstanceSliderButton(int xPos, int yPos, int widthIn, int heightIn, CosmosOptionInstance<N> instanceIn, CosmosOptionInstance.SliderableValueSet<N> valueSetIn, CosmosOptionInstance.TooltipSupplier<N> tooltipIn) {
+			super(xPos, yPos, widthIn, heightIn, CommonComponents.EMPTY, valueSetIn.toSliderValue(instanceIn.get()));
 			this.instance = instanceIn;
 			this.values = valueSetIn;
 			this.tooltip = tooltipIn;
@@ -452,13 +453,7 @@ public class CosmosOptionInstance<T> {
 		@Override
 		protected void applyValue() {
 			this.instance.set(this.values.fromSliderValue(this.value));
-			this.options.save();
 		}
-		/*
-		@Override
-		public List<FormattedCharSequence> tooltip() {
-			return this.tooltip.apply(this.values.fromSliderValue(this.value));
-		}*/
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -466,13 +461,13 @@ public class CosmosOptionInstance<T> {
 		boolean createCosmosCycleButton();
 		
 		@Override
-		default Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn) {
-			return this.createCosmosCycleButton() ? CosmosOptionInstance.CycleableValueSet.super.createButton(tooltipIn, optionsIn, xPosIn, yPosIn, widthIn, heightIn, messageIn, splitterIn) : CosmosOptionInstance.SliderableValueSet.super.createButton(tooltipIn, optionsIn, xPosIn, yPosIn, widthIn, heightIn, messageIn, splitterIn);
+		default Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn) {
+			return this.createCosmosCycleButton() ? CosmosOptionInstance.CycleableValueSet.super.createButton(tooltipIn, xPosIn, yPosIn, widthIn, heightIn, messageIn, splitterIn) : CosmosOptionInstance.SliderableValueSet.super.createButton(tooltipIn, xPosIn, yPosIn, widthIn, heightIn, messageIn, splitterIn);
 		}
 		
 		@Override
-		default Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn) {
-			return this.createCosmosCycleButton() ? CosmosOptionInstance.CycleableValueSet.super.createResetButton(tooltipIn, optionsIn, xPosIn, yPosIn, widthIn, heightIn, messageIn) : CosmosOptionInstance.SliderableValueSet.super.createResetButton(tooltipIn, optionsIn, xPosIn, yPosIn, widthIn, heightIn, messageIn);
+		default Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn) {
+			return this.createCosmosCycleButton() ? CosmosOptionInstance.CycleableValueSet.super.createResetButton(tooltipIn, xPosIn, yPosIn, widthIn, heightIn, messageIn) : CosmosOptionInstance.SliderableValueSet.super.createResetButton(tooltipIn, xPosIn, yPosIn, widthIn, heightIn, messageIn);
 		}
 	}
 
@@ -483,18 +478,18 @@ public class CosmosOptionInstance<T> {
 		T fromSliderValue(double p_231731_);
 
 		@Override
-		default Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn) {
+		default Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn) {
 			return (instance) -> {
-				return new CosmosOptionInstance.OptionInstanceSliderButton<>(optionsIn, xPosIn, yPosIn, widthIn, heightIn, instance, this, tooltipIn);
+				return new CosmosOptionInstance.OptionInstanceSliderButton<>(xPosIn, yPosIn, widthIn, heightIn, instance, this, tooltipIn);
 			};
 		}
 		
 		@Override
-		default Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, CosmosOptions optionsIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn) {
+		default Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> tooltipIn, int xPosIn, int yPosIn, int widthIn, int heightIn, MutableComponent messageIn) {
 			return (instance) -> {
 				Button.Builder builder = new Button.Builder(messageIn, (button) -> {
 					instance.set(instance.defaultValue);
-					optionsIn.save();
+					//optionsIn.save();
 				});
 				builder.pos(xPosIn, yPosIn);
 				builder.size(widthIn, heightIn);
@@ -569,9 +564,9 @@ public class CosmosOptionInstance<T> {
 
 	@OnlyIn(Dist.CLIENT)
 	interface ValueSet<T> {
-		Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> p_231779_, CosmosOptions p_231780_, int xPos, int yPos, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn);
+		Function<CosmosOptionInstance<T>, AbstractWidget> createButton(CosmosOptionInstance.TooltipSupplier<T> p_231779__, int xPos, int yPos, int widthIn, int heightIn, MutableComponent messageIn, String splitterIn);
 		
-		Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> p_231779_, CosmosOptions p_231780_, int xPos, int yPos, int widthIn, int heightIn, MutableComponent messageIn);
+		Function<CosmosOptionInstance<T>, AbstractWidget> createResetButton(CosmosOptionInstance.TooltipSupplier<T> p_231779_, int xPos, int yPos, int widthIn, int heightIn, MutableComponent messageIn);
 		
 		Optional<T> validateValue(T p_231784_);
 		

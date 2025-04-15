@@ -18,19 +18,6 @@ public class CosmosOptionBoolean extends CosmosOptionInstance<Boolean> {
 			return value ? type.getOnStateComp() : type.getOffStateComp();
 		}, CosmosOptionInstance.BOOLEAN_VALUES, initialValue, false, consumerFunctionIn, false, splitterIn);
 	}
-	
-	public void set(CosmosOptions options, String valueIn) {
-		this.set(options, "true".equals(valueIn));
-	}
-
-	public void toggle(CosmosOptions options) {
-		this.set(options, !this.value);
-		options.save();
-	}
-
-	private void set(CosmosOptions options, boolean valueIn) {
-		this.value = valueIn;
-	}
 
 	public enum TYPE {
 		ON_OFF(ComponentColour.GREEN, ComponentColour.RED, ComponentHelper.style(ComponentColour.GREEN, "bold", "cosmoslibrary.options.on.composed"), ComponentHelper.style(ComponentColour.RED, "bold", "cosmoslibrary.options.off.composed")),

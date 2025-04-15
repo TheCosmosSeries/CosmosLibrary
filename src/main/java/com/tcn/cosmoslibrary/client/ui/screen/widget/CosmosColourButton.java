@@ -41,7 +41,7 @@ public class CosmosColourButton extends CosmosButtonBase {
 	@Override
 	public void onPress() {
 		if (this.visible && this.active) {
-			this.onPress.onPress(this);
+			//this.onPress.onPress(this);
 		}
 	}
 
