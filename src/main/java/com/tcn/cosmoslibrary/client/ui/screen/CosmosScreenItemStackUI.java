@@ -67,7 +67,7 @@ public class CosmosScreenItemStackUI<J extends CosmosContainerMenuItemStack> ext
 
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		int textColour = this.getUIMode().getTextColour().dec();
+		int textColour = this.getUIMode().equals(EnumUIMode.DARK) ? CosmosUISystem.DEFAULT_COLOUR_FONT_LIST : ComponentColour.BLACK.dec();
 		
 		graphics.drawString(this.font, this.title.getString(), this.titleLabelX, this.titleLabelY, textColour, false);
 		graphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, textColour, false);

@@ -4,6 +4,7 @@ import com.tcn.cosmoslibrary.common.capability.IEnergyCapBE;
 import com.tcn.cosmoslibrary.common.capability.IEnergyCapItem;
 import com.tcn.cosmoslibrary.common.capability.IFluidCapBE;
 import com.tcn.cosmoslibrary.common.capability.IFluidCapItem;
+import com.tcn.cosmoslibrary.common.capability.IItemCapBE;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.color.block.BlockColor;
@@ -188,6 +189,13 @@ public class CosmosRuntime {
 		public static void registerBlockFluidCapabilities(RegisterCapabilitiesEvent event, BlockEntityType<? extends IFluidCapBE>... caps) {
 			for (BlockEntityType<? extends IFluidCapBE> cap : caps) {
 				event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, cap, (myBlockEntity, side) -> myBlockEntity.getFluidCapability(side));
+			}
+		}
+
+		@SafeVarargs
+		public static void registerBlockItemCapabilities(RegisterCapabilitiesEvent event, BlockEntityType<? extends IItemCapBE>... caps) {
+			for (BlockEntityType<? extends IItemCapBE> cap : caps) {
+				event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, cap, (myBlockEntity, side) -> myBlockEntity.getItemCapability(side));
 			}
 		}
 		

@@ -57,11 +57,20 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 	private final A innerModel;
 	private final A outerModel;
 //	private final TextureAtlas armorTrimAtlas;
+	
+	private final ComponentColour defaultBaseColour;
+	private final ComponentColour defaultOverlayColour;
+	private final ComponentColour defaultAlphaColour;
 
-	public CosmosLayerArmourColourable(RenderLayerParent<E, M> entityRenderer, A innerModelIn, A outerModelIn, ModelManager modelManager) {
+	public CosmosLayerArmourColourable(RenderLayerParent<E, M> entityRenderer, A innerModelIn, A outerModelIn, ModelManager modelManager, ComponentColour defaultBaseColour, ComponentColour defaultOverlayColour, ComponentColour defaultAlphaColour) {
 		super(entityRenderer);
 		this.innerModel = innerModelIn;
 		this.outerModel = outerModelIn;
+		
+		this.defaultBaseColour = defaultBaseColour;
+		this.defaultOverlayColour = defaultOverlayColour;
+		this.defaultAlphaColour = defaultAlphaColour;
+		
 //		this.armorTrimAtlas = modelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);
 	}
 
@@ -97,13 +106,15 @@ public class CosmosLayerArmourColourable<E extends LivingEntity, M extends Human
 						if (nbtData.contains("colour")) {
 							this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, FastColor.ARGB32.opaque(nbtData.getInt("colour")), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
 						}
+					} else {
+						this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, this.defaultBaseColour.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
 					}
 				} else {
-					this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, ComponentColour.POCKET_PURPLE_LIGHT.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
+					this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, this.defaultBaseColour.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.BASE, null));
 				}
 				
-				this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, ComponentColour.WHITE.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.OVERLAY, null));
-				this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, ComponentColour.WHITE.decOpaque(), true, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.ALPHA, null));
+				this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, this.defaultOverlayColour.decOpaque(), false, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.OVERLAY, null));
+				this.renderModel(matrixStackIn, bufferIn, packedLightIn, flag1, model, this.defaultAlphaColour.decOpaque(), true, this.getArmorResource(livingEntityIn, stackIn, slotTypeIn, TYPE.ALPHA, null));
 			}
 		}
 	}
